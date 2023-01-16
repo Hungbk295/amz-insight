@@ -39,6 +39,19 @@ const crawl = async (page, crawlInfo) => {
     return crawlerList[classify(crawlInfo["url"])](page, crawlInfo)
 }
 
+function insertItem(item, data) {
+    let changed = false
+    for (const dt of data){
+        if (item["hotel_id"] === dt["hotel_id"] && item["name"] === dt["name"] &&  item["hotel_name"] === dt["hotel_name"] && item["supplier_name"] === dt["supplier_name"] && item["hotel_address"] === dt["hotel_address"] ) {
+            if (item["price"] < dt["price"]){
+                dt["price"] = item["price"]
+                changed = true
+            }
+        }
+    }
+    if (changed === false) data.push(item)
+}
+
 const main = async () => {
     dotenv.config()
     console.log("Start crawling")
@@ -56,6 +69,7 @@ const main = async () => {
                 let crawlResult = await crawl(page, crawlInfo)
                 for (const room of crawlResult["rooms_info"]){
                     let item = {}
+                    item["hotel_id"] = parseInt(hotel["id"])
                     item["name"] = room["room_name"]
                     item["price"] = parseInt(room["room_price"])
                     item["is_break_fast"] = room["room_breakfast"]
@@ -65,9 +79,8 @@ const main = async () => {
                     item["hotel_name"] = hotel["hotel_name"]
                     item["supplier_name"] = room["supplier_name"]
                     item["hotel_address"] = room["hotel_address"]
-                    data.push(item)
+                    insertItem(item, data)
                 }
-
             } catch (e) {
                 console.log("Can't crawl", crawlInfo["url"])
                 console.log(e)
