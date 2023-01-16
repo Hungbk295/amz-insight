@@ -30,7 +30,7 @@ const crawlExpedia = async (page, crawlInfo) => {
         dict_raw["supplier_name"] = 'Expedia'
         dict_raw["hotel_address"] = hotel_addr
         dict_raw['room_name'] = room_name
-        dict_raw['room_price'] = room_price === ""? "0" : room_price.substring(1).replace(",","")
+        dict_raw['room_price'] = room_price === ""? "0" : room_price.substring(1).replaceAll(",","")
         dict_raw['room_breakfast'] = room_breakfast
         dict_raw['room_cancelable'] = room_cancelable
         rooms_info.push(dict_raw)
