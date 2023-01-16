@@ -38,11 +38,11 @@ function generateTaskFromLine(line, startDate, endDate) {
   task["end_date"] = endDate;
   let results = [];
   let numberOfDays = dayjs(endDate).diff(dayjs(startDate), "days");
-  for (let i = 1; i <= numberOfDays; i++) {
+  for (let i = 0; i < numberOfDays; i++) {
     let link = {};
     let targetDate = dayjs(startDate).add(i, "day").format("YYYY-MM-DD");
     let nextDate = dayjs(startDate).add(i + 1, "day").format("YYYY-MM-DD");
-    if (dayjs(targetDate).day() === 2 || dayjs(targetDate).day() === 5 || dayjs(targetDate).day() === 6) {
+    // if (dayjs(targetDate).day() === 2 || dayjs(targetDate).day() === 5 || dayjs(targetDate).day() === 6) {
       link["id"] = id;
       link["target_date"] = targetDate;
       link["next_date"] = nextDate;
@@ -56,7 +56,7 @@ function generateTaskFromLine(line, startDate, endDate) {
         default:
       }
       results.push(link);
-    }
+    // }
   }
   task["results"] = results
   return task
@@ -91,7 +91,7 @@ async function main() {
   let todayString = today.year() + '-' + today.month() + 1 + '-' + today.date()
   let startDate = dayjs(todayString).add(7, "day").format("YYYY-MM-DD")
   let endDate = dayjs(todayString).add(14, "day").format("YYYY-MM-DD")
-  const tasks = generateTasks(startDate, endDate, "hotel.csv")
+  const tasks = generateTasks("2023-02-23", "2023-02-24", "temp.csv")
   shuffle(tasks)
   await sendMessages(tasks)
 }

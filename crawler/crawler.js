@@ -84,6 +84,9 @@ const main = async () => {
             } catch (e) {
                 console.log("Can't crawl", crawlInfo["url"])
                 console.log(e)
+                const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
+                console.log(stdout)
+                await sleep(3)
             }
             const context = browser.contexts()[0];
             const allPages = context.pages();

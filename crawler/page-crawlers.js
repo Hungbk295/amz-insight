@@ -77,7 +77,7 @@ const crawlAgoda = async (page, crawlInfo) => {
             room_info["supplier_name"] = 'Agoda'
             room_info["hotel_address"] = hotel_addr
             room_info["room_name"] = room_name
-            room_info["room_price"] = room_price.replace(",", "")
+            room_info["room_price"] = room_price.replaceAll(",", "")
             room_info["room_breakfast"] = room_breakfast
             room_info["room_cancelable"] = room_cancelable
             rooms_info.push(room_info)
