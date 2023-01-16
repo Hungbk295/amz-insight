@@ -40,6 +40,8 @@ const crawlExpedia = async (page, crawlInfo) => {
 }
 
 const crawlAgoda = async (page, crawlInfo) => {
+    await page.goto('https://www.agoda.com/api/cronos/layout/currency/set?currencyId=26');
+    await sleep(3)
     await page.goto(crawlInfo["url"], { timeout: 60000});
 
     let startDate = dayjs(crawlInfo["target_date"]).format("ddd MMM D YYYY")
@@ -50,12 +52,12 @@ const crawlAgoda = async (page, crawlInfo) => {
     await page.click("//button[contains(@data-selenium,'searchButton')]")
     await sleep(40)
 
-    let currency = await page.locator(`//div[contains(@data-value,"KRW")]`).elementHandles()
-    if (currency.length === 0) {
-        await page.click(`//div[contains(@data-selenium,"currency-container-selected-currency")]`)
-        // await sleep(10)
-        await page.click(`(//div[contains(@data-value,"KRW")])[1]`)
-    }
+    // let currency = await page.locator(`//div[contains(@data-value,"KRW")]`).elementHandles()
+    // if (currency.length === 0) {
+    //     await page.click(`//div[contains(@data-selenium,"currency-container-selected-currency")]`)
+    //     // await sleep(10)
+    //     await page.click(`(//div[contains(@data-value,"KRW")])[1]`)
+    // }
 
     const hotel_addr_tag = await page.locator(`//span[contains(@data-selenium,'hotel-address-map')]`).elementHandle();
     const hotel_addr = (hotel_addr_tag !== null) ? await hotel_addr_tag.innerText() : '';
