@@ -1,0 +1,23 @@
+{
+  "name": "hotel-link-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1287.0",
+    "axios": "^1.2.2",
+    "dayjs": "^1.11.7",
+    "dotenv": "^16.0.3",
+    "fingerprint-generator": "^2.1.7",
+    "fingerprint-injector": "^2.1.7",
+    "playwright": "^1.29.1",
+    "split-array": "^1.0.1",
+    "uuid": "^9.0.0"
+  }
+}
