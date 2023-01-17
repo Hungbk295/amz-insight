@@ -74,7 +74,7 @@ function generateTasks(startDate, endDate, hotelFilePath) {
   return tasks
 }
 
-async function sendMessages(tasks) {
+export async function sendMessages(tasks) {
   AWS.config.update({region: 'ap-northeast-2'});
   const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
   for (const task of tasks) {

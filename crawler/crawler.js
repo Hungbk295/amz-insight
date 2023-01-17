@@ -6,6 +6,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 import AWS from "aws-sdk";
 import {crawlerList, classify} from "./page-crawlers.js";
+import {sendMessages} from "../link-generator/link-generator.js";
 
 
 const s3Config = {
@@ -84,6 +85,8 @@ const main = async () => {
             } catch (e) {
                 console.log("Can't crawl", crawlInfo["url"])
                 console.log(e)
+
+                await sendMessages([hotel])
                 const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
                 console.log(stdout)
                 await sleep(3)
