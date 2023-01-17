@@ -2,7 +2,7 @@ import fs from "fs";
 import {FingerprintGenerator} from "fingerprint-generator";
 import {FingerprintInjector} from "fingerprint-injector";
 import {chromium} from "playwright";
-import {sleep} from "../crawler/utils/util.js";
+import {sleep} from "../utils/util.js";
 
 export async function initial() {
     const fingerprintGenerator = new FingerprintGenerator();

@@ -1,4 +1,4 @@
-import {checkBreakfast, checkCancelable, scroll, sleep} from "./utils/util.js"
+import {checkBreakfast, checkCancelable, scroll, sleep} from "../utils/util.js"
 import dayjs from "dayjs";
 
 const crawlExpedia = async (page, crawlInfo) => {

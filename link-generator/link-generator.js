@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import fs from "fs";
 import AWS from "aws-sdk";
+import {sendMessages} from "../utils/util.js";
 
 function generateUrlForExpedia(originalUrl, targetDate, nextDate) {
   return originalUrl + ".Hotel-Information?chkin=" + targetDate + "&chkout=" + nextDate
@@ -72,18 +73,6 @@ function generateTasks(startDate, endDate, hotelFilePath) {
     tasks.push(task)
   })
   return tasks
-}
-
-export async function sendMessages(tasks) {
-  AWS.config.update({region: 'ap-northeast-2'});
-  const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
-  for (const task of tasks) {
-    const params = {
-      MessageBody: JSON.stringify(task),
-      QueueUrl: process.env.AWS_SQS_HOTELFLY_LINK_URL
-    };
-    await sqs.sendMessage(params, () => {})
-  }
 }
 
 async function main() {

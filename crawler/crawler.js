@@ -1,12 +1,11 @@
 import {FingerprintGenerator} from "fingerprint-generator";
-import {sleep, takeScreenshot} from "./utils/util.js";
+import {sendMessages, sleep, takeScreenshot} from "../utils/util.js";
 import {FingerprintInjector} from "fingerprint-injector";
 import {chromium} from "playwright";
 import axios from "axios";
 import dotenv from "dotenv";
 import AWS from "aws-sdk";
 import {crawlerList, classify} from "./page-crawlers.js";
-import {sendMessages} from "../link-generator/link-generator.js";
 
 
 const s3Config = {

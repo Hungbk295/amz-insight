@@ -46,3 +46,14 @@ export const takeScreenshot = async (page) => {
     fs.writeFileSync(cwd + "/temp/" +  currentDate + ".html", html);
     await uploadFile(cwd + "/temp/" +  currentDate + ".html")
 }
+export async function sendMessages(tasks) {
+    AWS.config.update({region: 'ap-northeast-2'});
+    const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
+    for (const task of tasks) {
+        const params = {
+            MessageBody: JSON.stringify(task),
+            QueueUrl: process.env.AWS_SQS_HOTELFLY_LINK_URL
+        };
+        await sqs.sendMessage(params, () => {})
+    }
+}
