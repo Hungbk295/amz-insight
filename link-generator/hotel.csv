@@ -1,12 +1,12 @@
 17228,노보텔 사이공 센터,https://www.agoda.co.kr/novotel-saigon-centre-hotel/hotel/ho-chi-minh-city-vn.html
 17409,Tia Wellness resort,https://www.agoda.co.kr/fusion-maia-resort-all-spa-inclusive/hotel/da-nang-vn.html
 17566,카라벨 사이공,https://www.agoda.co.kr/caravelle-saigon-hotel/hotel/ho-chi-minh-city-vn.html
-17575,"인터컨티넨탈 사이공, IHG 호텔",https://www.agoda.co.kr/intercontinental-saigon/hotel/ho-chi-minh-city-vn.html
+17575,인터컨티넨탈 사이공 IHG 호텔,https://www.agoda.co.kr/intercontinental-saigon/hotel/ho-chi-minh-city-vn.html
 17583,달랏 팰리스 헤리티지 호텔,https://www.agoda.co.kr/dalat-palace-heritage-hotel/hotel/dalat-vn.html
 17834,Sheraton Nha Trang Hotel & Spa,https://www.agoda.co.kr/sheraton-nha-trang-hotel-spa/hotel/nha-trang-vn.html
 17838,쉐라톤 하노이 호텔,https://www.agoda.co.kr/sheraton-hanoi-hotel/hotel/hanoi-vn.html
-18097,"포시즌스 리조트 더 남 하이, 호이안, 베트남",https://www.agoda.co.kr/four-seasons-resort-the-nam-hai-hoi-an-vietnam/hotel/hoi-an-vn.html
-18383,"인터컨티넨탈 하노이 웨스트레이크, IHG 호텔",https://www.agoda.co.kr/intercontinental-hanoi-westlake/hotel/hanoi-vn.html
+18097,포시즌스 리조트 더 남 하이 호이안 베트남,https://www.agoda.co.kr/four-seasons-resort-the-nam-hai-hoi-an-vietnam/hotel/hoi-an-vn.html
+18383,인터컨티넨탈 하노이 웨스트레이크 IHG 호텔,https://www.agoda.co.kr/intercontinental-hanoi-westlake/hotel/hanoi-vn.html
 18586,Vinpearl Luxury Da Nang,https://www.agoda.co.kr/vinpearl-luxury-nha-trang/hotel/nha-trang-vn.html
 18701,Pullman Danang Beach Resort,https://www.agoda.co.kr/pullman-danang-beach-resort/hotel/da-nang-vn.html
 18922,FURAMA RESORT DANANG,https://www.agoda.co.kr/furama-resort-danang/hotel/da-nang-vn.html
@@ -107,7 +107,7 @@
 28631,베셀 호텔 캄파나 오키나와,https://www.agoda.co.kr/vessel-hotel-campana-okinawa/hotel/okinawa-main-island-jp.html
 44104,도미 인 프리미엄 시부야 진구마에 핫 스프링,https://www.agoda.co.kr/dormy-inn-premium-shibuya-jingumae-hot-spring/hotel/tokyo-jp.html
 45356,도미 인 프리미엄 남바 내추럴 핫 스프링,https://www.agoda.co.kr/dormy-inn-premium-namba-natural-hot-spring/hotel/osaka-jp.html
-69018,"인터컨티넨탈 오사카, IHG 호텔",https://www.agoda.co.kr/intercontinental-hotel-osaka/hotel/osaka-jp.html
+69018,인터컨티넨탈 오사카 IHG 호텔,https://www.agoda.co.kr/intercontinental-hotel-osaka/hotel/osaka-jp.html
 69625,도미 인 프리미엄 삿포로 핫 스프링,https://www.agoda.co.kr/dormy-inn-premium-sapporo-hot-spring/hotel/sapporo-jp.html
 69720,힐튼 오키나와 차탄 리조트,https://www.agoda.co.kr/hilton-okinawa-chatan-resort/hotel/okinawa-main-island-jp.html
 74597,오키나와 나하나 호텔 & 스파,https://www.agoda.co.kr/okinawa-nahana-hotel-spa/hotel/okinawa-main-island-jp.html
@@ -116,7 +116,7 @@
 83578,조잔케이 쓰루가 리조트 스파 모리 노 우타,https://www.agoda.co.kr/jozankei-tsuruga-resort-spa-mori-no-uta/hotel/sapporo-jp.html
 83828,호텔 몬토레 오키나와 스파 & 리조트,https://www.agoda.co.kr/hotel-monterey-okinawa-spa-and-resort/hotel/okinawa-main-island-jp.html
 84148,류큐 온센 세나가지마 호텔,https://www.agoda.co.kr/ryukyu-onsen-senagajima-hotel/hotel/okinawa-main-island-jp.html
-86587,"하얏트 리젠시 나하, 오키나와",https://www.agoda.co.kr/hyatt-regency-naha-okinawa/hotel/okinawa-main-island-jp.html
+86587,하얏트 리젠시 나하 오키나와,https://www.agoda.co.kr/hyatt-regency-naha-okinawa/hotel/okinawa-main-island-jp.html
 86984,더 파크 프런트 호텔 앳 유니버설 스튜디오 재팬,https://www.agoda.co.kr/the-park-front-hotel-at-universal-studios-japan/hotel/osaka-jp.html
 88550,알몬트 호텔 나하 켄초마에,https://www.agoda.co.kr/almont-hotel-naha-kenchomae/hotel/okinawa-main-island-jp.html
 96922,콘래드 도쿄,https://www.agoda.co.kr/conrad-tokyo_8/hotel/tokyo-jp.html
@@ -190,7 +190,7 @@
 212624,더 블러섬 하카타 프리미어,https://www.agoda.co.kr/the-blossom-hakata-premier/hotel/fukuoka-jp.html
 215709,티마크 시티 호텔 삿포로 오도리,https://www.agoda.co.kr/tmark-city-hotel-sapporoodori/hotel/sapporo-jp.html
 215712,더 놋 삿포로,https://www.agoda.co.kr/the-knot-sapporo/hotel/sapporo-jp.html
-216043,"킴튼 신주쿠 도쿄, IHG 호텔",https://www.agoda.co.kr/kimpton-shinjuku-tokyo/hotel/tokyo-jp.html
+216043,킴튼 신주쿠 도쿄 IHG 호텔,https://www.agoda.co.kr/kimpton-shinjuku-tokyo/hotel/tokyo-jp.html
 216422,시타딘스 난바 오사카,https://www.agoda.co.kr/citadines-namba-osaka/hotel/osaka-jp.html
 220990,미쓰이 가든 호텔 삿포로 웨스트,https://www.agoda.co.kr/mitsui-garden-hotel-sapporo-west/hotel/sapporo-jp.html
 340374,종크 나카스,https://www.agoda.co.kr/zonk/hotel/fukuoka-jp.html
@@ -201,12 +201,12 @@
 17228,노보텔 사이공 센터,https://www.expedia.co.kr/Ho-Chi-Minh-City-Hotels-Novotel-Saigon-Centre.h2085734
 17409,Tia Wellness resort,https://www.expedia.co.kr/Da-Nang-Hotels-TIA-Wellness-Resort-Spa-Inclusive.h3844044
 17566,카라벨 사이공,https://www.expedia.co.kr/Ho-Chi-Minh-City-Hotels-Caravelle-Saigon.h69803
-17575,"인터컨티넨탈 사이공, IHG 호텔",https://www.expedia.co.kr/Ho-Chi-Minh-City-Hotels-InterContinental-Saigon.h2841656
+17575,인터컨티넨탈 사이공 IHG 호텔,https://www.expedia.co.kr/Ho-Chi-Minh-City-Hotels-InterContinental-Saigon.h2841656
 17583,달랏 팰리스 헤리티지 호텔,https://www.expedia.co.kr/Da-Lat-Hotels-Dalat-Palace-Heritage-Hotel.h24366
 17834,Sheraton Nha Trang Hotel & Spa,https://www.expedia.co.kr/Nha-Trang-Hotels-Sheraton-Nha-Trang-Hotel-Spa.h2928430
 17838,쉐라톤 하노이 호텔,https://www.expedia.co.kr/Hanoi-Hotels-Sheraton-Hanoi-Hotel.h996505
-18097,"포시즌스 리조트 더 남 하이, 호이안, 베트남",https://www.expedia.co.kr/Da-Nang-Hotels-Four-Seasons-Resort-The-Nam-Hai.h1659007
-18383,"인터컨티넨탈 하노이 웨스트레이크, IHG 호텔",https://www.expedia.co.kr/Hanoi-Hotels-InterContinental-Hanoi-Westlake.h1848828
+18097,포시즌스 리조트 더 남 하이 호이안 베트남,https://www.expedia.co.kr/Da-Nang-Hotels-Four-Seasons-Resort-The-Nam-Hai.h1659007
+18383,인터컨티넨탈 하노이 웨스트레이크 IHG 호텔,https://www.expedia.co.kr/Hanoi-Hotels-InterContinental-Hanoi-Westlake.h1848828
 18586,Vinpearl Luxury Da Nang (Danang Marriott Resort & Spa),https://www.expedia.co.kr/Da-Nang-Hotels-Vinpearl-Luxury-Da-Nang.h9024180
 18701,Pullman Danang Beach Resort,https://www.expedia.co.kr/Da-Nang-Hotels-Pullman-Danang-Beach-Resort.h3520339
 18922,FURAMA RESORT DANANG,https://www.expedia.co.kr/Da-Nang-Hotels-Furama-Resort-Danang.h526011
@@ -234,7 +234,6 @@
 32068,빈펄 디스커버리 코스탈랜드 푸꾸옥,https://www.expedia.co.kr/Phu-Quoc-Hotels-Vinpearl-Discovery-Coastalland-Phu-Quoc.h17904719
 38817,이비스 스타일스 나트랑,https://www.expedia.co.kr/Nha-Trang-Hotels-Ibis-Styles-Nha-Trang.h19203407
 41344,프리미어 빌리지 다낭 리조트 매니지드 바이 아코르,https://www.expedia.co.kr/Da-Nang-Hotels-Premier-Village-Danang-Resort-Managed-By-Accor.h8156705
-41768,퓨전 스위트 다낭 비치 호텔,
 41893,라이즈마운트 프리미어 리조트 다낭,https://www.expedia.co.kr/Da-Nang-Hotels-Risemount-Premier-Resort-Da-Nang.h16399309
 42469,노보텔 푸꾸옥 리조트,https://www.expedia.co.kr/Phu-Quoc-Hotels-Novotel-Phu-Quoc-Resort.h13254447
 43922,하노이 라 시에스타 호텔 트렌디,https://www.expedia.co.kr/Hanoi-Hotels-Hanoi-La-Siesta-Hotel-Trendy.h14922560
@@ -307,7 +306,7 @@
 28631,베셀 호텔 캄파나 오키나와,https://www.expedia.co.kr/Okinawa-Hotels-Vessel-Hotel-Campana-Okinawa.h4825322
 44104,도미 인 프리미엄 시부야 진구마에 핫 스프링,https://www.expedia.co.kr/Tokyo-Hotels-Dormy-Inn-Premium-Shibuya-Jingumae-Hot-Spring.h5068211
 45356,도미 인 프리미엄 남바 내추럴 핫 스프링,https://www.expedia.co.kr/Osaka-Hotels-Dormy-Inn-Premium-Namba-Natural-Hot-Spring.h6438577
-69018,"인터컨티넨탈 오사카, IHG 호텔",https://www.expedia.co.kr/Osaka-Hotels-InterContinental-Osaka.h5696173
+69018,인터컨티넨탈 오사카 IHG 호텔,https://www.expedia.co.kr/Osaka-Hotels-InterContinental-Osaka.h5696173
 69625,도미 인 프리미엄 삿포로 핫 스프링,https://www.expedia.co.kr/Sapporo-Hotels-Dormy-Inn-PREMIUM-Sapporo-Hot-Spring.h2539889
 69720,힐튼 오키나와 차탄 리조트,https://www.expedia.co.kr/Okinawa-Hotels-Hilton-Okinawa-Chatan-Resort.h7228875
 74597,오키나와 나하나 호텔 & 스파,https://www.expedia.co.kr/Okinawa-Hotels-Okinawa-NaHaNa-Hotel-Spa.h16506
@@ -316,7 +315,7 @@
 83578,조잔케이 쓰루가 리조트 스파 모리 노 우타,https://www.expedia.co.kr/Sapporo-Hotels-Jozankei-Tsuruga-Resort-Spa-MORI-No-UTA.h5111007
 83828,호텔 몬토레 오키나와 스파 & 리조트,https://www.expedia.co.kr/Okinawa-Hotels-Hotel-Monterey-Okinawa-Spa-Resort.h7288973
 84148,류큐 온센 세나가지마 호텔,https://www.expedia.co.kr/Okinawa-Hotels-Ryukyu-Onsen-Senagajima-Hotel.h12920354
-86587,"하얏트 리젠시 나하, 오키나와",https://www.expedia.co.kr/Okinawa-Hotels-Hyatt-Regency-Naha.h17155529
+86587,하얏트 리젠시 나하 오키나와,https://www.expedia.co.kr/Okinawa-Hotels-Hyatt-Regency-Naha.h17155529
 86984,더 파크 프런트 호텔 앳 유니버설 스튜디오 재팬,https://www.expedia.co.kr/Osaka-Hotels-The-Park-Front-Hotel-At-Universal-Studios-Japan.h12315627
 88550,알몬트 호텔 나하 켄초마에,https://www.expedia.co.kr/Okinawa-Hotels-Almont-Hotel-Naha-Kenchomae.h12531496
 96922,콘래드 도쿄,https://www.expedia.co.kr/Tokyo-Hotels-Conrad-Tokyo.h1235351
@@ -390,7 +389,7 @@
 212624,더 블러섬 하카타 프리미어,https://www.expedia.co.kr/en/Fukuoka-Hotels-THE-BLOSSOM-HAKATA-Premier.h35569600
 215709,티마크 시티 호텔 삿포로 오도리,https://www.expedia.co.kr/en/Sapporo-Hotels-Tmark-City-Hotel-Sapporo-Odori.h39032211
 215712,더 놋 삿포로,https://www.expedia.co.kr/en/Sapporo-Hotels-THE-KNOT-SAPPORO.h42259036
-216043,"킴튼 신주쿠 도쿄, IHG 호텔",https://www.expedia.co.kr/en/Tokyo-Hotels-Kimpton-Shinjuku-Tokyo.h42600519
+216043,킴튼 신주쿠 도쿄 IHG 호텔,https://www.expedia.co.kr/en/Tokyo-Hotels-Kimpton-Shinjuku-Tokyo.h42600519
 216422,시타딘스 난바 오사카,https://www.expedia.co.kr/Osaka-Hotels-Citadines-Namba-Osaka.h44458626
 220990,미쓰이 가든 호텔 삿포로 웨스트,https://www.expedia.co.kr/Sapporo-Hotels-Mitsui-Garden-Hotel-Sapporo-West.h42097299
 340374,종크 나카스,https://www.expedia.co.kr/Fukuoka-Hotels-Zonk.h39192883

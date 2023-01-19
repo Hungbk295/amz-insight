@@ -77,7 +77,7 @@ async function searchExpedia(hotelName) {
 
 let generateCsvFile = async function(){
     let hotelNameFilePath = "hotel-name.txt"
-    let resultFilePath = "expedia-links.csv"
+    let resultFilePath = "expedia.js-links.csv"
     let data = fs.readFileSync(hotelNameFilePath, {encoding:'utf8', flag:'r'})
     data = data.replace(/(\r\n|\n|\r)/gm, "\n")
     const lines = data.split("\n")

@@ -40,7 +40,7 @@ We can choose to use:
 - Create cluster with linux/arm64 cpu
 - Create task definitions
 
-docker run --init --rm -it hotel-daily-fly xvfb-run node crawler/crawler.js "[{\"id\":\"213796\",\"hotel_name\":\"Radisson Blu Resort Cam Ranh\",\"start_date\":\"2022-01-8\",\"end_date\":\"2022-01-10\",\"results\":[{\"id\":\"213796\",\"target_date\":\"2023-01-07\",\"next_date\":\"2023-01-08\",\"url\":\"https://www.expedia.com/Nha-Trang-Hotels-Radisson-Blu-Resort-Cam-Ranh.h37999130.Hotel-Information?chkin=2023-01-07&chkout=2023-01-08\"}]}]"
+docker run --init --rm -it hotel-daily-fly xvfb-run node crawler/main.js "[{\"id\":\"213796\",\"hotel_name\":\"Radisson Blu Resort Cam Ranh\",\"start_date\":\"2022-01-8\",\"end_date\":\"2022-01-10\",\"results\":[{\"id\":\"213796\",\"target_date\":\"2023-01-07\",\"next_date\":\"2023-01-08\",\"url\":\"https://www.expedia.com/Nha-Trang-Hotels-Radisson-Blu-Resort-Cam-Ranh.h37999130.Hotel-Information?chkin=2023-01-07&chkout=2023-01-08\"}]}]"
 
 
 
