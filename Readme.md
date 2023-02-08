@@ -1,4 +1,18 @@
-# Setting up crawler docker image for AWS Batch
+# Setting with expressvpn 
+1. Install nodejs 18
+```
+curl -sL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh
+sudo bash /tmp/nodesource_setup.sh
+sudo apt install nodejs
+```
+2. Setup env
+```
+export HOTELFLY_API_HOST=https://api.hotelfly.tidesquarevn.com
+export AWS_SQS_HOTELFLY_LINK_URL=https://sqs.ap-northeast-2.amazonaws.com/836881754257/hotel-crawling-links-prod
+xvfb-run node crawler/main.js 
+```
+
+## Deprecated: Setting up crawler docker image for AWS Batch
 ### Setup credential for AWS client:
 #### On local env:
 
