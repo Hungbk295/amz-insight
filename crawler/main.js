@@ -78,8 +78,8 @@ const main = async () => {
                 }
             }
             console.log("Finish crawling")
-            await sleep(5)
         }
+        await sleep(5)
         await main()
     })
 }
