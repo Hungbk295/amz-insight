@@ -55,7 +55,7 @@ const main = async () => {
                             item["hotel_address"] = room["hotel_address"]
                             insertItem(item, data)
                         }
-                        console.log(data)
+                        if(data.length === 0) console.log(crawlInfo)
                         await axios.post(process.env.HOTELFLY_API_HOST + '/room', {"data": data})
                         await deleteSqsMsg(msg.ReceiptHandle)
                     } catch (e) {

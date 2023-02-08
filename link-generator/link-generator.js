@@ -72,9 +72,9 @@ function generateTasks(startDate, endDate, hotelFilePath) {
 
 async function main() {
     let today = dayjs()
-    let todayString = today.year() + '-' + today.month() + 1 + '-' + today.date()
-    let startDate = dayjs(todayString).add(7, "day").format("YYYY-MM-DD")
-    let endDate = dayjs(todayString).add(14, "day").format("YYYY-MM-DD")
+    let todayString = today.year() + '-' + (today.month() + 1) + '-' + today.date()
+    let startDate = dayjs(todayString).add(21, "day").format("YYYY-MM-DD")
+    let endDate = dayjs(todayString).add(28, "day").format("YYYY-MM-DD")
     const tasks = generateTasks(startDate, endDate, "hotel.csv")
     shuffle(tasks)
     await sendMessages(tasks)
