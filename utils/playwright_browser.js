@@ -1,6 +1,6 @@
 import {FingerprintGenerator} from "fingerprint-generator";
 import {FingerprintInjector} from "fingerprint-injector";
-import {firefox} from "playwright";
+import {chromium} from "playwright";
 
 export const getBrowser = async () => {
     const fingerprintGenerator = new FingerprintGenerator();
@@ -12,7 +12,7 @@ export const getBrowser = async () => {
     const fingerprintInjector = new FingerprintInjector();
     const {fingerprint} = browserFingerprintWithHeaders;
 
-    const browser = await firefox.launch({headless: false});
+    const browser = await chromium.launch({headless: false});
     const context = await browser.newContext({
         userAgent: fingerprint.userAgent,
         locale: "ko_KR",

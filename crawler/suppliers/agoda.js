@@ -2,10 +2,11 @@ import {checkBreakfast, checkCancelable, sleep} from "../../utils/util.js";
 import dayjs from "dayjs";
 
 export const crawl = async (page, crawlInfo) => {
-    await page.goto(crawlInfo["url"],{ timeout: 60000, waitUntil: 'networkidle' });
+    await page.goto(crawlInfo["url"],{ timeout: 60000 });
     await page.goto('https://www.agoda.com/api/cronos/layout/currency/set?currencyId=26');
     await sleep(3)
-    await page.goBack({ timeout: 60000, waitUntil: 'networkidle' })
+    await page.goBack({ timeout: 60000 })
+    await sleep(10)
     let startDate = dayjs(crawlInfo["target_date"]).format("ddd MMM DD YYYY")
     let endDate = dayjs(crawlInfo["next_date"]).format("ddd MMM DD YYYY")
 

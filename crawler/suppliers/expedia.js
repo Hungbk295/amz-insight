@@ -1,7 +1,7 @@
 import {checkBreakfast, checkCancelable, scroll, sleep} from "../../utils/util.js"
 
 export const crawl = async (page, crawlInfo) => {
-    await page.goto(crawlInfo["url"],{ timeout: 60000, waitUntil: 'networkidle' });
+    await page.goto(crawlInfo["url"],{ timeout: 60000 });
     await sleep(15)
     await page.evaluate(scroll, {direction: "down", speed: "slow"});
     await page.evaluate(scroll, {direction: "up", speed: "slow"});
