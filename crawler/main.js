@@ -59,7 +59,7 @@ const main = async () => {
                         await axios.post(process.env.HOTELFLY_API_HOST + '/room', {"data": data})
                         await deleteSqsMsg(msg.ReceiptHandle)
                     } catch (e) {
-                        await takeScreenshot(page)
+                        // await takeScreenshot(page)
                         console.log("Can't crawl", crawlInfo)
                         console.log(e)
                         await sleep(10)
