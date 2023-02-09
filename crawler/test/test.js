@@ -23,58 +23,15 @@ function insertItem(item, data) {
 }
 
 const tasks = [{
-    id: '19156',
-    target_date: '2023-03-07',
-    next_date: '2023-03-08',
-    url: 'https://www.agoda.co.kr/intercontinental-danang-sun-peninsula-resort/hotel/da-nang-vn.html'
-},
-    {
-        id: '107168',
+    id: '74669',
+    target_date: '2023-03-04',
+    next_date: '2023-03-05',
+    url: 'https://www.expedia.co.kr/Fukuoka-Hotels-Solaria-Nishitetsu-Hotel-Fukuoka.h9777175.Hotel-Information?chkin=2023-03-04&chkout=2023-03-05'
+}, {
+        id: '216043',
         target_date: '2023-03-04',
         next_date: '2023-03-05',
-        url: 'https://www.agoda.co.kr/intercontinental-nha-trang/hotel/nha-trang-vn.html'
-    },
-    {
-        id: '107168',
-        target_date: '2023-03-07',
-        next_date: '2023-03-08',
-        url: 'https://www.agoda.co.kr/intercontinental-nha-trang/hotel/nha-trang-vn.html'
-    },
-    {
-        id: '97227',
-        target_date: '2023-03-04',
-        next_date: '2023-03-05',
-        url: 'https://www.agoda.co.kr/hotel-nikko-fukuoka/hotel/fukuoka-jp.html'
-    },
-    {
-        id: '97227',
-        target_date: '2023-03-07',
-        next_date: '2023-03-08',
-        url: 'https://www.agoda.co.kr/hotel-nikko-fukuoka/hotel/fukuoka-jp.html'
-    },
-    {
-        id: '99126',
-        target_date: '2023-03-04',
-        next_date: '2023-03-05',
-        url: 'https://www.agoda.co.kr/the-busena-terrace/hotel/okinawa-main-island-jp.html'
-    },
-    {
-        id: '99126',
-        target_date: '2023-03-07',
-        next_date: '2023-03-08',
-        url: 'https://www.agoda.co.kr/the-busena-terrace/hotel/okinawa-main-island-jp.html'
-    },
-    {
-        id: '216422',
-        target_date: '2023-03-04',
-        next_date: '2023-03-05',
-        url: 'https://www.agoda.co.kr/citadines-namba-osaka/hotel/osaka-jp.html'
-    },
-    {
-        id: '216422',
-        target_date: '2023-03-07',
-        next_date: '2023-03-08',
-        url: 'https://www.agoda.co.kr/citadines-namba-osaka/hotel/osaka-jp.html'
+        url: 'https://www.expedia.co.kr/en/Tokyo-Hotels-Kimpton-Shinjuku-Tokyo.h42600519.Hotel-Information?chkin=2023-03-04&chkout=2023-03-05'
     }]
 const main = async () => {
     let browser = await getBrowser();

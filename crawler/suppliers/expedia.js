@@ -2,8 +2,9 @@ import {checkBreakfast, checkCancelable, scroll, sleep} from "../../utils/util.j
 
 export const crawl = async (page, crawlInfo) => {
     await page.goto(crawlInfo["url"],{ timeout: 60000 });
-    await sleep(15)
+    await sleep(20)
     await page.evaluate(scroll, {direction: "down", speed: "slow"});
+    await sleep(5)
     await page.evaluate(scroll, {direction: "up", speed: "slow"});
     const result = {}
     let hotel_addr_tag = null
