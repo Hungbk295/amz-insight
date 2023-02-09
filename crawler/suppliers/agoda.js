@@ -17,7 +17,7 @@ export const crawl = async (page, crawlInfo) => {
         await page.click('//*[@id="pricefreeze-promo-popup"]//button', {timeout: 6000})
     } catch (e) {
     }
-    await sleep(10)
+    await sleep(20)
     const hotel_addr_tag = await page.locator(`//span[contains(@data-selenium,'hotel-address-map')]`).elementHandle();
     const hotel_addr = (hotel_addr_tag !== null) ? await hotel_addr_tag.innerText() : '';
     const list_room_group = await page.locator('.MasterRoom').elementHandles();
