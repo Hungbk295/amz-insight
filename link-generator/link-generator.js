@@ -38,7 +38,7 @@ function generateTaskFromLine(line, startDate, endDate) {
         let link = {};
         let targetDate = dayjs(startDate).add(i, "day").format("YYYY-MM-DD");
         let nextDate = dayjs(startDate).add(i + 1, "day").format("YYYY-MM-DD");
-        if (dayjs(targetDate).day() === 2 || dayjs(targetDate).day() === 5 || dayjs(targetDate).day() === 6) {
+        if (dayjs(targetDate).day() === 2 || dayjs(targetDate).day() === 6) {
             link["id"] = id;
             link["target_date"] = targetDate;
             link["next_date"] = nextDate;
