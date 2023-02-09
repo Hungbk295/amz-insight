@@ -27,12 +27,12 @@ const params = {
     QueueUrl: process.env.AWS_SQS_HOTELFLY_LINK_URL,
 };
 
-let browser = await getBrowser();
 const main = async () => {
     sqs.receiveMessage(params, async (err, data) => {
         if (err) {
             console.log("Receive Error", err);
         } else if (data.Messages) {
+            let browser = await getBrowser();
             for (const msg of data.Messages) {
                 const hotel = JSON.parse(msg.Body)
                 const context = await browser.contexts()[0]
@@ -77,6 +77,7 @@ const main = async () => {
                     }
                 }
             }
+            await browser.close()
             console.log("Finish crawling")
         }
         await sleep(5)
