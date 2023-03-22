@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "booking": "nodemon crawler/test/testBooking.js"
+    
   },
   "author": "",
   "license": "ISC",
@@ -16,8 +17,12 @@
     "dotenv": "^16.0.3",
     "fingerprint-generator": "^2.1.7",
     "fingerprint-injector": "^2.1.7",
+    "lodash": "^4.17.21",
     "playwright": "^1.29.1",
     "split-array": "^1.0.1",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
   }
 }
