@@ -1,6 +1,7 @@
 import { crawl as crawlAgoda } from './suppliers/agoda.js'
 import { crawl as crawlExpedia } from './suppliers/expedia.js'
 import { crawl as crawlBooking } from './suppliers/booking.js'
+import { crawl as crawlTrip } from './suppliers/trip.js'
 const crawlDefault = () => {
 	return null
 }
@@ -10,6 +11,7 @@ export const classify = link => {
 	if (link.includes('www.expedia')) return 'expedia'
 	if (link.includes('www.agoda')) return 'agoda'
 	if (link.includes('www.booking')) return 'booking'
+	if (link.includes('trip.com')) return 'trip'
 }
 
 export const crawlerList = {
@@ -17,4 +19,5 @@ export const crawlerList = {
 	agoda: crawlAgoda,
 	expedia: crawlExpedia,
 	booking: crawlBooking,
+	trip: crawlTrip,
 }

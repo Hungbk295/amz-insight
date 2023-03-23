@@ -15,23 +15,6 @@ const crawl = async (page, crawlInfo) => {
 	return crawlerList[classify(crawlInfo['url'])](page, crawlInfo)
 }
 
-function insertItem(item, data) {
-	let isThisRoomExisted = false
-	for (const dt of data) {
-		if (
-			item['hotel_id'] === dt['hotel_id'] &&
-			item['name'] === dt['name'] &&
-			item['supplier_name'] === dt['supplier_name']
-		) {
-			if (item['price'] < dt['price']) {
-				dt['price'] = item['price']
-			}
-			isThisRoomExisted = true
-		}
-	}
-	if (!isThisRoomExisted) data.push(item)
-}
-
 const tasks = [
 	{
 		id: '74669',

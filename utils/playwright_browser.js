@@ -7,7 +7,8 @@ export const getBrowser = async () => {
 	const browserFingerprintWithHeaders = fingerprintGenerator.getFingerprint({
 		devices: [
 			'desktop',
-			// , 'mobile'
+
+			// 'mobile'
 		],
 		browsers: ['chrome', 'firefox'],
 	})
@@ -17,8 +18,8 @@ export const getBrowser = async () => {
 
 	const browser = await chromium.launch({ headless: false })
 	const context = await browser.newContext({
-		userAgent: fingerprint.userAgent,
-		locale: 'ko_KR',
+		// userAgent: fingerprint.userAgent,
+		// locale: 'ko_KR',
 		viewport: fingerprint.screen,
 	})
 	await fingerprintInjector.attachFingerprintToPlaywright(
