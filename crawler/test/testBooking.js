@@ -5,7 +5,6 @@ import {
 	sqs,
 	takeScreenshot,
 } from '../../utils/util.js'
-import axios from 'axios'
 import { crawlerList, classify } from '../crawler.js'
 import { getBrowser } from '../../utils/playwright_browser.js'
 import { execSync } from 'child_process'

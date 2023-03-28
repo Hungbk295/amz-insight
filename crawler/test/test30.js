@@ -1,3 +1,5 @@
+
+
 import {deleteSqsMsg, getRandom, sleep, sqs, takeScreenshot} from "../../utils/util.js";
 import axios from "axios";
 import {crawlerList, classify} from "../crawler.js";
@@ -40,43 +42,13 @@ const tasks = [
     //     target_date: '2023-03-26',
     //     next_date: '2023-03-27',
     //     url: 'https://www.trip.com/hotels/w/detail?hotelid=988659&curr=KRW&locale=en_xx&checkin=2023-04-01&checkout=2023-04-02&hoteluniquekey=H4sIAAAAAAAAAOPayszFK8Fo8B8GGIWYOBil5jNznHw08xmLEKe5mZGhpYWhgZFBP6fF3GTHNBDgaXTw1IzpP_R1QYtDAM8kRinOw181Yvo_hTsI2nJdX1xwN8TBiY3jVJOPBNMMxs-rbTYyiqxzf1i1JMZhByPTCcZpS9gWMM27ukB4FxMLR_tZ9kNA6uMKxlNMDJeYGG4xMTxiYnjFxPCJieEXRL6JmaGLmWESM1jVLGaGRcwMp1jAnEsstxijq5WyUyuVrEx0lEoyS3JSlayUXm9reLUBhN7snPGmZYeSjlJibn5pXglQytDQ2MhYz8AAKFaSWOGZAtaXnJiTXJqTWJIaUlkA1G-mo5RZ7FxSlFkQlJqbWVKSClSVlphTnFqrg2nXm5Y5r3e2vOlaogCiZq1EsczAyNIExTJzEiyLvcXC8IiFKTr2EwvDLxaGJlaGLlaGSazgIBFiBcePlEJyYmJimmFqimFyiplJcopRYpJRipm5uUFiqpFJslGqgQKfxpema_PZjFi7GJm8g6yYpRjdPBiD2IxMjQycDaO0uJhDg10EezXe8u6bIO0gxewdFK64MH3zq-KtpfZaIJ4hjJfEmp2v6x2U0clTwNjFyCHA6MEYwVjBuIqRnYvZwMhQgGkDI-MJRsZLjBzOjr4Bjp7ufo8YeT38Q1x94t0dfXxcgyJfMYIMBAB5hQghcwIAAA'
-    // },
+    // }
     {
-        id: 'naver',
+        id: '988659',
         target_date: '2023-03-26',
-        next_date: '2023-03-29',
-        url: 'https://hotels.naver.com/list?placeFileName=place%3AJeju_Province&adultCnt=2&checkIn=2023-04-26&checkOut=2023-04-27&includeTax=false&sortField=popularityKR&sortDirection=descending',
-    },
-    // {
-    //     id: 'booking',
-    //     target_date: '2023-03-26',
-    //     next_date: '2023-03-27',
-    //     url: 'https://www.booking.com/searchresults.html?ss=Seoul&ssne=Seoul&ssne_untouched=Seoul&label=gen173nr-1FCAEoggI46AdIM1gEaH2IAQGYATG4ARjIAQzYAQHoAQH4AQKIAgGoAgS4AvzB5aAGwAIB0gIkOWQwMWNhNjItMmQ3ZC00M2JlLWIwYzktOWM5NDczM2VlN2Jm2AIF4AIB&aid=304142&lang=en-us&sb=1&src_elem=sb&src=index&dest_id=-716583&dest_type=city&checkin=2023-04-11&checkout=2023-04-15&group_adults=2&no_rooms=1&group_children=0&sb_travel_purpose=leisure'
-    // }
-    // {
-    //     id: 'trip',
-    //     target_date: '2023-03-26',
-    //     next_date: '2023-03-27',
-    //     url: 'https://uk.trip.com/hotels/list?city=274&cityName=Seoul&provinceId=0&countryId=42&districtId=0&checkin=2023%2F03%2F29&checkout=2023%2F03%2F31&barCurr=KRW&searchType=H&searchWord=%EC%84%9C%EC%9A%B8&searchValue=30%257C%25EC%2584%259C%25EC%259A%25B8_30_%25EC%2584%259C%25EC%259A%25B8_1&crn=1&adult=2&children=0&searchBoxArg=t&travelPurpose=0&ctm_ref=ix_sb_dl&domestic=true&listFilters=80%7C3%7C1*80*3*2%2C29%7C1*29*1%7C2*2'
-    // },
-    // {
-    //     id: 'expedia',
-    //     target_date: '2023-03-26',
-    //     next_date: '2023-03-27',
-    //     url: 'https://www.expedia.co.kr/Hotel-Search?adults=2&d1=2023-04-05&d2=2023-04-06&destination=Seoul%2C%20South%20Korea&endDate=2023-04-06&langid=1033&latLong=37.566535%2C126.977969&regionId=3124&rooms=1&semdtl=&sort=RECOMMENDED&startDate=2023-04-05&theme=&useRewards=false&userIntent='
-    // },
-    // {
-    //     id: 'agoda',
-    //     target_date: '2023-03-26',
-    //     next_date: '2023-03-27',
-    //     url: 'https://www.agoda.com/search?checkin=2023-04-01&los=1&city=14690&adults=2&children=0&rooms=1&cid=1891463&tag=6142ca91-565f-ac42-ec24-2e7f5532fd78'
-    // },
-    // {
-    //     id: 'hotels',
-    //     target_date: '2023-03-26',
-    //     next_date: '2023-03-27',
-    //     url: 'https://kr.hotels.com/Hotel-Search?GOTO=HOTSEARCH&SearchArea=City&SearchType=Place&adults=2&children=&destination=Seoul%2C%20South%20Korea&endDate=2023-03-29&lang=1033&latLong=37.566535%2C126.977969&locale=en_US&lodging=HOSTEL&mapBounds=&needUTF8Decode=true&regionId=3124&rfrr=hotel.search&semdtl=&sort=RECOMMENDED&startDate=2023-03-28&theme=&useRewards=false&userIntent='
-    // }
+        next_date: '2023-03-27',
+        url: 'https://hotels.naver.com/list?placeFileName=place%3ASeoul&adultCnt=2&checkIn=2023-04-26&checkOut=2023-04-27&includeTax=false&sortField=popularityKR&sortDirection=descending'
+    }
 ]
 const main = async () => {
     let browser = await getBrowser();
@@ -86,25 +58,25 @@ const main = async () => {
         let data = []
         try {
             let crawlResult = await crawl(page, crawlInfo)
-            for (const hotel of crawlResult["hotel_info"]) {
+            for (const room of crawlResult["rooms_info"]) {
                 let item = {}
-                // item["url"] = parseInt(crawlInfo['url'])
-                item["name"] = hotel["hotel_name"]
-                item["price"] = hotel["hotel_price"]
-                item["unique_name"] = hotel["hotel_unique"]
-                item["link"] = hotel["hotel_link"]
+                item["url"] = parseInt(crawlInfo['url'])
+                item["name"] = room["room_name"]
+                item["price"] = parseInt(room["room_price"])
+                item["is_break_fast"] = room["room_breakfast"]
+                item["is_cancelable"] = room["room_cancetest.jslable"]
                 item["check_in"] = crawlInfo["target_date"]
                 item["check_out"] = crawlInfo["next_date"]
-                item["supplier_name"] = hotel["supplier_name"]
-                item["hotel_address"] = hotel["hotel_address"]
+                item["supplier_name"] = room["supplier_name"]
+                item["hotel_address"] = room["hotel_address"]
                 insertItem(item, data)
             }
-            console.log(data.length)
             console.log(data)
         } catch (e) {
+            // // await takeScreenshot(page)
             console.log("Can't crawl", crawlInfo)
             console.log(e)
-            await sleep(20)
+            await sleep(10)
             // await browser.close()
             const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
             console.log(stdout)
@@ -119,6 +91,20 @@ const main = async () => {
 
         }
     }
+    // await browser.close()
     console.log("Finish crawling")
 }
 await main()
+
+
+
+
+
+
+
+
+
+
+
+
+

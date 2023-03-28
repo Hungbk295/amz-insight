@@ -13,8 +13,8 @@ export const crawl = async (page, crawlInfo) => {
     const rooms_info = []
     const list_room = await page.locator(`//div[contains(@data-stid,'section-room-list')]/div/div`).elementHandles()
     for (const room of list_room) {
-        let room_breakfast = "N"
-        let room_cancelable = "N"
+        let room_breakfast = "0"
+        let room_cancelable = "0"
         const dict_raw = {}
         const room_name = await (await room.$(`//h3[contains(@class,'uitk-heading')]`)).innerText()
         const room_price_tag = await room.$(`//div[contains(@data-stid,'price-summary')]/div/div/div/span/div`)

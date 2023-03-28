@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "booking": "nodemon crawler/test/testBooking.js",
-    "trip": "nodemon crawler/test/testTrip.js"
+    "trip": "nodemon crawler/test/testTrip.js",
+    "agoda30": "nodemon crawler/test/test.js"
   },
   "author": "",
   "license": "ISC",
