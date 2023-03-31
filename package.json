@@ -5,13 +5,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "booking": "nodemon crawler/test/testBooking.js",
-    "trip": "nodemon crawler/test/testTrip.js",
-    "agoda30": "nodemon crawler/test/test.js"
+    "booking": "nodemon src/crawler/test/testBooking.js",
+    "trip": "nodemon src/crawler/test/testTrip.js",
+    "agoda30": "nodemon src/crawler/test/test.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.301.0",
+    "@aws-sdk/client-sqs": "^3.301.0",
+    "@aws-sdk/lib-storage": "^3.301.0",
     "aws-sdk": "^2.1287.0",
     "axios": "^1.2.2",
     "dayjs": "^1.11.7",

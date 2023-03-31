@@ -1,4 +1,4 @@
-import { sleep, swapTimeUrl } from '../../utils/util.js'
+import { sleep, swapTimeUrl } from '../../../utils/util.js'
 
 export const crawl = async (page, crawlInfo) => {
 	try {

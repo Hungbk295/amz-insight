@@ -1,4 +1,4 @@
-import {checkBreakfast, checkCancelable, scroll, sleep} from "../../utils/util.js"
+import {checkBreakfast, checkCancelable, scroll, sleep} from "../../../utils/util.js"
 
 export const crawl = async (page, crawlInfo) => {
     await page.goto(crawlInfo["url"],{ timeout: 60000 });

@@ -1,3 +1,10 @@
+/**
+ * Input: csv file containing the link to the Hotel in the supplier Page
+ * Output: Supplier Page of that hotel with checkin and checkout date
+ */
+
+
+
 import dayjs from "dayjs";
 import fs from "fs";
 import {sendMessages} from "../utils/util.js";

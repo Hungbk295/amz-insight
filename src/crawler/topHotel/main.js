@@ -1,0 +1,71 @@
+import {deleteSqsMsg, getRandom, sleep, sqs} from "../../utils/util.js";
+import axios from "axios";
+import {crawlerList, classify} from "../common/crawler.js";
+import {getBrowser} from "../../utils/playwright_browser.js";
+import {execSync} from "child_process"
+import {SERVERS} from "../../constants/expressvpn.js";
+import dotenv from 'dotenv'
+
+dotenv.config({path: '../../../.env'})
+const crawl = async (page, crawlInfo) => {
+    return crawlerList[classify(crawlInfo["url"])](page, crawlInfo)
+}
+
+const params = {
+    MaxNumberOfMessages: 1,
+    QueueUrl: process.env.AWS_SQS_HOTELFLY_LINK_URL,
+};
+
+const main = async () => {
+    await sqs.receiveMessage(params, async (err, data) => {
+        if (err) {
+            console.log("Receive Error", err);
+        } else if (data.Messages) {
+            let browser = await getBrowser();
+            const context = await browser.contexts()[0]
+            const page = context.pages().length > 0 ? context.pages()[0] : await context.newPage();
+            for (const msg of data.Messages) {
+                let data = []
+                try {
+                    const crawlInfo = JSON.parse(msg.Body)
+                    let crawlResult = await crawl(page, crawlInfo)
+                    for (const hotel of crawlResult) {
+                        let item = {}
+                        item["name"] = hotel["name"]
+                        item["price"] = parseInt(hotel["price"])
+                        item["identifier"] = hotel["identifier"]
+                        item["link"] = hotel["link"]
+                        item["checkinDate"] = crawlInfo["checkinDate"]
+                        item["checkoutDate"] = crawlInfo["checkoutDate"]
+                        item["supplierId"] = hotel["supplierId"]
+                        data.push(item)
+                    }
+                    console.log(data.length)
+                    console.log(data)
+                    await axios.post(process.env.HOTELFLY_API_HOST + '/hotel', {"data": data})
+                    await deleteSqsMsg(msg.ReceiptHandle)
+                } catch (e) {
+                    console.log("Error", msg.Body)
+                    console.log(e)
+                    await sleep(20)
+                    await browser.close()
+                    const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
+                    console.log(stdout)
+                    await sleep(5)
+                    browser = await getBrowser();
+                    await sleep(5)
+                }
+                const context = browser.contexts()[0];
+                const allPages = context.pages();
+                for (let i = 1; i < allPages.length; i++) {
+                    await allPages[i].close()
+                }
+            }
+            await browser.close()
+        }
+        await sleep(5)
+        await main()
+    })
+}
+
+await main()

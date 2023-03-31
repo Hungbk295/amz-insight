@@ -1,13 +1,19 @@
 import AWS from "aws-sdk";
+import { Upload } from "@aws-sdk/lib-storage";
+import { S3 } from "@aws-sdk/client-s3";
+import { SQS } from "@aws-sdk/client-sqs";
 import fs from "fs"
 import {randomUUID} from "crypto"
 import parseUrl from 'parse-url'
+import dotenv from 'dotenv'
+
+dotenv.config({path: '../../.env'})
 const s3Config = {
     apiVersion: '2006-03-01', region: 'ap-northeast-2',
 }
-const s3 = new AWS.S3(s3Config)
+const s3 = new S3(s3Config)
 AWS.config.update({region: 'ap-northeast-2'});
-export const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
+export const sqs = new SQS({apiVersion: '2012-11-05'});
 
 export const sleep = s => new Promise(r => setTimeout(r, s * 1000));
 export const getRandomInt = (min, max) => Math.random() * (max - min) + min;
@@ -21,9 +27,13 @@ export const checkCancelable = (text, key) => {
 
 export const uploadFile = (file) => {
     const fileContent = fs.readFileSync(file);
-    return s3.upload({
-        Bucket: 'airticket-daily-fly', ACL: 'private', Key: file, Body: fileContent
-    }).promise()
+    return new Upload({
+        client: s3,
+
+        params: {
+            Bucket: 'airticket-daily-fly', ACL: 'private', Key: file, Body: fileContent
+        }
+    }).done();
 }
 export const scroll = async (args) => {
     const {direction, speed} = args;
@@ -51,9 +61,7 @@ export const takeScreenshot = async (page) => {
 export async function sendMessages(tasks) {
     for (let i = 0; i < tasks.length; i += 10) {
         const messages = tasks.slice(i, i + 10).map(task => {
-            return {
-                'Id': randomUUID(), 'MessageBody': JSON.stringify(task)
-            }
+            return {'Id': randomUUID(), 'MessageBody': JSON.stringify(task)}
         })
 
         const params = {

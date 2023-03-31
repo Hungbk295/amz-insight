@@ -1,5 +1,5 @@
 
-import { sleep, swapTimeUrl } from '../../utils/util.js'
+import { sleep, swapTimeUrl } from '../../../utils/util.js'
 import parseUrl from 'parse-url'
 
 export const crawl = async (page, crawlInfo) => {

@@ -1,4 +1,4 @@
-import {checkBreakfast, checkCancelable, sleep} from "../../utils/util.js";
+import {checkBreakfast, checkCancelable, sleep} from "../../../utils/util.js";
 import dayjs from "dayjs";
 
 export const crawl = async (page, crawlInfo) => {
@@ -40,6 +40,7 @@ export const crawl = async (page, crawlInfo) => {
             room_info["room_breakfast"] = room_breakfast
             room_info["room_cancelable"] = room_cancelable
             rooms_info.push(room_info)
+            break
         }
     }
     result["rooms_info"] = rooms_info

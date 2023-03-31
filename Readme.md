@@ -54,10 +54,26 @@ We can choose to use:
 - Create cluster with linux/arm64 cpu
 - Create task definitions
 
+3. **Run locally**
 docker run --init --rm -it hotel-daily-fly xvfb-run node crawler/main.js "[{\"id\":\"213796\",\"hotel_name\":\"Radisson Blu Resort Cam Ranh\",\"start_date\":\"2022-01-8\",\"end_date\":\"2022-01-10\",\"results\":[{\"id\":\"213796\",\"target_date\":\"2023-01-07\",\"next_date\":\"2023-01-08\",\"url\":\"https://www.expedia.com/Nha-Trang-Hotels-Radisson-Blu-Resort-Cam-Ranh.h37999130.Hotel-Information?chkin=2023-01-07&chkout=2023-01-08\"}]}]"
 
 
 
-```
+### Hotel additional information:
 
-```
+Some pages need additional information of the city (like city id, or internal name of the city), we must go to the page to get the information then modify the ```src/utils/cityInfo.js``` file
+
+- In Naver: 
+  'hanoi': 'Hanoi',
+  'phuquoc': 'Phu_Quoc',
+  'seoul': 'Seoul'
+- In Trip or Agoda: 
+  - const cityIdMapForAgoda = {
+    'hanoi': 2758,
+    'seoul': 14690
+    }
+
+    const cityIdMapForTrip = {
+    'hanoi': 268,
+    'seoul': 274,
+    }
