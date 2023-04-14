@@ -29,28 +29,32 @@ const main = async () => {
                 try {
                     const crawlInfo = JSON.parse(msg.Body)
                     let crawlResult = await crawl(page, crawlInfo)
-                    for (const hotel of crawlResult) {
+                    for (let idx = 0; idx < crawlResult.length; idx++) {
+                        const hotel = crawlResult[idx]
                         let item = {}
+                        item["rank"] = idx+1
                         item["name"] = hotel["name"]
                         item["price"] = parseInt(hotel["price"])
                         item["identifier"] = hotel["identifier"]
                         item["link"] = hotel["link"]
                         item["checkinDate"] = crawlInfo["checkinDate"]
                         item["checkoutDate"] = crawlInfo["checkoutDate"]
+                        item["keyword_id"] = crawlInfo["keywordId"]
                         item["supplierId"] = hotel["supplierId"]
                         data.push(item)
                     }
+                    console.log(crawlInfo)
                     console.log(data.length)
                     console.log(data)
-                    await axios.post(process.env.HOTELFLY_API_HOST + '/hotel', {"data": data})
+                    await axios.post(process.env.HOTELFLY_API_HOST + '/hotel/data', {"data": data})
                     await deleteSqsMsg(msg.ReceiptHandle)
                 } catch (e) {
                     console.log("Error", msg.Body)
                     console.log(e)
                     await sleep(20)
                     await browser.close()
-                    const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
-                    console.log(stdout)
+                    // const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
+                    // console.log(stdout)
                     await sleep(5)
                     browser = await getBrowser();
                     await sleep(5)

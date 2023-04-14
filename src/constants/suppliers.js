@@ -1,11 +1,11 @@
 const Suppliers = {
-    Booking: {
-        'name': 'Booking',
-        'url': 'https://www.booking.com/'
-    },
     Agoda: {
         'name': 'Agoda',
         'url': 'https://www.agoda.com/ko-kr/'
+    },
+    Booking: {
+        'name': 'Booking',
+        'url': 'https://www.booking.com/'
     },
     Expedia: {
         'name': 'Expedia',

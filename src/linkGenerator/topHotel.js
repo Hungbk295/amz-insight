@@ -11,10 +11,12 @@
 import {Suppliers} from "../constants/suppliers.js";
 import {sendMessages} from "../utils/util.js";
 import {getAgodaCityId, getNaverCityName, getTripCityId} from "../utils/cityInfo.js";
+import axios from "axios";
 
 function generateLink(keywords, suppliers, checkinDate, checkoutDate){
     let tasks = []
-    for (const keyword of keywords){
+    for (const item of keywords){
+        const keyword = item.keyword
         const encodedKeyword = encodeURIComponent(keyword)
         for (const supplier of suppliers){
             let task = {}
@@ -48,6 +50,7 @@ function generateLink(keywords, suppliers, checkinDate, checkoutDate){
             }
             task.checkinDate = checkinDate
             task.checkoutDate = checkoutDate
+            task.keywordId = item.id
             tasks.push(task)
         }
     }
@@ -55,8 +58,8 @@ function generateLink(keywords, suppliers, checkinDate, checkoutDate){
 }
 
 async function main() {
-    const [checkinDate, checkoutDate] = ['2023-04-11', '2023-04-15']
-    const keywords = ['Ha Noi', 'Seoul']
+    const [checkinDate, checkoutDate] = ['2023-04-13', '2023-04-20']
+    const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
     const suppliers = ['Booking', 'Agoda', 'Expedia', 'Hotels', 'Naver', 'Trip']
     const tasks = generateLink(keywords, suppliers, checkinDate, checkoutDate)
     console.log(tasks)

@@ -28,5 +28,9 @@ export const crawl = async (page, crawlInfo) => {
     }
 
     const result = hotels.slice(0,40)
+    console.log(result)
     return result;
 }
+
+
+

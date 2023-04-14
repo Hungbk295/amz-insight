@@ -19,7 +19,7 @@ export const crawl = async (page, crawlInfo) => {
             hotel.name = hotel_name;
             hotel.price = hotel_price.replace(/[^0-9]/g, '');
             hotel.supplierId = 3
-            hotel.link = crawlInfo.url
+            hotel.link = ""
             hotel.checkinDate = crawlInfo.checkinDate
             hotel.checkoutDate = crawlInfo.checkoutDate
             hotel.identifier = hotel_identifier

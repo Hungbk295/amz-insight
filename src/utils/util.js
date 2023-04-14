@@ -41,7 +41,7 @@ export const scroll = async (args) => {
     const scrollHeight = () => document.body.scrollHeight;
     const start = direction === "down" ? 0 : scrollHeight();
     const shouldStop = (position) => direction === "down" ? position > (scrollHeight()-500) : position < 0;
-    const increment = direction === "down" ? 100 : -50;
+    const increment = direction === "down" ? 200 : -50;
     const delayTime = speed === "slow" ? 100 : 10;
     console.error(start, shouldStop(start), increment)
     for (let i = start; !shouldStop(i); i += increment) {
