@@ -39,7 +39,7 @@ const main = async () => {
                         item["link"] = hotel["link"]
                         item["checkinDate"] = crawlInfo["checkinDate"]
                         item["checkoutDate"] = crawlInfo["checkoutDate"]
-                        item["keyword_id"] = crawlInfo["keywordId"]
+                        item["keywordId"] = crawlInfo["keywordId"]
                         item["supplierId"] = hotel["supplierId"]
                         data.push(item)
                     }
