@@ -29,10 +29,7 @@ function generateLink(keywords, suppliers, checkinDate, checkoutDate){
                     task.url = Suppliers.Agoda.url + `search?city=${agodaCityId}&isdym=true&searchterm=${keyword}&locale=ko-kr&currency=KRW&pageTypeId=1&realLanguageId=9&languageId=9&origin=KR&cid=-1&whitelabelid=1&loginLvl=0&storefrontId=3&currencyId=26&currencyCode=KRW&htmlLanguage=ko-kr&cultureInfoName=ko-kr&trafficSubGroupId=4&aid=130243&cttp=4&isRealUser=true&mode=production&browserFamily=Chrome&checkIn=2023-04-01&checkOut=2023-04-02&rooms=1&adults=1&children=0&priceCur=KRW&los=1&textToSearch=Hanoi&travellerType=0&familyMode=off`
                     break
                 case Suppliers.Expedia.name:
-                    task.url = Suppliers.Expedia.url + `Hotel-Search?adults=2&d1=${checkinDate}&d2=${checkoutDate}&destination=${encodedKeyword}`
-                    // task.checkinDate = checkinDate
-                    // task.checkoutDate = checkoutDate
-                    // tasks.push(task)
+                    task.url = Suppliers.Expedia.url + `Hotel-Search?adults=2&startDate=${checkinDate}&endDate=${checkoutDate}&destination=${encodedKeyword}`
                     break
                 case Suppliers.Hotels.name:
                     task.url = Suppliers.Hotels.url + `Hotel-Search?adults=2&d1=${checkinDate}&d2=${checkoutDate}&destination=${encodedKeyword}&locale=en_US`
@@ -58,7 +55,7 @@ function generateLink(keywords, suppliers, checkinDate, checkoutDate){
 }
 
 async function main() {
-    const [checkinDate, checkoutDate] = ['2023-04-13', '2023-04-20']
+    const [checkinDate, checkoutDate] = ['2023-05-13', '2023-05-14']
     const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
     const suppliers = ['Booking', 'Agoda', 'Expedia', 'Hotels', 'Naver', 'Trip']
     const tasks = generateLink(keywords, suppliers, checkinDate, checkoutDate)
