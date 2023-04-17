@@ -4,20 +4,20 @@ export const crawl = async (page, crawlInfo) => {
     await page.goto(crawlInfo["url"],{ timeout: 60000 });
     await sleep(15)
     await page.evaluate(scroll, {direction: "down", speed: "slow"});
-    await sleep(5);
+    page.locator(`//button[contains(@data-stid,'show-more-results')]`).click()
+    await sleep(2);
 
-    let hotel_infos = await page.locator(`//div[contains(@data-stid,'property-listing-results')]/div`).elementHandles();
-    if(hotel_infos.length < 30){
-        const hotel_infos_added = await page.locator(`//div[contains(@class,'lazyload-wrapper')]/div`).elementHandles();
-        hotel_infos.push(...hotel_infos_added)
-    }
+    let hotel_infos = await page.locator(`//div[contains(@class, 'uitk-spacing-margin-blockstart-three')]`).elementHandles();
 
     const hotels = [];
     for (const info of hotel_infos){
         const hotel = {};
         try {
-            const hotel_name = await (await info.$(`//div/div[2]/div/div/h4`)).innerText();
-            const hotel_price = await (await info.$(`//div[contains(@data-test-id,'price-summary-message-line')]/div/span/div`)).innerText();
+            const hotel_name = await (await info.$(`//div/h4`)).innerText();
+            let hotel_price = (await info.innerText()).matchAll(/(총 요금: ₩)((\d|,)+)/gi);
+            hotel_price = [...hotel_price]
+            hotel_price = hotel_price.length > 0 ? hotel_price[0][2] : '0'
+
             const hotel_link = await (await info.$(`//a[contains(@data-stid,'open-hotel-information')]`)).getAttribute('href');
             const hotel_unique = hotel_link.split('/')[2]
             hotel.name = hotel_name;
@@ -30,9 +30,9 @@ export const crawl = async (page, crawlInfo) => {
             hotels.push(hotel);
         }
         catch (e){
+            console.log(e)
         }
 
     }
-    const result = hotels.slice(0,40);
-    return result;
+    return hotels.slice(0, 40);
 }

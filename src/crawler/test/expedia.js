@@ -1,4 +1,5 @@
 import {handle} from "./handler.js";
+import {crawl} from "../topHotel/suppliers/expedia.js";
 
 const crawlInfo = {
     "url": "https://www.expedia.co.kr/Hotel-Search?adults=2&startDate=2023-05-14&endDate=2023-05-15&destination=Ha%20Noi",
@@ -7,4 +8,4 @@ const crawlInfo = {
     "keywordId": 2
 }
 
-await handle(crawlInfo)
+await handle(crawlInfo, crawl)
