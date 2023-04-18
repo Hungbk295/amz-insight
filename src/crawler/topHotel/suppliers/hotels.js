@@ -13,8 +13,9 @@ export const crawl = async (page, crawlInfo) => {
     for (const info of hotel_infos){
         const hotel = {};
         try {
+            const content = (await info.innerText())
             const hotel_name = await (await info.$(`//div/h4`)).innerText();
-            let hotel_price = (await info.innerText()).matchAll(/(총 요금: ₩)((\d|,)+)/gi);
+            let hotel_price = content.matchAll(/(총 요금: ₩)((\d|,)+)/gi);
             hotel_price = [...hotel_price]
             hotel_price = hotel_price.length > 0 ? hotel_price[0][2] : '0'
 

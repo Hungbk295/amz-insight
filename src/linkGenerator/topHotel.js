@@ -32,7 +32,7 @@ function generateLink(keywords, suppliers, checkinDate, checkoutDate){
                     task.url = Suppliers.Expedia.url + `Hotel-Search?adults=2&startDate=${checkinDate}&endDate=${checkoutDate}&destination=${encodedKeyword}`
                     break
                 case Suppliers.Hotels.name:
-                    task.url = Suppliers.Hotels.url + `Hotel-Search?adults=2&d1=${checkinDate}&d2=${checkoutDate}&destination=${encodedKeyword}&locale=en_US`
+                    task.url = Suppliers.Hotels.url + `Hotel-Search?adults=2&startDate=${checkinDate}&endDate=${checkoutDate}&destination=${encodedKeyword}&locale=ko_KR`
                     break
                 case Suppliers.Naver.name:
                     const placeName = getNaverCityName(keyword)
@@ -55,9 +55,9 @@ function generateLink(keywords, suppliers, checkinDate, checkoutDate){
 }
 
 async function main() {
-    const [checkinDate, checkoutDate] = ['2023-05-13', '2023-05-14']
+    const [checkinDate, checkoutDate] = ['2023-06-13', '2023-06-14']
     const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
-    const suppliers = ['Booking', 'Agoda', 'Expedia', 'Hotels', 'Naver', 'Trip']
+    const suppliers = ['Booking', 'Agoda', 'Expedia', 'Hotels', 'Trip', 'Naver']
     const tasks = generateLink(keywords, suppliers, checkinDate, checkoutDate)
     console.log(tasks)
     await sendMessages(tasks)
