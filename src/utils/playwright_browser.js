@@ -6,8 +6,8 @@ export const getBrowser = async () => {
 	const fingerprintGenerator = new FingerprintGenerator()
 	const browserFingerprintWithHeaders = fingerprintGenerator.getFingerprint({
 		devices: [
-			'desktop',
-			// , 'mobile'
+			// 'desktop',
+			'mobile',
 		],
 		browsers: ['chrome', 'firefox'],
 	})

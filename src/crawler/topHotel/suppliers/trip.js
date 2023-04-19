@@ -1,33 +1,50 @@
-import {scroll, sleep} from "../../../utils/util.js"
+import { scroll, sleep } from '../../../utils/util.js'
+import _ from 'lodash'
+import parseUrl from 'parse-url'
 
 export const crawl = async (page, crawlInfo) => {
-    await page.goto(crawlInfo["url"],{ timeout: 60000 });
-    await sleep(15)
-    await page.evaluate(scroll, {direction: "down", speed: "slow"});
-    await sleep(1)
-    await page.evaluate(scroll, {direction: "up", speed: "fast"});
-    await sleep(2)
+	let data = []
+	await page.on('response', async response => {
+		const urls = await response.url()
+		if (
+			urls.includes('https://kr.trip.com/htls/getHotelList') &&
+			response.status() === 200
+		) {
+			let res = await response.json()
 
-    const hotel_infos = await page.locator(`//div[contains(@class,'hotel-info')]`).elementHandles();
-    const hotels = [];
-    for (const info of hotel_infos){
-        try {
-            const hotel = {};
-            const hotel_name = await (await info.$(`//div[contains(@class,'list-card-title')]/span`)).innerText();
-            const hotel_price = await (await info.$(`//div[contains(@id,'meta-real-price')]/span/div`)).innerText();
-            const hotel_identifier = crawlInfo['link'].split('&')[0].split('=')[1];
-            hotel.name = hotel_name;
-            hotel.price = hotel_price.replace(/[^0-9]/g, '');
-            hotel.supplierId = 3
-            hotel.link = ""
-            hotel.checkinDate = crawlInfo.checkinDate
-            hotel.checkoutDate = crawlInfo.checkoutDate
-            hotel.identifier = hotel_identifier
-            hotels.push(hotel);
-        } catch (e) {
-        }
-    }
+			data = data.concat(res.hotelList)
+		}
+	})
 
-    const result = hotels;
-    return result;
+	await page.goto(crawlInfo['url'], { timeout: 60000 })
+	await sleep(8)
+
+	try {
+		await page.locator('//*[@type="ic_popups_close"]').click()
+	} catch {}
+	await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
+	await sleep(3)
+	await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
+	await sleep(3)
+	await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
+	await sleep(3)
+
+	// data = data.slice(0, 30)
+
+	const handle = item => {
+		const { hotelBasicInfo } = item
+
+		return {
+			name: hotelBasicInfo.hotelName,
+			price: hotelBasicInfo.price,
+			supplierId: 3,
+			identifier: hotelBasicInfo.hotelId,
+			checkinDate: crawlInfo['checkinDate'],
+			checkoutDate: crawlInfo['checkoutDate'],
+			link: `/detail/?hotelId=${hotelBasicInfo.hotelId}`,
+		}
+	}
+	// console.log(data.length)
+
+	return _.map(data.slice(0, 30), handle)
 }
