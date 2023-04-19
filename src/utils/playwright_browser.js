@@ -5,7 +5,7 @@ import { chromium } from 'playwright'
 export const getBrowser = async ({ devices }) => {
 	const fingerprintGenerator = new FingerprintGenerator()
 	const browserFingerprintWithHeaders = fingerprintGenerator.getFingerprint({
-		devices: devices || ['desktop', 'mobile'],
+		devices: devices || ['desktop'],
 		browsers: ['chrome', 'firefox'],
 	})
 

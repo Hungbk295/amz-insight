@@ -8,7 +8,8 @@
     "booking": "nodemon src/crawler/test/testBooking.js",
     "trip": "nodemon src/crawler/test/testTrip.js",
     "agoda30": "nodemon src/crawler/test/test.js",
-    "trip30":"nodemon src/crawler/test/trip.js"
+    "trip30":"nodemon src/crawler/test/trip.js",
+    "privia30":"nodemon src/crawler/test/priviatravel.js"
   },
   "author": "",
   "license": "ISC",
