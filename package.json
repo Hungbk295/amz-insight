@@ -13,7 +13,8 @@
     "kyte30":"nodemon src/crawler/test/kyte.js",
     "interpark30":"nodemon src/crawler/test/interpark.js",
     "goodchoice30":"nodemon src/crawler/test/goodchoice.js",
-    "yanolja30":"nodemon src/crawler/test/yanolja.js"
+    "yanolja30":"nodemon src/crawler/test/yanolja.js",
+    "testDetail": "nodemon src/crawler/hotelDetail/suppliers/test.js"
 
   },
   "author": "",
