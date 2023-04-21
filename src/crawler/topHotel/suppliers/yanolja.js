@@ -5,36 +5,34 @@ export const crawl = async (page, crawlInfo) => {
 	let data = []
 	await page.on('response', async response => {
 		const urls = await response.url()
-		if (
-			urls.includes('price?loginYn=N&hccAuthYn') &&
-			response.status() === 200
-		) {
+		if (urls.includes('search?advert=KEYWORD') && response.status() === 200) {
 			let res = await response.json()
-
-			data = data.concat(res.hotelFareList)
+			data = data.concat(res.motels.lists)
 		}
 	})
 
 	await page.goto(crawlInfo['url'], { timeout: 60000 })
-	// await sleep(2)
-	await sleep(20)
+	await sleep(2)
+	await page.mouse.wheel(0, 45000)
+
+	await sleep(10)
 
 	const handle = item => {
-		const { htlNameKr, salePrice, htlMasterId, addr, htlNameEn } = item
+		const { name, displayPrices, key } = item
 
 		return {
-			name: htlNameKr,
-			nameEn: htlNameEn,
+			name,
+			// nameEn: null,
 			// phone: null,
-			address: addr,
-			price: salePrice,
-			supplierId: 7,
-			identifier: htlMasterId,
+			price: displayPrices[0].rawDiscountPrice,
+			supplierId: 10,
+			identifier: key,
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],
-			link: `/view`,
+			// address: null,
+			link: `https://place-site.yanolja.com/places/${key}`,
 		}
 	}
 
-	return _.map(data.slice(0, 30), handle)
+	return _.map(data, handle).slice(0, 30)
 }

@@ -1,6 +1,5 @@
 import { scroll, sleep } from '../../../utils/util.js'
 import _ from 'lodash'
-import parseUrl from 'parse-url'
 
 export const crawl = async (page, crawlInfo) => {
 	let data = []
@@ -27,24 +26,24 @@ export const crawl = async (page, crawlInfo) => {
 	await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
 	await sleep(3)
 	await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
-	await sleep(3)
-
-	// data = data.slice(0, 30)
+	await sleep(20)
 
 	const handle = item => {
 		const { hotelBasicInfo } = item
 
 		return {
 			name: hotelBasicInfo.hotelName,
+			nameEn: hotelBasicInfo.hotelEnName,
+			// phone: null,
 			price: hotelBasicInfo.price,
 			supplierId: 3,
 			identifier: hotelBasicInfo.hotelId,
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],
+			address: hotelBasicInfo.hotelAddress,
 			link: `/detail/?hotelId=${hotelBasicInfo.hotelId}`,
 		}
 	}
-	// console.log(data.length)
 
 	return _.map(data.slice(0, 30), handle)
 }
