@@ -34,7 +34,7 @@ export const crawl = async (page, crawlInfo) => {
 		return {
 			name: hotelBasicInfo.hotelName,
 			nameEn: hotelBasicInfo.hotelEnName,
-			phone: null,
+			// phone: null,
 			price: hotelBasicInfo.price,
 			supplierId: 3,
 			identifier: hotelBasicInfo.hotelId,

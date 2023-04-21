@@ -24,14 +24,14 @@ export const crawl = async (page, crawlInfo) => {
 
 		data.push({
 			name,
-			nameEn: null,
+			// nameEn: null,
 			price: getNumberInString(price),
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],
 			link,
-			phone: null,
+			// phone: null,
 			supplierId: 9,
-			address: null,
+			// address: null,
 			identifier,
 		})
 	}

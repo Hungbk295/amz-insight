@@ -25,7 +25,7 @@ export const crawl = async (page, crawlInfo) => {
 		return {
 			name: htlNameKr,
 			nameEn: htlNameEn,
-			phone: null,
+			// phone: null,
 			address: addr,
 			price: salePrice,
 			supplierId: 7,

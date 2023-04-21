@@ -33,14 +33,14 @@ export const crawl = async (page, crawlInfo) => {
 
 		return {
 			name: goodsname,
-			nameEn: null,
-			phone: null,
+			// nameEn: null,
+			// phone: null,
 			price: mobile_coupon_price,
 			supplierId: 8,
 			identifier: id,
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],
-			address: null,
+			// address: null,
 			link: `/checkinnow/goods/${id}`,
 		}
 	}
