@@ -22,14 +22,14 @@ export const crawl = async (page, crawlInfo) => {
 
 		return {
 			name,
-			nameEn: null,
-			phone: null,
+			// nameEn: null,
+			// phone: null,
 			price: displayPrices[0].rawDiscountPrice,
 			supplierId: 10,
 			identifier: key,
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],
-			address: null,
+			// address: null,
 			link: `https://place-site.yanolja.com/places/${key}`,
 		}
 	}
