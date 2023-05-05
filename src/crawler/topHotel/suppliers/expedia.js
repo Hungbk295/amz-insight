@@ -1,4 +1,4 @@
-import { scroll, sleep } from '../../../utils/util.js'
+import {scroll, sleep} from '../../../utils/util.js'
 
 export const crawl = async (page, crawlInfo) => {
 	await page.goto(crawlInfo['url'], { timeout: 60000 })
@@ -40,7 +40,5 @@ export const crawl = async (page, crawlInfo) => {
 		}
 	}
 
-	const result = hotels.slice(0, 40)
-	console.log(result)
-	return result
+	return hotels.slice(0, 40)
 }

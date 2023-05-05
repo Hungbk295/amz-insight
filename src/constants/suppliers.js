@@ -23,6 +23,22 @@ const Suppliers = {
         'name': 'Trip',
         'url': 'https://trip.com/'
     },
+    // Goodchoice: {
+    //     'name': 'Goodchoice',
+    //     'url': 'https://www.goodchoice.kr/'
+    // },
+    // Interpark: {
+    //     'name': 'Interpark',
+    //     'url': 'https://mtravel.interpark.com/'
+    // },
+    // Yanolja: {
+    //     'name': 'Yanolja',
+    //     'url': 'https://www.yanolja.com/'
+    // },
+    Priviatravel: {
+        'name': 'Priviatravel',
+        'url': 'https://hotel.priviatravel.com/search/'
+    }
 }
 
 export { Suppliers }

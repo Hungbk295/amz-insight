@@ -1,6 +1,6 @@
 import {deleteSqsMsg, getRandom, sleep, sqs} from "../../utils/util.js";
 import axios from "axios";
-import {crawlerList, classify} from "../common/crawler.js";
+import {classify} from "../common/crawler.js";
 import {getBrowser} from "../../utils/playwright_browser.js";
 import {execSync} from "child_process"
 import {SERVERS} from "../../constants/expressvpn.js";
@@ -8,7 +8,7 @@ import dotenv from 'dotenv'
 
 dotenv.config({path: '../../../.env'})
 const crawl = async (page, crawlInfo) => {
-    return crawlerList[classify(crawlInfo["url"])](page, crawlInfo)
+    return classify(crawlInfo["url"])(page, crawlInfo)
 }
 
 const params = {
@@ -21,13 +21,14 @@ const main = async () => {
         if (err) {
             console.log("Receive Error", err);
         } else if (data.Messages) {
-            let browser = await getBrowser();
-            const context = await browser.contexts()[0]
-            const page = context.pages().length > 0 ? context.pages()[0] : await context.newPage();
+
             for (const msg of data.Messages) {
                 let data = []
+                const crawlInfo = JSON.parse(msg.Body)
+                let browser = await getBrowser({devices: crawlInfo.devices});
+                const context = await browser.contexts()[0]
+                const page = context.pages().length > 0 ? context.pages()[0] : await context.newPage();
                 try {
-                    const crawlInfo = JSON.parse(msg.Body)
                     let crawlResult = await crawl(page, crawlInfo)
                     for (let idx = 0; idx < crawlResult.length; idx++) {
                         const hotel = crawlResult[idx]
@@ -44,8 +45,9 @@ const main = async () => {
                         data.push(item)
                     }
                     console.log(crawlInfo)
-                    console.log(data.length)
                     console.log(data)
+                    console.log(data.length)
+
                     await axios.post(process.env.HOTELFLY_API_HOST + '/hotel/data', {"data": data})
                     await deleteSqsMsg(msg.ReceiptHandle)
                 } catch (e) {
@@ -56,16 +58,15 @@ const main = async () => {
                     // const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
                     // console.log(stdout)
                     await sleep(5)
-                    browser = await getBrowser();
+                    // browser = await getBrowser({devices: crawlInfo.devices});
                     await sleep(5)
                 }
-                const context = browser.contexts()[0];
                 const allPages = context.pages();
                 for (let i = 1; i < allPages.length; i++) {
                     await allPages[i].close()
                 }
+                await browser.close()
             }
-            await browser.close()
         }
         await sleep(5)
         await main()

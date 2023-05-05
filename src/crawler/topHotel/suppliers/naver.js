@@ -8,7 +8,7 @@ const handleSinglePage = async (crawlInfo, page) => {
         const hotel_name = await (await info.$(`//div[1]/div[2]/h4`)).innerText()
         const hotel_price = await (await info.$(`//div[2]/em`)).innerText()
         const hotel_link = await (await info.$(`//a`)).getAttribute('href')
-        const hotel_unique = hotel_link.split('&')[0].split('%3')[1];
+        const hotel_unique = hotel_link.split('&')[0].split('%3A')[1];
 
         hotel.name = hotel_name
         hotel.price = hotel_price.replace(/[^0-9]/g, '');

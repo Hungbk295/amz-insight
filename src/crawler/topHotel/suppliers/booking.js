@@ -46,7 +46,7 @@ export const crawl = async (page, crawlInfo) => {
   //   dict_raw["hotel_name"] = hotel_name
   //   dict_raw["hotel_price"] = hotel_price.replace(/[^0-9]/g, '');
   //   dict_raw["hotel_link"] = hotel_link
-  //   hotel_info.push(dict_raw)
+  //   hotels.push(dict_raw)
   // }
   return hotels
 }
