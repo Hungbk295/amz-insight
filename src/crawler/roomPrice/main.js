@@ -1,6 +1,6 @@
 import {deleteSqsMsg, getRandom, sleep, sqs, takeScreenshot} from "../../utils/util.js";
 import axios from "axios";
-import {crawlerList, classify} from "../common/crawler.js";
+import {crawlerList, classify} from "../topHotel/crawler.js";
 import {getBrowser} from "../../utils/playwright_browser.js";
 import {execSync} from "child_process"
 import {SERVERS} from "../../constants/expressvpn.js";

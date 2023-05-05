@@ -16,3 +16,10 @@ export const crawl = async (page, crawlInfo) => {
 		phone: getNumberInString(phone).trim(),
 	}
 }
+
+export const getIdentifier = url => {
+	return {
+		identifier: url.split('&')[0].split('%3A')[1],
+		identifier_id: null
+	}
+}

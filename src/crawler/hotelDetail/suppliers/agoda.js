@@ -11,3 +11,10 @@ export const crawl = async (page, crawlInfo) => {
 		address,
 	}
 }
+
+export const getIdentifier = url => {
+	return {
+		identifier: link.split('/')[2],
+		identifier_id: null
+	}
+}
