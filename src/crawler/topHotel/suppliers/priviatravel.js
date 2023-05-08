@@ -33,6 +33,7 @@ export const crawl = async (page, crawlInfo) => {
 			price: salePrice,
 			supplierId: 7,
 			identifier: htlMasterId,
+			tag: htlNameEn,
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],
 			link: link,

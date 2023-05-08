@@ -20,10 +20,12 @@ export const crawl = async (page, crawlInfo) => {
 				await info.$(`//span[contains(@data-selenium,'display-price')]`)
 			).innerText()
 			const hotel_link = await (await info.$(`//div/a`)).getAttribute('href')
-			const hotel_unique = hotel_link.split('/')[2]
+			const hotel_identifier = hotel_link.split('/')[2]
+			const hotel_tag = hotel_identifier
 			hotel.name = hotel_name
 			hotel.price = hotel_price.replace(/[^0-9]/g, '')
-			hotel.identifier = hotel_unique
+			hotel.identifier = hotel_identifier
+			hotel.tag = hotel_tag
 			hotel.link = hotel_link
 			hotel.supplierId = 2
 			hotel.checkinDate = crawlInfo.checkinDate

@@ -42,6 +42,7 @@ export const crawl = async (page, crawlInfo) => {
 			checkoutDate: crawlInfo['checkoutDate'],
 			address: hotelBasicInfo.hotelAddress,
 			link: `/detail/?hotelId=${hotelBasicInfo.hotelId}`,
+			tag: hotelBasicInfo.hotelEnName
 		}
 	}
 

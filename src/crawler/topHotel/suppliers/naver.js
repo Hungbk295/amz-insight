@@ -15,6 +15,7 @@ const handleSinglePage = async (crawlInfo, page) => {
         hotel.link = hotel_link
         hotel.supplierId = 5
         hotel.identifier = hotel_unique
+        hotel.tag = hotel_unique
         hotel.checkinDate = crawlInfo.checkinDate
         hotel.checkoutDate = crawlInfo.checkoutDate
         hotels.push(hotel)

@@ -17,12 +17,13 @@ export const crawl = async (page, crawlInfo) => {
       const hotel_price = await (await info.$(`//span[contains(@data-testid,'price-and-discounted-price')]`)).innerText()
       const hotel_link = await (await info.$(`//a[contains(@data-testid,'title-link')]`)).getAttribute('href')
       const hotel_identifier = hotel_link.split('/')[5].split('.')[0]
-
+      const hotel_tag = hotel_identifier
 
       hotel.name = hotel_name
       hotel.price = hotel_price.replace(/[^0-9]/g, '');
       hotel.link = hotel_link
       hotel.identifier = hotel_identifier
+      hotel.tag = hotel_tag
       hotel.supplierId = 3
       hotel.checkinDate = crawlInfo['checkinDate']
       hotel.checkoutDate = crawlInfo['checkoutDate']

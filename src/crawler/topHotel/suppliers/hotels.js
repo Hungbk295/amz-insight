@@ -21,9 +21,11 @@ export const crawl = async (page, crawlInfo) => {
 
             const hotel_link = await (await info.$(`//a[contains(@data-stid,'open-hotel-information')]`)).getAttribute('href');
             const hotel_unique = hotel_link.split('/')[2]
+            const hotel_tag = hotel_link.split('/')[3]
             hotel.name = hotel_name;
             hotel.price = hotel_price.replace(/[^0-9]/g, '');
             hotel.identifier = hotel_unique;
+            hotel.tag = hotel_tag
             hotel.link = hotel_link;
             hotel.supplierId = 6
             hotel.checkinDate = crawlInfo["checkinDate"]

@@ -26,11 +26,13 @@ export const crawl = async (page, crawlInfo) => {
 			const hotel_unique = hotel_link
 				.match(/\.(h\d+)\./gi)[0]
 				.replaceAll('.', '')
+			const hotel_tag = hotel_link.split(".")[0].replace("/", "")
 
 			hotel.name = hotel_name
 			hotel.price = hotel_price.replace(/[^0-9]/g, '')
 			hotel.identifier = hotel_unique
 			hotel.link = hotel_link
+			hotel.tag = hotel_tag
 			hotel.checkinDate = crawlInfo['checkinDate']
 			hotel.checkinDate = crawlInfo['checkoutDate']
 			hotel.supplierId = 1

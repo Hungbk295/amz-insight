@@ -30,12 +30,8 @@ const main = async () => {
                 try {
                     let crawlResult = await crawl(page, crawlInfo)
                     for (let idx = 0; idx < crawlResult.length; idx++) {
-                        const hotelDetails = crawlResult[idx]
-                        let item = {}
-                        item["hotelId"] = hotelDetails["hotelId"]
-                        item["phone"] = hotelDetails[""]
-                        item["address"] = hotelDetails["address"]
-                        data.push(item)
+                        const hotelDetail = crawlResult[idx]
+                        data.push(hotelDetail)
                     }
                     console.log(crawlInfo)
                     console.log(data)

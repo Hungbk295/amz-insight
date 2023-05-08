@@ -13,9 +13,7 @@
     "kyte30": "nodemon src/crawler/topHotel/test/kyte.js",
     "interpark30": "nodemon src/crawler/topHotel/test/interpark.js",
     "goodchoice30": "nodemon src/crawler/topHotel/test/goodchoice.js",
-    "yanolja30": "nodemon src/crawler/topHotel/test/yanolja.js",
-    "testDetail": "nodemon src/crawler/hotelDetail/test.js"
-
+    "yanolja30": "nodemon src/crawler/topHotel/test/yanolja.js"
   },
   "author": "",
   "license": "ISC",
