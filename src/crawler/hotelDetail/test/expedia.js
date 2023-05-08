@@ -1,8 +1,8 @@
-import { getBrowser } from '../../utils/playwright_browser.js'
-// import { crawl } from './suppliers/expedia.js'
+import { getBrowser } from '../../../utils/playwright_browser.js'
+import { crawl } from '../suppliers/expedia.js'
 // import { crawl } from './suppliers/agoda.js'
 // import { crawl } from './suppliers/naver.js'
-// import { crawl } from './suppliers/booking.js'
+// import { crawl } from '../suppliers/booking.js'
 // import { crawl } from './suppliers/interpark.js'
 // import { crawl } from './suppliers/hotels.js'
 // import { crawl } from './suppliers/priviatravel.js'
@@ -23,7 +23,6 @@ const crawlInfo = {
 	// url: 'https://www.goodchoice.kr/product/detail?ano=70163&adcno=2&sel_date=2023-04-25&sel_date2=2023-04-26',
 
 	// url: 'https://hotel.priviatravel.com/view/kr/korea/seoul/theshillaseoul.html?hotelInFlowPath=B37&checkIn=2023-04-27&checkOut=2023-04-28&occupancies=1~1~0&htlMasterId=55143&salePrice=1085526&h=1',
-	// devices: ['mobile'],
 }
 
 export const handle = async (crawlInfo, crawlFunction) => {

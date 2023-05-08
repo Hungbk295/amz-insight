@@ -7,8 +7,9 @@ export const crawl = async (page, crawlInfo) => {
 		.elementHandle()
 
 	const address = await (await block.$('.address')).innerText()
-
+	const hotelId = crawlInfo['hotelId']
 	return {
+		hotelId,
 		address,
 	}
 }

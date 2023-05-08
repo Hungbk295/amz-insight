@@ -1,4 +1,4 @@
-import { getBrowser } from '../../utils/playwright_browser.js'
+import { getBrowser } from '../../../utils/playwright_browser.js'
 
 export const handle = async (crawlInfo, crawlFunction) => {
 	let browser = await getBrowser({ devices: crawlInfo.devices })

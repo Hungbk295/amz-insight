@@ -3,18 +3,12 @@ export const crawl = async (page, crawlInfo) => {
 	const block = await page
 		.locator(`//*[@id="property-main-content"]`)
 		.elementHandle()
-
 	const address = await (
 		await block.$(`.HeaderCerebrum__Location`)
 	).innerText()
+	const hotelId = crawlInfo['hotelId']
 	return {
+		hotelId,
 		address,
-	}
-}
-
-export const getIdentifier = url => {
-	return {
-		identifier: link.split('/')[2],
-		identifier_id: null
 	}
 }

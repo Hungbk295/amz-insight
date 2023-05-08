@@ -1,7 +1,7 @@
 const Suppliers = {
     Agoda: {
         'name': 'Agoda',
-        'url': 'https://www.agoda.com/ko-kr/'
+        'url': 'https://www.agoda.com/'
     },
     Booking: {
         'name': 'Booking',

@@ -1,17 +1,17 @@
-import { getBrowser } from '../../utils/playwright_browser.js'
-// import { crawl } from './suppliers/expedia.js'
+import { getBrowser } from '../../../utils/playwright_browser.js'
+// import { crawl } from '../suppliers/expedia.js'
 // import { crawl } from './suppliers/agoda.js'
 // import { crawl } from './suppliers/naver.js'
-// import { crawl } from './suppliers/booking.js'
+// import { crawl } from '../suppliers/booking.js'
 // import { crawl } from './suppliers/interpark.js'
 // import { crawl } from './suppliers/hotels.js'
 // import { crawl } from './suppliers/priviatravel.js'
-// import { crawl } from './suppliers/goodchoice.js'
+import { crawl } from '../suppliers/goodchoice.js'
 
 const crawlInfo = {
 	// url: 'https://www.agoda.com/seoul-n-hotel-dongdaemun/hotel/seoul-kr.html?finalPriceView=1&isShowMobileAppPrice=false&cid=1898832&numberOfBedrooms=&familyMode=false&adults=2&children=0&rooms=1&maxRooms=0&checkIn=2023-05-5&isCalendarCallout=false&childAges=&numberOfGuest=0&missingChildAges=false&travellerType=1&showReviewSubmissionEntry=false&currencyCode=VND&isFreeOccSearch=false&isCityHaveAsq=false&los=1&searchrequestid=54902709-a0f1-4f7d-bcdf-3c510e6fb1e3',
 
-	url: 'https://www.expedia.com/Madrid-Hotels-Barcelo-Emperatriz.h54497.Hotel-Information?chkin=2023-05-14&chkout=2023-05-16&x_pwa=1&rfrr=HSR&pwa_ts=1682435190947&referrerUrl=aHR0cHM6Ly93d3cuZXhwZWRpYS5jb20vSG90ZWwtU2VhcmNo&useRewards=false&rm1=a2&regionId=178281&destination=Madrid+%28and+vicinity%29%2C+Community+of+Madrid%2C+Spain&destType=MARKET&neighborhoodId=6282810&latLong=40.417007%2C-3.703565&sort=RECOMMENDED&top_dp=185&top_cur=USD&userIntent=&selectedRoomType=315888174&selectedRatePlan=384943828',
+	// url: 'https://www.expedia.com/Madrid-Hotels-Barcelo-Emperatriz.h54497.Hotel-Information?chkin=2023-05-14&chkout=2023-05-16&x_pwa=1&rfrr=HSR&pwa_ts=1682435190947&referrerUrl=aHR0cHM6Ly93d3cuZXhwZWRpYS5jb20vSG90ZWwtU2VhcmNo&useRewards=false&rm1=a2&regionId=178281&destination=Madrid+%28and+vicinity%29%2C+Community+of+Madrid%2C+Spain&destType=MARKET&neighborhoodId=6282810&latLong=40.417007%2C-3.703565&sort=RECOMMENDED&top_dp=185&top_cur=USD&userIntent=&selectedRoomType=315888174&selectedRatePlan=384943828',
 	// url: 'https://www.booking.com/hotel/kr/the-stay-classic-myeongdong.ko.html?aid=304142&label=gen173nr-1FCAEoggI46AdIM1gEaPQBiAEBmAEXuAEZyAEM2AEB6AEB-AEMiAIBqAIDuALp25-iBsACAdICJDZhN2RiM2MxLWI0YzQtNDNhYy04ZjQwLWJiNmMyNDQ0NDZhY9gCBuACAQ&sid=c2e28b9d7c4c5baf4234e2642357367e&all_sr_blocks=962894004_372224286_0_0_0;checkin=2023-04-28;checkout=2023-04-29;dest_id=-716583;dest_type=city;dist=0;group_adults=2;group_children=0;hapos=1;highlighted_blocks=962894004_372224286_0_0_0;hpos=1;matching_block_id=962894004_372224286_0_0_0;no_rooms=1;req_adults=2;req_children=0;room1=A%2CA;sb_price_type=total;sr_order=popularity;sr_pri_blocks=962894004_372224286_0_0_0__20475000;srepoch=1682435580;srpvid=fcdc6afd0e750246;type=total;ucfs=1&#hotelTmpl',
 
 	// url: 'https://travel.interpark.com/checkinnow/goods/GN0002152622?startdate=20230429&enddate=20230430&roomOptions=0%5E2%5E0%5E&npprmaxsort=min',
@@ -20,10 +20,9 @@ const crawlInfo = {
 
 	// url: 'https://place-site.yanolja.com/places/3001248',
 
-	// url: 'https://www.goodchoice.kr/product/detail?ano=70163&adcno=2&sel_date=2023-04-25&sel_date2=2023-04-26',
+	url: 'https://www.goodchoice.kr/product/detail?ano=70163&adcno=2&sel_date=2023-04-25&sel_date2=2023-04-26',
 
 	// url: 'https://hotel.priviatravel.com/view/kr/korea/seoul/theshillaseoul.html?hotelInFlowPath=B37&checkIn=2023-04-27&checkOut=2023-04-28&occupancies=1~1~0&htlMasterId=55143&salePrice=1085526&h=1',
-	// devices: ['mobile'],
 }
 
 export const handle = async (crawlInfo, crawlFunction) => {

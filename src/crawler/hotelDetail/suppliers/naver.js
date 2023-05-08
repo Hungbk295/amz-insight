@@ -7,15 +7,11 @@ export const crawl = async (page, crawlInfo) => {
 	const address = await (
 		await block.$(`.HeaderCerebrum__Location`)
 	).innerText()
+	const hotelId = crawlInfo['hotelId']
 	return {
+		hotelId,
 		address,
 	}
 }
 
-export const getIdentifier = url => {
-	return {
-		identifier: url.split('&')[0].split('%3A')[1],
-		identifier_id: null
-	}
-}
 

@@ -5,16 +5,10 @@ export const crawl = async (page, crawlInfo) => {
 		.elementHandle()
 
 	const address = await block.innerText()
-
+	const hotelId = crawlInfo['hotelId']
 	return {
+		hotelId,
 		address,
-	}
-}
-
-export const getIdentifier = url => {
-	return {
-		identifier: url.split('/')[4].split('.')[0],
-		identifier_id: url.split('/')[3].split('.')[0],
 	}
 }
 

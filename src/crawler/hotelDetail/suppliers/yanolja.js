@@ -9,7 +9,9 @@ export const crawl = async (page, crawlInfo) => {
 	// const address = await block.$('font')
 
 	const address = await block.innerText()
+	const hotelId = crawlInfo['hotelId']
 	return {
+		hotelId,
 		address,
 	}
 }

@@ -4,15 +4,10 @@ export const crawl = async (page, crawlInfo) => {
 		.locator(`//*[@data-stid="content-hotel-address"]`)
 		.elementHandle()
 	const address = await block.innerText()
+	const hotelId = crawlInfo['hotelId']
 	return {
+		hotelId,
 		address,
-	}
-}
-
-export const getIdentifier = url => {
-	return {
-		identifier: url.split('/')[3].split('.')[0],
-		identifier_id: url.split('/')[3].split('.')[1],
 	}
 }
 
