@@ -37,7 +37,7 @@ const Suppliers = {
     // },
     Priviatravel: {
         'name': 'Priviatravel',
-        'url': 'https://hotel.priviatravel.com/search/'
+        'url': 'https://hotel.priviatravel.com/'
     }
 }
 

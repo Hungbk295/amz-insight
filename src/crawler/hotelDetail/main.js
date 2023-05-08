@@ -32,8 +32,8 @@ const main = async () => {
                     for (let idx = 0; idx < crawlResult.length; idx++) {
                         const hotelDetails = crawlResult[idx]
                         let item = {}
-                        item["identifier"] = hotelDetails["identifier"]
-                        item["supplier_id"] = hotelDetails["supplier_id"]
+                        item["hotelId"] = hotelDetails["hotelId"]
+                        item["phone"] = hotelDetails[""]
                         item["address"] = hotelDetails["address"]
                         data.push(item)
                     }

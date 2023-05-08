@@ -21,7 +21,10 @@ export const crawl = async (page, crawlInfo) => {
 
 	const handle = item => {
 		const { htlNameKr, salePrice, htlMasterId, addr, htlNameEn } = item
-
+		let [urlPartInLink, queryPartInLink] = crawlInfo["url"].split("?")
+		urlPartInLink = urlPartInLink.replace(/[^/]+$/, `${htlNameEn.replaceAll(" ", "").toLowerCase()}.html`).split(".com/")[1]
+		queryPartInLink = queryPartInLink.replace(/destinationType(.*)/g, `htlMasterId=${htlMasterId}`)
+		const link = urlPartInLink + "?" + queryPartInLink
 		return {
 			name: htlNameKr,
 			nameEn: htlNameEn,
@@ -32,9 +35,10 @@ export const crawl = async (page, crawlInfo) => {
 			identifier: htlMasterId,
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],
-			link: `/view`,
+			link: link,
 		}
 	}
 
 	return _.map(data.slice(0, 30), handle)
 }
+

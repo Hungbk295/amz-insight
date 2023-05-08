@@ -43,7 +43,7 @@ function generateLink(keywords, checkinDate, checkoutDate){
                     task.devices = ['mobile']
                     break
                 case Suppliers.Priviatravel.name:
-                    task.url = Suppliers.Priviatravel.url + `${item.privia_dest_info}.html?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&destinationType=${item.privia_dest_type}&destinationId=${item.privia_dest_id}`
+                    task.url = Suppliers.Priviatravel.url + `search/${item.privia_dest_info}.html?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&destinationType=${item.privia_dest_type}&destinationId=${item.privia_dest_id}`
                     break
                 // case Suppliers.Goodchoice.name:
                 //     task.url = Suppliers.Goodchoice.url + `product/result?keyword=${encodedKeyword}`
