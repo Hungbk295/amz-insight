@@ -5,19 +5,16 @@ export const crawl = async (page, crawlInfo) => {
 	let data = []
 	await page.on('response', async response => {
 		const urls = await response.url()
-		if (
-			urls.includes('price?loginYn=N&hccAuthYn') &&
-			response.status() === 200
-		) {
+		if (urls.includes('price?') &&
+			response.status() === 200) {
 			let res = await response.json()
-
 			data = data.concat(res.hotelFareList)
 		}
 	})
 
-	await page.goto(crawlInfo['url'], { timeout: 60000 })
+	await page.goto(crawlInfo['url'], { timeout: 300000 })
 	// await sleep(2)
-	await sleep(20)
+	await sleep(180)
 
 	const handle = item => {
 		const { htlNameKr, salePrice, htlMasterId, addr, htlNameEn } = item
@@ -32,7 +29,7 @@ export const crawl = async (page, crawlInfo) => {
 			address: addr,
 			price: salePrice,
 			supplierId: 7,
-			identifier: htlMasterId,
+			identifier: htlMasterId + "",
 			tag: htlNameEn,
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],

@@ -41,15 +41,20 @@ const main = async () => {
                         item["checkinDate"] = crawlInfo["checkinDate"]
                         item["checkoutDate"] = crawlInfo["checkoutDate"]
                         item["keywordId"] = crawlInfo["keywordId"]
+                        item["createdAt"] = crawlInfo["createdAt"]
                         item["supplierId"] = hotel["supplierId"]
+                        item["tag"] = hotel["tag"]
                         data.push(item)
                     }
                     console.log(crawlInfo)
                     console.log(data)
                     console.log(data.length)
-
-                    await axios.post(process.env.HOTELFLY_API_HOST + '/hotel/data', {"data": data})
-                    await deleteSqsMsg(msg.ReceiptHandle)
+                    try {
+                        await axios.post(process.env.HOTELFLY_API_HOST + '/hotel/data', {"data": data})
+                        await deleteSqsMsg(msg.ReceiptHandle)
+                    } catch (e) {
+                        console.log(e)
+                    }
                 } catch (e) {
                     console.log("Error", msg.Body)
                     console.log(e)

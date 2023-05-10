@@ -21,12 +21,10 @@ export const crawl = async (page, crawlInfo) => {
 	try {
 		await page.locator('//*[@type="ic_popups_close"]').click()
 	} catch {}
-	await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
-	await sleep(3)
-	await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
-	await sleep(3)
-	await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
-	await sleep(20)
+	for (let i = 0; i < 3; i++){
+		await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
+		await sleep(20)
+	}
 
 	const handle = item => {
 		const { hotelBasicInfo } = item

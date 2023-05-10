@@ -18,6 +18,6 @@ export const classify = link => {
 	if (link.includes('https://www.booking.com/')) return crawlBooking
 	if (link.includes('https://trip.com/')) return crawlTrip
 	if (link.includes('https://kr.hotels.com/')) return crawlHotels
-	if (link.includes('https://hotel.priviatravel.com/search/')) return crawlPrivia
+	if (link.includes('https://hotel.priviatravel.com/')) return crawlPrivia
 }
 

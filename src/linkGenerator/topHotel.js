@@ -14,6 +14,7 @@ import axios from "axios";
 
 function generateLink(keywords, checkinDate, checkoutDate){
     let tasks = []
+    const createdAt = new Date()
     for (const item of keywords){
         const keyword = item.keyword
         const encodedKeyword = encodeURIComponent(keyword)
@@ -60,6 +61,7 @@ function generateLink(keywords, checkinDate, checkoutDate){
             task.checkinDate = checkinDate
             task.checkoutDate = checkoutDate
             task.keywordId = item.id
+            task.createdAt = createdAt
             tasks.push(task)
         }
     }
@@ -69,7 +71,7 @@ function generateLink(keywords, checkinDate, checkoutDate){
 }
 
 async function main() {
-    const [checkinDate, checkoutDate] = ['2023-06-13', '2023-06-14']
+    const [checkinDate, checkoutDate] = ['2023-05-24', '2023-05-25']
     const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
     const tasks = generateLink(keywords, checkinDate, checkoutDate)
     console.log(tasks)
