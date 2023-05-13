@@ -44,16 +44,16 @@ function generateLink(keywords, checkinDate, checkoutDate){
                 case Suppliers.Priviatravel.name:
                     task.url = Suppliers.Priviatravel.url + `search/${item.privia_dest_info}.html?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&destinationType=${item.privia_dest_type}&destinationId=${item.privia_dest_id}`
                     break
-                case Suppliers.Goodchoice.name:
-                    task.url = Suppliers.Goodchoice.url + `product/result?keyword=${encodedKeyword}`
-                    break
-                case Suppliers.Interpark.name:
-                    task.url = Suppliers.Interpark.url + `checkinnow/search/keyword?disp_q=${keyword}&startdate=20230520&enddate=20230522`
-                    task.devices = ['mobile']
-                    break
-                case Suppliers.Yanolja.name:
-                    task.url = Suppliers.Yanolja.url + `${item.yanolja_dest_info}?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}`
-                    break
+                // case Suppliers.Goodchoice.name:
+                //     task.url = Suppliers.Goodchoice.url + `product/result?keyword=${encodedKeyword}`
+                //     break
+                // case Suppliers.Interpark.name:
+                //     task.url = Suppliers.Interpark.url + `checkinnow/search/keyword?disp_q=${keyword}&startdate=20230520&enddate=20230522`
+                //     task.devices = ['mobile']
+                //     break
+                // case Suppliers.Yanolja.name:
+                //     task.url = Suppliers.Yanolja.url + `${item.yanolja_dest_info}?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}`
+                //     break
 
             }
             task.checkinDate = checkinDate
@@ -70,8 +70,7 @@ function generateLink(keywords, checkinDate, checkoutDate){
 async function main() {
     const [checkinDate, checkoutDate] = ['2023-05-24', '2023-05-25']
     const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
-    const tasks = generateLink(keywords.filter((item) => item.id === 24), checkinDate, checkoutDate)
-    console.log(tasks)
+    const tasks = generateLink(keywords, checkinDate, checkoutDate)
     await sendMessages(tasks)
 }
 
