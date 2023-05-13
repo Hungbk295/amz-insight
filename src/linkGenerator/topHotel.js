@@ -36,7 +36,6 @@ function generateLink(keywords, checkinDate, checkoutDate){
                     task.url = Suppliers.Naver.url + `list?placeFileName=place%3A${item.naver_city_name}&adultCnt=2&checkIn=${checkinDate}&checkOut=${checkoutDate}&includeTax=false&sortField=popularityKR&sortDirection=descending`
                     break
                 case Suppliers.Trip.name:
-                    console.log(typeof checkinDate)
                     const checkin = checkinDate.replaceAll('-', '/')
                     const checkout = checkoutDate.replaceAll('-', '/')
                     task.url = Suppliers.Trip.url + `hotels/list?city=${item.trip_city_id}&provinceId=${item.trip_province_id}&cityName=${encodedKeyword}&checkin=${checkin}&checkout=${checkout}&barCurr=KRW&adult=2&children=0&curr=KRW`
@@ -45,16 +44,16 @@ function generateLink(keywords, checkinDate, checkoutDate){
                 case Suppliers.Priviatravel.name:
                     task.url = Suppliers.Priviatravel.url + `search/${item.privia_dest_info}.html?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&destinationType=${item.privia_dest_type}&destinationId=${item.privia_dest_id}`
                     break
-                // case Suppliers.Goodchoice.name:
-                //     task.url = Suppliers.Goodchoice.url + `product/result?keyword=${encodedKeyword}`
-                //     break
-                // case Suppliers.Interpark.name:
-                //     task.url = Suppliers.Interpark.url + `checkinnow/search/keyword?disp_q=${keyword}&startdate=20230520&enddate=20230522`
-                //     task.devices = ['mobile']
-                //     break
-                // case Suppliers.Yanolja.name:
-                //     task.url = Suppliers.Yanolja.url + `${item.yanolja_dest_info}?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}`
-                //     break
+                case Suppliers.Goodchoice.name:
+                    task.url = Suppliers.Goodchoice.url + `product/result?keyword=${encodedKeyword}`
+                    break
+                case Suppliers.Interpark.name:
+                    task.url = Suppliers.Interpark.url + `checkinnow/search/keyword?disp_q=${keyword}&startdate=20230520&enddate=20230522`
+                    task.devices = ['mobile']
+                    break
+                case Suppliers.Yanolja.name:
+                    task.url = Suppliers.Yanolja.url + `${item.yanolja_dest_info}?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}`
+                    break
 
             }
             task.checkinDate = checkinDate
@@ -69,9 +68,9 @@ function generateLink(keywords, checkinDate, checkoutDate){
 }
 
 async function main() {
-    const [checkinDate, checkoutDate] = ['2023-06-13', '2023-06-14']
+    const [checkinDate, checkoutDate] = ['2023-05-24', '2023-05-25']
     const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
-    const tasks = generateLink(keywords, checkinDate, checkoutDate)
+    const tasks = generateLink(keywords.filter((item) => item.id === 24), checkinDate, checkoutDate)
     console.log(tasks)
     await sendMessages(tasks)
 }
