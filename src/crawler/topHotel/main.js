@@ -25,6 +25,7 @@ const main = async () => {
             for (const msg of data.Messages) {
                 let body = []
                 const crawlInfo = JSON.parse(msg.Body)
+                console.log(crawlInfo)
                 let browser = await getBrowser({devices: crawlInfo.devices});
                 const context = await browser.contexts()[0]
                 const page = context.pages().length > 0 ? context.pages()[0] : await context.newPage();

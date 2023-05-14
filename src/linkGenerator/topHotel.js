@@ -100,7 +100,8 @@ async function main() {
 
     for (const dayType of dayTypes) {
         for (const subsequentWeek of subsequentWeeks) {
-            const [checkinDate, checkoutDate] = getTargetDate('weekday', 1)
+            const [checkinDate, checkoutDate] = getTargetDate(dayType, subsequentWeek)
+            console.log(checkinDate, checkoutDate)
             const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
             const tasks = generateLink(keywords, checkinDate, checkoutDate)
             await sendMessages(tasks)
