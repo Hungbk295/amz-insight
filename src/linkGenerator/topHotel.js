@@ -95,10 +95,17 @@ function generateLink(keywords, checkinDate, checkoutDate){
 }
 
 async function main() {
-    const [checkinDate, checkoutDate] = getTargetDate('weekday', 1)
-    const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
-    const tasks = generateLink(keywords, checkinDate, checkoutDate)
-    await sendMessages(tasks)
+    const dayTypes = ['weekday', 'weekend']
+    const subsequentWeeks = [2, 3]
+
+    for (const dayType of dayTypes) {
+        for (const subsequentWeek of subsequentWeeks) {
+            const [checkinDate, checkoutDate] = getTargetDate('weekday', 1)
+            const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
+            const tasks = generateLink(keywords, checkinDate, checkoutDate)
+            await sendMessages(tasks)
+        }
+    }
 }
 
 await main()
