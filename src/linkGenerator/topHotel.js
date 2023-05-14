@@ -64,10 +64,11 @@ function generateLink(keywords, checkinDate, checkoutDate){
                     break
                 case Suppliers.Priviatravel.name:
                     task.url = Suppliers.Priviatravel.url + `search/${item.privia_dest_info}.html?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&destinationType=${item.privia_dest_type}&destinationId=${item.privia_dest_id}`
+                    task.devices = ['mobile']
                     break
                 case Suppliers.Tourvis.name:
-                    task.url = Suppliers.Tourvis.url + `hotels?type=${item.privia_dest_info}.html?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&destinationType=${item.privia_dest_type}&destinationId=${item.privia_dest_id}`
-                    "https://hotel.tourvis.com/hotels?type=CITY&keyword=%25EA%25B4%258C%2C%2520%25EA%25B4%258C&id=686&in=20230524&out=20230525&guests=2&division=city"
+                    task.url = Suppliers.Tourvis.url + `hotels?type=${item.privia_dest_type}&keyword=${encodedKeyword}&id=${item.privia_dest_id}&in=${checkinDate.replaceAll("-", "")}&out=${checkoutDate.replaceAll("-", "")}&guests=2`
+                    task.devices = ['mobile']
                     break
                 // case Suppliers.Goodchoice.name:
                 //     task.url = Suppliers.Goodchoice.url + `product/result?keyword=${encodedKeyword}`

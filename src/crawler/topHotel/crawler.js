@@ -5,6 +5,7 @@ import { crawl as crawlTrip } from './suppliers/trip.js'
 import { crawl as crawlNaver } from './suppliers/naver.js'
 import { crawl as crawlHotels } from './suppliers/hotels.js'
 import { crawl as crawlPrivia } from './suppliers/priviatravel.js'
+import { crawl as crawlTourvis } from './suppliers/tourvis.js'
 
 const crawlDefault = (url) => {
 	return []
@@ -19,5 +20,6 @@ export const classify = link => {
 	if (link.includes('https://kr.trip.com/')) return crawlTrip
 	if (link.includes('https://kr.hotels.com/')) return crawlHotels
 	if (link.includes('https://hotel.priviatravel.com/')) return crawlPrivia
+	if (link.includes('https://hotel.tourvis.com/')) return crawlTourvis
 }
 
