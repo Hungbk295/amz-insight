@@ -1,9 +1,13 @@
 import {scroll, sleep} from '../../../utils/util.js'
+import {Suppliers} from "../../../constants/suppliers.js";
 
 export const crawl = async (page, crawlInfo) => {
 	await page.goto(crawlInfo['url'], { timeout: 60000 })
-	await sleep(60)
-	await page.locator(`//button[contains(@data-stid,'show-more-results')]`).click()
+	await sleep(90)
+	try {
+		await page.locator(`//button[contains(@data-stid,'show-more-results')]`).click()
+	} catch (e) {
+	}
 	await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
 	await sleep(2)
 
@@ -35,7 +39,7 @@ export const crawl = async (page, crawlInfo) => {
 			hotel.tag = hotel_tag
 			hotel.checkinDate = crawlInfo['checkinDate']
 			hotel.checkinDate = crawlInfo['checkoutDate']
-			hotel.supplierId = 1
+			hotel.supplierId = Suppliers.Expedia.id
 			hotels.push(hotel)
 		} catch (e) {
 			console.log(e)

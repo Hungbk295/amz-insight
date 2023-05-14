@@ -12,6 +12,26 @@ import {Suppliers} from "../constants/suppliers.js";
 import {sendMessages} from "../utils/util.js";
 import axios from "axios";
 
+function getDateInString(date){
+    let month = date.getUTCMonth() + 1;
+    month = month < 10 ? `0${month}` : month;
+    const day = date.getUTCDate()
+    const year = date.getUTCFullYear()
+    return `${year}-${month}-${day}`
+}
+
+function getTargetDate(dayType, subsequentWeek){
+    const targetDayInWeek = dayType === 'weekday' ? 3 : 6;
+    let date = new Date();
+    date.setDate(date.getDate() + (targetDayInWeek - (date.getDay() % 7)) + 7 * subsequentWeek);
+    const checkin = getDateInString(date)
+    date = new Date()
+    date.setDate(date.getDate() + (targetDayInWeek + 1 - (date.getDay() % 7)) + 7 * subsequentWeek);
+    const checkout = getDateInString(date)
+
+    return [checkin, checkout]
+};
+
 function generateLink(keywords, checkinDate, checkoutDate){
     let tasks = []
     const createdAt = new Date()
@@ -45,6 +65,10 @@ function generateLink(keywords, checkinDate, checkoutDate){
                 case Suppliers.Priviatravel.name:
                     task.url = Suppliers.Priviatravel.url + `search/${item.privia_dest_info}.html?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&destinationType=${item.privia_dest_type}&destinationId=${item.privia_dest_id}`
                     break
+                case Suppliers.Tourvis.name:
+                    task.url = Suppliers.Tourvis.url + `hotels?type=${item.privia_dest_info}.html?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&destinationType=${item.privia_dest_type}&destinationId=${item.privia_dest_id}`
+                    "https://hotel.tourvis.com/hotels?type=CITY&keyword=%25EA%25B4%258C%2C%2520%25EA%25B4%258C&id=686&in=20230524&out=20230525&guests=2&division=city"
+                    break
                 // case Suppliers.Goodchoice.name:
                 //     task.url = Suppliers.Goodchoice.url + `product/result?keyword=${encodedKeyword}`
                 //     break
@@ -70,7 +94,7 @@ function generateLink(keywords, checkinDate, checkoutDate){
 }
 
 async function main() {
-    const [checkinDate, checkoutDate] = ['2023-05-24', '2023-05-25']
+    const [checkinDate, checkoutDate] = getTargetDate('weekday', 1)
     const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
     const tasks = generateLink(keywords, checkinDate, checkoutDate)
     await sendMessages(tasks)

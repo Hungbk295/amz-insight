@@ -1,5 +1,6 @@
 import { scroll, sleep } from '../../../utils/util.js'
 import _ from 'lodash'
+import {Suppliers} from "../../../constants/suppliers.js";
 
 export const crawl = async (page, crawlInfo) => {
 	let data = []
@@ -34,7 +35,7 @@ export const crawl = async (page, crawlInfo) => {
 			nameEn: hotelBasicInfo.hotelEnName,
 			// phone: null,
 			price: hotelBasicInfo.price,
-			supplierId: 3,
+			supplierId: Suppliers.Trip.id,
 			identifier: hotelBasicInfo.hotelId + '',
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],

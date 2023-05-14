@@ -48,7 +48,7 @@ const Suppliers = {
     },
     Tourvis: {
         'name': 'Tourvis',
-        'url': 'https://m.tourvis.com/',
+        'url': 'https://hotel.tourvis.com/',
         'id': 8
     }
 }

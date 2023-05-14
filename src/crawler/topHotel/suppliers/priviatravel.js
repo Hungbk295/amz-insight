@@ -1,8 +1,15 @@
 import { scroll, sleep } from '../../../utils/util.js'
 import _ from 'lodash'
+import {Suppliers} from "../../../constants/suppliers.js";
 
 export const crawl = async (page, crawlInfo) => {
 	let data = []
+	const client = await page.context().newCDPSession(page);
+	await client.send('Page.setLifecycleEventsEnabled', { enabled: true });
+	await client.send('Network.enable', {
+		maxResourceBufferSize: 1024 * 1204 * 100,
+		maxTotalBufferSize: 1024 * 1204 * 200,
+	});
 	await page.on('response', async response => {
 		const urls = await response.url()
 		if (urls.includes('price?') &&
@@ -13,6 +20,7 @@ export const crawl = async (page, crawlInfo) => {
 	})
 
 	await page.goto(crawlInfo['url'], { timeout: 300000 })
+
 	// await sleep(2)
 	await sleep(120)
 
@@ -28,7 +36,7 @@ export const crawl = async (page, crawlInfo) => {
 			// phone: null,
 			address: addr,
 			price: salePrice,
-			supplierId: 7,
+			supplierId: Suppliers.Priviatravel.id,
 			identifier: htlMasterId + "",
 			tag: htlNameEn,
 			checkinDate: crawlInfo['checkinDate'],

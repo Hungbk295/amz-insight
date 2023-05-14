@@ -23,7 +23,7 @@ const main = async () => {
         } else if (data.Messages) {
 
             for (const msg of data.Messages) {
-                let data = []
+                let body = []
                 const crawlInfo = JSON.parse(msg.Body)
                 let browser = await getBrowser({devices: crawlInfo.devices});
                 const context = await browser.contexts()[0]
@@ -44,13 +44,13 @@ const main = async () => {
                         item["createdAt"] = crawlInfo["createdAt"]
                         item["supplierId"] = hotel["supplierId"]
                         item["tag"] = hotel["tag"]
-                        data.push(item)
+                        body.push(item)
                     }
                     console.log(crawlInfo)
-                    console.log(data)
-                    console.log(data.length)
+                    console.log(body)
+                    console.log(body.length)
                     try {
-                        await axios.post(process.env.HOTELFLY_API_HOST + '/hotel/data', {"data": data})
+                        await axios.post(process.env.HOTELFLY_API_HOST + '/hotel/data', {"data": body})
                         await deleteSqsMsg(msg.ReceiptHandle)
                     } catch (e) {
                         console.log(e)

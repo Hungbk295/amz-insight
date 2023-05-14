@@ -1,4 +1,5 @@
 import { scroll, sleep } from '../../../utils/util.js'
+import {Suppliers} from "../../../constants/suppliers.js";
 
 export const crawl = async (page, crawlInfo) => {
 	await page.goto(crawlInfo['url'], { timeout: 60000 })
@@ -27,7 +28,7 @@ export const crawl = async (page, crawlInfo) => {
 			hotel.identifier = hotel_identifier
 			hotel.tag = hotel_tag
 			hotel.link = hotel_link
-			hotel.supplierId = 2
+			hotel.supplierId = Suppliers.Agoda.id
 			hotel.checkinDate = crawlInfo.checkinDate
 			hotel.checkoutDate = crawlInfo.checkoutDate
 			hotels.push(hotel)
