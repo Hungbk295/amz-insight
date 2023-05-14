@@ -13,10 +13,11 @@ import {sendMessages} from "../utils/util.js";
 import axios from "axios";
 
 function getDateInString(date){
-    let month = date.getUTCMonth() + 1;
+    let month = date.getMonth() + 1;
     month = month < 10 ? `0${month}` : month;
-    const day = date.getUTCDate()
-    const year = date.getUTCFullYear()
+    let day = date.getDate()
+    day = day < 10 ? `0${day}` : day;
+    const year = date.getFullYear()
     return `${year}-${month}-${day}`
 }
 
