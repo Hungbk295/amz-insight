@@ -32,7 +32,7 @@ export const crawl = async (page, crawlInfo) => {
     let pageIndex = 0
     let hotels = await handleSinglePage(crawlInfo, page)
 
-    while (hotels.length < 30){
+    if (hotels.length < 30){
         // const next_page = await page.locator(`//*[@id="__next"]/div/div/div/div[1]/div[3]/div[2]/button[7]`)
         // await next_page.click();
         await page.goto(crawlInfo["url"] + `&pageIndex=${++pageIndex}`,{ timeout: 60000 });
