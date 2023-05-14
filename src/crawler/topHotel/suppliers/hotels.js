@@ -5,7 +5,9 @@ export const crawl = async (page, crawlInfo) => {
     await page.goto(crawlInfo["url"],{ timeout: 60000 });
     await sleep(60)
     await page.evaluate(scroll, {direction: "down", speed: "slow"});
-    await page.locator(`//button[contains(@data-stid,'show-more-results')]`).click()
+    try {
+        await page.locator(`//button[contains(@data-stid,'show-more-results')]`).click()
+    } catch (e) {}
     await sleep(2);
 
     let hotel_infos = await page.locator(`//div[contains(@class, 'uitk-spacing-margin-blockstart-three')]`).elementHandles();

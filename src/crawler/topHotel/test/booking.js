@@ -6,6 +6,7 @@ const crawlInfo = {
     checkinDate: '2023-06-25',
     checkoutDate: '2023-06-26',
     keywordId: 2,
+    devices: ['mobile']
 }
 
 console.log(await handle(crawlInfo, crawl))

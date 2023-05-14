@@ -4,19 +4,19 @@ import {Suppliers} from "../../../constants/suppliers.js";
 
 export const crawl = async (page, crawlInfo) => {
   await page.goto(crawlInfo["url"],{ timeout: 60000 });
-  await sleep(15)
-  await page.mouse.click(100, 100);
+  await sleep(8)
+  await page.mouse.click(1, 2);
   await page.evaluate(scroll, {direction: "down", speed: "slow"});
 
-  const hotel_infos = await page.locator(`//div[contains(@data-testid,'property-card')]`).elementHandles()
+  const hotel_infos = await page.locator(`//div[contains(@data-testid,'property-card-content')]`).elementHandles()
   const hotels = []
   for (const info of hotel_infos){
     try {
       const hotel = {};
-      const hotel_name = await (await info.$(`//div[contains(@data-testid,'title')]`)).innerText()
+      const hotel_name = await (await info.$(`//h2`)).innerText()
       const hotel_price = await (await info.$(`//span[contains(@data-testid,'price-and-discounted-price')]`)).innerText()
-      const hotel_link = (await (await info.$(`//a[contains(@data-testid,'title-link')]`)).getAttribute('href')).replace(Suppliers.Booking.url, "/")
-      const hotel_identifier = hotel_link.split('/')[5].split('.')[0]
+      const hotel_link = (await (await info.$(`//a[contains(@data-testid,'title')]`)).getAttribute('href')).replace(Suppliers.Booking.url, "/")
+      const hotel_identifier = hotel_link.split('/')[3].split('.')[0]
       const hotel_tag = hotel_identifier
 
       hotel.name = hotel_name
@@ -29,7 +29,6 @@ export const crawl = async (page, crawlInfo) => {
       hotel.checkoutDate = crawlInfo['checkoutDate']
       hotels.push(hotel)
     } catch (e) {
-
     }
   }
   // if (remain_elements > 0 ){
