@@ -45,6 +45,7 @@ const main = async () => {
                         item["createdAt"] = crawlInfo["createdAt"]
                         item["supplierId"] = hotel["supplierId"]
                         item["tag"] = hotel["tag"]
+                        item["price"] = !isNaN(item["price"]) ? item["price"] : 0;
                         body.push(item)
                     }
                     console.log(crawlInfo)

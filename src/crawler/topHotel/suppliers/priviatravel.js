@@ -1,15 +1,15 @@
-import { scroll, sleep } from '../../../utils/util.js'
+import { sleep } from '../../../utils/util.js'
 import _ from 'lodash'
 import {Suppliers} from "../../../constants/suppliers.js";
 
 export const crawl = async (page, crawlInfo) => {
 	let data = []
-	const client = await page.context().newCDPSession(page);
-	await client.send('Page.setLifecycleEventsEnabled', { enabled: true });
-	await client.send('Network.enable', {
-		maxResourceBufferSize: 1024 * 1204 * 100,
-		maxTotalBufferSize: 1024 * 1204 * 200,
-	});
+	// const client = await page.context().newCDPSession(page);
+	// await client.send('Page.setLifecycleEventsEnabled', { enabled: true });
+	// await client.send('Network.enable', {
+	// 	maxResourceBufferSize: 1024 * 1204 * 100,
+	// 	maxTotalBufferSize: 1024 * 1204 * 200,
+	// });
 	await page.on('response', async response => {
 		const urls = await response.url()
 		if (urls.includes('price?') &&

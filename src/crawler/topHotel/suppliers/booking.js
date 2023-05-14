@@ -5,11 +5,10 @@ import {Suppliers} from "../../../constants/suppliers.js";
 export const crawl = async (page, crawlInfo) => {
   await page.goto(crawlInfo["url"],{ timeout: 60000 });
   await sleep(15)
+  await page.click()
   await page.evaluate(scroll, {direction: "down", speed: "slow"});
 
   const hotel_infos = await page.locator(`//div[contains(@data-testid,'property-card')]`).elementHandles()
-  const count_elements_page = hotel_infos.length;
-  const remain_elements = 40 - count_elements_page
   const hotels = []
   for (const info of hotel_infos){
     try {
