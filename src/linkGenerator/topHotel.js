@@ -37,7 +37,6 @@ function generateLink(keywords, checkinDate, checkoutDate){
                     task.url = Suppliers.Naver.url + `list?placeFileName=place%3A${item.naver_city_name}&adultCnt=2&checkIn=${checkinDate}&checkOut=${checkoutDate}&includeTax=false&sortField=popularityKR&sortDirection=descending`
                     break
                 case Suppliers.Trip.name:
-                    console.log(typeof checkinDate)
                     const checkin = checkinDate.replaceAll('-', '/')
                     const checkout = checkoutDate.replaceAll('-', '/')
                     task.url = Suppliers.Trip.url + `hotels/list?city=${item.trip_city_id}&provinceId=${item.trip_province_id}&cityName=${encodedKeyword}&checkin=${checkin}&checkout=${checkout}&barCurr=KRW&adult=2&children=0&curr=KRW`
@@ -74,7 +73,6 @@ async function main() {
     const [checkinDate, checkoutDate] = ['2023-05-24', '2023-05-25']
     const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
     const tasks = generateLink(keywords, checkinDate, checkoutDate)
-    console.log(tasks)
     await sendMessages(tasks)
 }
 

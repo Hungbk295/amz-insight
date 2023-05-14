@@ -35,7 +35,7 @@ export const crawl = async (page, crawlInfo) => {
 			// phone: null,
 			price: hotelBasicInfo.price,
 			supplierId: 3,
-			identifier: hotelBasicInfo.hotelId,
+			identifier: hotelBasicInfo.hotelId + '',
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],
 			address: hotelBasicInfo.hotelAddress,
