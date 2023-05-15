@@ -22,7 +22,7 @@ function getDateInString(date){
 }
 
 function getTargetDate(dayType, subsequentWeek){
-    const targetDayInWeek = dayType === 'weekday' ? 3 : 6;
+    const targetDayInWeek = dayType === 'weekday' ? 1 : 6;
     let date = new Date();
     date.setDate(date.getDate() + (targetDayInWeek - (date.getDay() % 7)) + 7 * subsequentWeek);
     const checkin = getDateInString(date)
