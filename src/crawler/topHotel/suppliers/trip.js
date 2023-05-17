@@ -17,7 +17,7 @@ export const crawl = async (page, crawlInfo) => {
 	})
 
 	await page.goto(crawlInfo['url'], { timeout: 60000 })
-	await sleep(8)
+	await sleep(20)
 
 	try {
 		await page.locator('//*[@type="ic_popups_close"]').click()

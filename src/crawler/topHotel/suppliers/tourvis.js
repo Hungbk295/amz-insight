@@ -18,7 +18,7 @@ export const crawl = async (page, crawlInfo) => {
 
 	await page.goto(crawlInfo['url'], { timeout: 60000 })
 
-	await sleep(6)
+	await sleep(60)
 	const handle = item => {
 		const { htlMasterId, htlNameKr, htlNameEn, salePrice, addr } = item
 		return {
