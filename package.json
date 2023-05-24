@@ -28,11 +28,13 @@
     "dotenv": "^16.0.3",
     "fingerprint-generator": "^2.1.21",
     "fingerprint-injector": "^2.1.21",
+    "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "parse-url": "^8.1.0",
     "playwright": "^1.29.1",
     "split-array": "^1.0.1",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "yaml": "^2.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

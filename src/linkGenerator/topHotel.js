@@ -9,7 +9,7 @@
  */
 
 import {Suppliers} from "../constants/suppliers.js";
-import {sendMessages} from "../utils/util.js";
+import {sendMessages, sleep} from "../utils/util.js";
 import axios from "axios";
 
 function getDateInString(date){
@@ -107,6 +107,7 @@ async function main() {
             const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
             const tasks = generateLink(keywords, checkinDate, checkoutDate)
             await sendMessages(tasks)
+            await sleep(2)
         }
     }
 }

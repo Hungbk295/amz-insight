@@ -1,10 +1,12 @@
-import {deleteSqsMsg, getRandom, sleep, sqs} from "../../utils/util.js";
+import {deleteSqsMsg, getRandom, sleep, sqs, uploadFile, uploadFileToS3} from "../../utils/util.js";
 import axios from "axios";
 import {classify} from "./crawler.js";
 import {getBrowser} from "../../utils/playwright_browser.js";
 import {execSync} from "child_process"
 import {SERVERS} from "../../constants/expressvpn.js";
 import dotenv from 'dotenv'
+import * as yaml from 'js-yaml';
+import fs from "fs"
 
 dotenv.config({path: '../../../.env'})
 const crawl = async (page, crawlInfo) => {
@@ -23,7 +25,7 @@ const main = async () => {
         } else if (data.Messages) {
 
             for (const msg of data.Messages) {
-                let body = []
+                let resultData = []
                 const crawlInfo = JSON.parse(msg.Body)
                 console.log(crawlInfo)
                 let browser = await getBrowser({devices: crawlInfo.devices});
@@ -46,13 +48,18 @@ const main = async () => {
                         item["supplierId"] = hotel["supplierId"]
                         item["tag"] = hotel["tag"]
                         item["price"] = !isNaN(item["price"]) ? item["price"] : 0;
-                        body.push(item)
+                        resultData.push(item)
                     }
                     console.log(crawlInfo)
-                    console.log(body)
-                    console.log(body.length)
+                    console.log(resultData)
+                    console.log(resultData.length)
+                    if (resultData.length > 0){
+                        const fileName = crawlInfo["checkinDate"] + "_" + crawlInfo["keywordId"] + "_" + crawlResult[0]["supplierId"] + ".yaml";
+                        await fs.writeFileSync(fileName, yaml.dump(resultData), 'utf8');
+                        await uploadFileToS3(fileName)
+                        await fs.unlinkSync(fileName)
+                    }
                     try {
-                        await axios.post(process.env.HOTELFLY_API_HOST + '/hotel/data', {"data": body})
                         await deleteSqsMsg(msg.ReceiptHandle)
                     } catch (e) {
                         console.log(e)
@@ -81,3 +88,17 @@ const main = async () => {
 }
 
 await main()
+
+// const a = [
+//     {
+//         name: "abc",
+//         price: 1111
+//     }, {
+//         name: "aaa",
+//         price: 22222
+//     },
+// ]
+// const y = yaml.dump(a);
+// console.log(typeof y);
+// const json = yaml.load(y)
+// console.log(json)

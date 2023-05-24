@@ -1,9 +1,9 @@
 import AWS from 'aws-sdk'
-import { Upload } from '@aws-sdk/lib-storage'
-import { S3 } from '@aws-sdk/client-s3'
-import { SQS } from '@aws-sdk/client-sqs'
+import {Upload} from '@aws-sdk/lib-storage'
+import {PutObjectCommand, S3, S3Client} from '@aws-sdk/client-s3'
+import {SQS} from '@aws-sdk/client-sqs'
 import fs from 'fs'
-import { randomUUID } from 'crypto'
+import {randomUUID} from 'crypto'
 import parseUrl from 'parse-url'
 import dotenv from 'dotenv'
 
@@ -26,19 +26,33 @@ export const checkCancelable = (text, key) => {
 	return text.includes(key) ? 'N' : 'Y'
 }
 
-export const uploadFile = file => {
+export const uploadFile = async file => {
 	const fileContent = fs.readFileSync(file)
 	return new Upload({
 		client: s3,
-
 		params: {
-			Bucket: 'airticket-daily-fly',
+			Bucket: process.env.AWS_S3_BUCKET_NAME,
 			ACL: 'private',
 			Key: file,
 			Body: fileContent,
 		},
 	}).done()
 }
+
+export const uploadFileToS3 = async (key) => {
+	const fileContent = fs.readFileSync(key)
+	const command = new PutObjectCommand({
+		Bucket: process.env.AWS_S3_BUCKET_NAME,
+		Key: "key",
+		Body: fileContent,
+	});
+	try {
+		await s3.send(command);
+	} catch (err) {
+		console.error(err);
+	}
+}
+
 export const scroll = async args => {
 	const { direction, speed } = args
 	const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -103,3 +117,4 @@ export const swapTimeUrl = ({ baseUrl, startTime, endTime }) => {
 		: (urlCrawl = urlCrawl + `&checkout=${endTime}`)
 	return urlCrawl
 }
+
