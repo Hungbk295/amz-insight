@@ -43,7 +43,7 @@ export const uploadFileToS3 = async (key) => {
 	const fileContent = fs.readFileSync(key)
 	const command = new PutObjectCommand({
 		Bucket: process.env.AWS_S3_BUCKET_NAME,
-		Key: "key",
+		Key: key,
 		Body: fileContent,
 	});
 	try {

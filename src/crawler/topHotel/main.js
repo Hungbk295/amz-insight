@@ -88,17 +88,3 @@ const main = async () => {
 }
 
 await main()
-
-// const a = [
-//     {
-//         name: "abc",
-//         price: 1111
-//     }, {
-//         name: "aaa",
-//         price: 22222
-//     },
-// ]
-// const y = yaml.dump(a);
-// console.log(typeof y);
-// const json = yaml.load(y)
-// console.log(json)
