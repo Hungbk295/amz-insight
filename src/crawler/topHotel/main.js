@@ -69,10 +69,10 @@ const main = async () => {
                     console.log(e)
                     await sleep(20)
                     await browser.close()
-                    // const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
-                    // console.log(stdout)
+                    const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
+                    console.log(stdout.toString())
                     await sleep(5)
-                    // browser = await getBrowser({devices: crawlInfo.devices});
+                    browser = await getBrowser({devices: crawlInfo.devices});
                     await sleep(5)
                 }
                 const allPages = context.pages();
@@ -87,4 +87,9 @@ const main = async () => {
     })
 }
 
+try {
+    const stdout = execSync(`expressvpn connect ${getRandom(SERVERS)}`);
+    console.log(stdout.toString())
+} catch (e) {
+}
 await main()
