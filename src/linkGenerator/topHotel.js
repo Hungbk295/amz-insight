@@ -56,7 +56,7 @@ function generateLink(keywords, checkinDate, checkoutDate){
                     task.url = Suppliers.Hotels.url + `Hotel-Search?adults=2&startDate=${checkinDate}&endDate=${checkoutDate}&destination=${encodedKeyword}&locale=ko_KR`
                     break
                 case Suppliers.Naver.name:
-                    task.url = Suppliers.Naver.url + `list?placeFileName=place%3A${item.naver_city_name}&includeTax=true&adultCnt=2&checkIn=${checkinDate}&checkOut=${checkoutDate}&includeTax=false&sortField=popularityKR&sortDirection=descending`
+                    task.url = Suppliers.Naver.url + `list?placeFileName=place%3A${item.naver_city_name}&includeTax=true&adultCnt=2&checkIn=${checkinDate}&checkOut=${checkoutDate}&sortField=popularityKR&sortDirection=descending`
                     break
                 case Suppliers.Trip.name:
                     const checkin = checkinDate.replaceAll('-', '/')
