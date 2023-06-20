@@ -84,7 +84,7 @@ async function main() {
     let endDate = dayjs(todayString).add(28, "day").format("YYYY-MM-DD")
     const tasks = generateTasks(startDate, endDate, "hotel.csv")
     shuffle(tasks)
-    await sendMessages(tasks)
+    await sendMessages(tasks, process.env.AWS_SQS_HOTELFLY_LINK_URL)
 }
 
 await main()

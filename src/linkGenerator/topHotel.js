@@ -106,7 +106,7 @@ async function main() {
             console.log(checkinDate, checkoutDate)
             const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
             const tasks = generateLink(keywords, checkinDate, checkoutDate)
-            await sendMessages(tasks)
+            await sendMessages(tasks, process.env.AWS_SQS_HOTELFLY_LINK_URL)
             await sleep(2)
         }
     }

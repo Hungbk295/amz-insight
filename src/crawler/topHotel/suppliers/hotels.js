@@ -37,7 +37,6 @@ export const crawl = async (page, crawlInfo) => {
         catch (e){
             console.log(e)
         }
-
     }
     return hotels.slice(0, 40);
 }

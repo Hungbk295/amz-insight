@@ -82,7 +82,7 @@ export const takeScreenshot = async page => {
 	await uploadFile('temp/' + currentDate + '.html')
 }
 
-export async function sendMessages(tasks) {
+export async function sendMessages(tasks, queueUrl) {
 	for (let i = 0; i < tasks.length; i += 10) {
 		const messages = tasks.slice(i, i + 10).map(task => {
 			return { Id: randomUUID(), MessageBody: JSON.stringify(task) }
@@ -90,17 +90,17 @@ export async function sendMessages(tasks) {
 
 		const params = {
 			Entries: messages,
-			QueueUrl: process.env.AWS_SQS_HOTELFLY_LINK_URL,
+			QueueUrl: queueUrl,
 		}
 
 		await sqs.sendMessageBatch(params, () => {})
 	}
 }
 
-export async function deleteSqsMsg(receiptHandle) {
+export async function deleteSqsMsg(receiptHandle, queueUrl) {
 	const params = {
 		ReceiptHandle: receiptHandle,
-		QueueUrl: process.env.AWS_SQS_HOTELFLY_LINK_URL,
+		QueueUrl: queueUrl,
 	}
 	await sqs.deleteMessage(params, () => {})
 }
