@@ -87,8 +87,10 @@ export const run = async (queueUrl) => {
 					console.log(e)
 					await sleep(20)
 					await browser.close()
-					const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
-					console.log(stdout.toString())
+					if (queueUrl === process.env.AWS_SQS_HOTELFLY_LINK_URL){
+						const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
+						console.log(stdout.toString())
+					}
 					await sleep(5)
 					browser = await getBrowser({devices: crawlInfo.devices});
 					await sleep(5)
