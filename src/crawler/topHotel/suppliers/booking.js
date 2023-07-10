@@ -1,5 +1,4 @@
 import {scroll, sleep} from "../../../utils/util.js"
-import {getBrowser} from "../../../utils/playwright_browser.js";
 import {Suppliers} from "../../../constants/suppliers.js";
 
 export const crawl = async (page, crawlInfo) => {
@@ -31,22 +30,9 @@ export const crawl = async (page, crawlInfo) => {
     } catch (e) {
     }
   }
-  // if (remain_elements > 0 ){
-  //   await page.locator(`//div[contains(@data-testid,'pagination')]/nav/div/div[3]/button`).click()
-  // }
-  // await sleep(5)
-  // await page.evaluate(scroll, {direction: "down", speed: "slow"});
-  // const hotel_infos2 = await page.locator(`//div[contains(@data-testid,'property-card')]`).elementHandles()
-  //
-  // for (let i = 0 ; i < remain_elements; i+= 1){
-  //   const dict_raw = {};
-  //   const hotel_name = await (await hotel_infos2[i].$(`//div[contains(@data-testid,'title')]`)).innerText()
-  //   const hotel_price = await (await hotel_infos2[i].$(`//span[contains(@data-testid,'price-and-discounted-price')]`)).innerText()
-  //   const hotel_link = await (await hotel_infos2[i].$(`//a[contains(@data-testid,'title-link')]`)).innerText()
-  //   dict_raw["hotel_name"] = hotel_name
-  //   dict_raw["hotel_price"] = hotel_price.replace(/[^0-9]/g, '');
-  //   dict_raw["hotel_link"] = hotel_link
-  //   hotels.push(dict_raw)
-  // }
+
+  hotels.forEach((item, index) => {
+    item.rank = index + 1;
+  })
   return hotels
 }

@@ -12,6 +12,8 @@ import {Suppliers} from "../constants/suppliers.js";
 import {sendMessages, sleep} from "../utils/util.js";
 import axios from "axios";
 
+const createdAt = new Date()
+
 function getDateInString(date){
     let month = date.getMonth() + 1;
     month = month < 10 ? `0${month}` : month;
@@ -31,11 +33,10 @@ function getTargetDate(dayType, subsequentWeek){
     const checkout = getDateInString(date)
 
     return [checkin, checkout]
-};
+}
 
 function generateLink(keywords, checkinDate, checkoutDate){
     let tasks = []
-    const createdAt = new Date()
     for (const item of keywords){
         const keyword = item.keyword
         const encodedKeyword = encodeURIComponent(keyword)
@@ -56,7 +57,7 @@ function generateLink(keywords, checkinDate, checkoutDate){
                     task.url = Suppliers.Hotels.url + `Hotel-Search?adults=2&startDate=${checkinDate}&endDate=${checkoutDate}&destination=${encodedKeyword}&locale=ko_KR`
                     break
                 case Suppliers.Naver.name:
-                    task.url = Suppliers.Naver.url + `list?placeFileName=place%3A${item.naver_city_name}&includeTax=true&adultCnt=2&checkIn=${checkinDate}&checkOut=${checkoutDate}&sortField=popularityKR&sortDirection=descending`
+                    task.url = Suppliers.Naver.url + `list?placeFileName=place%3ASeoul&includeTax=true&adultCnt=2&checkIn=${checkinDate}&checkOut=${checkoutDate}&sortField=popularityKR&sortDirection=descending`
                     break
                 case Suppliers.Trip.name:
                     const checkin = checkinDate.replaceAll('-', '/')
@@ -72,42 +73,33 @@ function generateLink(keywords, checkinDate, checkoutDate){
                     task.url = Suppliers.Tourvis.url + `hotels?type=${item.privia_dest_type}&keyword=${encodedKeyword}&id=${item.privia_dest_id}&in=${checkinDate.replaceAll("-", "")}&out=${checkoutDate.replaceAll("-", "")}&guests=2`
                     task.devices = ['mobile']
                     break
-                // case Suppliers.Goodchoice.name:
-                //     task.url = Suppliers.Goodchoice.url + `product/result?keyword=${encodedKeyword}`
-                //     break
-                // case Suppliers.Interpark.name:
-                //     task.url = Suppliers.Interpark.url + `checkinnow/search/keyword?disp_q=${keyword}&startdate=20230520&enddate=20230522`
-                //     task.devices = ['mobile']
-                //     break
-                // case Suppliers.Yanolja.name:
-                //     task.url = Suppliers.Yanolja.url + `${item.yanolja_dest_info}?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}`
-                //     break
-
             }
             task.checkinDate = checkinDate
             task.checkoutDate = checkoutDate
             task.keywordId = item.id
+            task.keyword = item.keyword
             task.createdAt = createdAt
             tasks.push(task)
         }
     }
-    console.log(tasks)
-    console.log(tasks.length)
     return tasks
+}
+
+async function execGetInternalPrices() {
+    await axios.get(process.env.AWS_LAMBDA_EXECUTOR_API + '?action=GET_HOTEL_INTERNATIONAL_INTERNAL_PRICES&createdAt=' + createdAt.toISOString())
 }
 
 async function main() {
     const dayTypes = ['weekday', 'weekend']
-    const subsequentWeeks = [2, 3]
+    const subsequentWeeks = [3, 5]
+    const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
+    await execGetInternalPrices()
 
     for (const dayType of dayTypes) {
         for (const subsequentWeek of subsequentWeeks) {
             const [checkinDate, checkoutDate] = getTargetDate(dayType, subsequentWeek)
-            console.log(checkinDate, checkoutDate)
-            const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
             const tasks = generateLink(keywords, checkinDate, checkoutDate)
             await sendMessages(tasks, process.env.AWS_SQS_HOTELFLY_LINK_URL)
-            await sleep(2)
         }
     }
 }

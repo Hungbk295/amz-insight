@@ -29,18 +29,6 @@ const Suppliers = {
         'url': 'https://kr.trip.com/',
         'id': 4
     },
-    // Goodchoice: {
-    //     'name': 'Goodchoice',
-    //     'url': 'https://www.goodchoice.kr/'
-    // },
-    // Interpark: {
-    //     'name': 'Interpark',
-    //     'url': 'https://mtravel.interpark.com/'
-    // },
-    // Yanolja: {
-    //     'name': 'Yanolja',
-    //     'url': 'https://www.yanolja.com/'
-    // },
     Priviatravel: {
         'name': 'Priviatravel',
         'url': 'https://hotel.priviatravel.com/',
@@ -50,7 +38,39 @@ const Suppliers = {
         'name': 'Tourvis',
         'url': 'https://hotel.tourvis.com/',
         'id': 8
-    }
+    },
+    // PriviaAfterDiscount: {
+    //     'name': 'Priviatravel',
+    //     'url': 'https://hotel.priviatravel.com/',
+    //     'id': 9
+    // },
+}
+const subSuppliers = {
+    PriviaAPI: {
+        'name': 'PriviaAPI',
+        'id': null
+    },
+    PriviaHomePage: {
+        'name': 'PriviaHomePage',
+        'id': 7000
+    },
+    PriviaAPIAfterLoggedIn: {
+        'name': 'PriviaAPIAfterLoggedIn',
+        'id': 7100
+    },
+    PriviaHomePageAfterLoggedIn: {
+        'name': 'PriviaHomePageAfterLoggedIn',
+        'id': 7200
+    },
+    TourvisHomePage: {
+        'name': 'Tourvis',
+        'id': 8000
+    },
 }
 
-export { Suppliers }
+const loggedInStates = {
+    notLoggedIn: 0,
+    loggedIn: 1,
+}
+
+export { Suppliers, subSuppliers, loggedInStates }

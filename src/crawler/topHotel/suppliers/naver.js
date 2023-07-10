@@ -1,6 +1,31 @@
 import {scroll, sleep} from "../../../utils/util.js"
 import {Suppliers} from "../../../constants/suppliers.js";
 
+export const crawl = async (page, crawlInfo) => {
+    await page.goto(crawlInfo["url"],{ timeout: 60000 });
+    await sleep(8)
+    await page.locator("(//button[contains(@class, 'SearchBox_btn_location')])[1]").click()
+    await sleep(3)
+    await page.locator("(//input[contains(@class, 'Autocomplete_txt')])[1]").fill(crawlInfo.keyword)
+    await sleep(3)
+    await page.locator("(//*[contains(@class, 'SearchResults_item')])[1]").click()
+    await sleep(15)
+    await page.evaluate(scroll, {direction: "down", speed: "slow"});
+    await sleep(2)
+    let hotels = await handleSinglePage(crawlInfo, page)
+
+    if (hotels.length < 30){
+        await page.locator("(//button[contains(@class, 'Pagination_next')])[1]").click()
+        await sleep(15)
+        await page.evaluate(scroll, {direction: "down", speed: "slow"});
+        hotels = hotels.concat(await handleSinglePage(crawlInfo, page))
+    }
+    hotels.forEach((item, index) => {
+        item.rank = index + 1;
+    })
+    return hotels;
+}
+
 const handleSinglePage = async (crawlInfo, page) => {
     const hotel_infos = await page.locator(`//*[@id="__next"]/div/div/div/div[1]/div[3]/ul/li`).elementHandles()
     const hotels = []
@@ -22,24 +47,4 @@ const handleSinglePage = async (crawlInfo, page) => {
         hotels.push(hotel)
     }
     return hotels
-}
-
-export const crawl = async (page, crawlInfo) => {
-    await page.goto(crawlInfo["url"],{ timeout: 60000 });
-    await sleep(15)
-    await page.evaluate(scroll, {direction: "down", speed: "slow"});
-    await sleep(2)
-    let pageIndex = 0
-    let hotels = await handleSinglePage(crawlInfo, page)
-
-    if (hotels.length < 30){
-        // const next_page = await page.locator(`//*[@id="__next"]/div/div/div/div[1]/div[3]/div[2]/button[7]`)
-        // await next_page.click();
-        await page.goto(crawlInfo["url"] + `&pageIndex=${++pageIndex}`,{ timeout: 60000 });
-        await sleep(15)
-        await page.evaluate(scroll, {direction: "down", speed: "slow"});
-        hotels = hotels.concat(await handleSinglePage(crawlInfo, page))
-    }
-
-    return hotels;
 }

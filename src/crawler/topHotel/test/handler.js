@@ -5,5 +5,7 @@ export const handle = async (crawlInfo, crawlFunction) => {
 	const context = await browser.contexts()[0]
 	const page =
 		context.pages().length > 0 ? context.pages()[0] : await context.newPage()
-	return await crawlFunction(page, crawlInfo)
+	const res = await crawlFunction(page, crawlInfo)
+	await browser.close()
+	return res
 }

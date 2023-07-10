@@ -55,7 +55,7 @@ export const run = async (queueUrl) => {
 					for (let idx = 0; idx < crawlResult.length; idx++) {
 						const hotel = crawlResult[idx]
 						let item = {}
-						item["rank"] = idx+1
+						item["rank"] = hotel["rank"] || null
 						item["name"] = hotel["name"]
 						item["price"] = parseInt(hotel["price"])
 						item["identifier"] = hotel["identifier"]
@@ -65,12 +65,13 @@ export const run = async (queueUrl) => {
 						item["keywordId"] = crawlInfo["keywordId"]
 						item["createdAt"] = crawlInfo["createdAt"]
 						item["supplierId"] = hotel["supplierId"]
+						item["siteId"] = hotel['siteId']
 						item["tag"] = hotel["tag"]
 						item["price"] = !isNaN(item["price"]) ? item["price"] : 0;
 						resultData.push(item)
 					}
 					console.log(resultData)
-					console.log(resultData.length)
+					console.log('length: ', resultData.length)
 					if (resultData.length > 0){
 						const fileName = crawlInfo["checkinDate"] + "_" + crawlInfo["keywordId"] + "_" + crawlResult[0]["supplierId"] + ".yaml";
 						await fs.writeFileSync(fileName, yaml.dump(resultData), 'utf8');
@@ -85,20 +86,17 @@ export const run = async (queueUrl) => {
 				} catch (e) {
 					console.log("Error", msg.Body)
 					console.log(e)
-					await sleep(20)
-					await browser.close()
 					if (queueUrl === process.env.AWS_SQS_HOTELFLY_LINK_URL){
 						const stdout = execSync(`expressvpn disconnect && expressvpn connect ${getRandom(SERVERS)}`);
 						console.log(stdout.toString())
 					}
-					await sleep(5)
-					browser = await getBrowser({devices: crawlInfo.devices});
 					await sleep(5)
 				}
 				const allPages = context.pages();
 				for (let i = 1; i < allPages.length; i++) {
 					await allPages[i].close()
 				}
+				// await browser.contexts()[0].clearCookies()
 				await browser.close()
 			}
 		}
@@ -106,5 +104,3 @@ export const run = async (queueUrl) => {
 		await run(queueUrl)
 	})
 }
-
-

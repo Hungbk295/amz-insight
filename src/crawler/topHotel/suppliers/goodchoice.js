@@ -20,8 +20,6 @@ export const crawl = async (page, crawlInfo) => {
 		const link = await (await item.$('a')).getAttribute('href')
 		const identifier = await (await item.$('a')).getAttribute('data-ano')
 
-		// console.log(price)
-
 		data.push({
 			name,
 			// nameEn: null,
@@ -37,5 +35,8 @@ export const crawl = async (page, crawlInfo) => {
 	}
 	await sleep(15)
 
+	data.forEach((item, index) => {
+		item.rank = index + 1;
+	})
 	return data.slice(0, 30)
 }

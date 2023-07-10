@@ -1,6 +1,6 @@
-import { scroll, sleep } from '../../../utils/util.js'
+import {scroll_step, sleep} from '../../../utils/util.js'
 import _ from 'lodash'
-import {Suppliers} from "../../../constants/suppliers.js";
+import {subSuppliers, Suppliers} from "../../../constants/suppliers.js";
 
 export const crawl = async (page, crawlInfo) => {
 	let data = []
@@ -24,7 +24,6 @@ export const crawl = async (page, crawlInfo) => {
 		return {
 			name: htlNameKr,
 			nameEn: htlNameEn,
-			// phone: null,
 			price: salePrice,
 			supplierId: Suppliers.Tourvis.id,
 			identifier: htlMasterId + '',
@@ -35,5 +34,9 @@ export const crawl = async (page, crawlInfo) => {
 		}
 	}
 
-	return _.map(data.slice(0, 30), handle)
+	const hotels = _.map(data.slice(0, 100), handle)
+	hotels.forEach((item, index) => {
+		item.rank = index + 1;
+	})
+	return hotels;
 }

@@ -7,6 +7,10 @@ export const crawl = async (page, crawlInfo) => {
 
 	await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
 
+	for (let i = 0; i < 30; i += 1) {
+		await page.mouse.wheel(0, 600)
+		await sleep(1)
+	}
 	const hotels = []
 	const hotel_infos = await page
 		.locator(`//ol[contains(@class,'hotel-list-container')]/li`)
@@ -17,9 +21,12 @@ export const crawl = async (page, crawlInfo) => {
 			const hotel_name = await (
 				await info.$(`//h3[contains(@data-selenium,'hotel-name')]`)
 			).innerText()
-			const hotel_price = await (
-				await info.$(`//span[contains(@data-selenium,'display-price')]`)
-			).innerText()
+			let hotel_price = ''
+			try {
+				hotel_price = await (
+					await info.$(`//span[contains(@data-selenium,'display-price')]`)
+				).innerText()
+			} catch (e) {}
 			const hotel_link = await (await info.$(`//div/a`)).getAttribute('href')
 			const hotel_identifier = hotel_link.split('/')[2]
 			const hotel_tag = hotel_identifier
@@ -34,6 +41,8 @@ export const crawl = async (page, crawlInfo) => {
 			hotels.push(hotel)
 		} catch (e) {}
 	}
-
+	hotels.forEach((item, index) => {
+		item.rank = index + 1;
+	})
 	return hotels.slice(0, 40)
 }

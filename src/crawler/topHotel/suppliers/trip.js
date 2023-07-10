@@ -45,5 +45,9 @@ export const crawl = async (page, crawlInfo) => {
 		}
 	}
 
-	return _.map(data.slice(0, 30), handle)
+	const hotels = _.map(data.slice(0, 30), handle)
+	hotels.forEach((item, index) => {
+		item.rank = index + 1;
+	})
+	return hotels;
 }
