@@ -39,6 +39,11 @@ const Suppliers = {
         'url': 'https://hotel.tourvis.com/',
         'id': 8
     },
+    Kyte: {
+        'name': 'Kyte',
+        'url': 'https://kyte.travel/',
+        'id': 12
+    },
     // PriviaAfterDiscount: {
     //     'name': 'Priviatravel',
     //     'url': 'https://hotel.priviatravel.com/',

@@ -6,6 +6,7 @@ import { crawl as crawlNaver } from './suppliers/naver.js'
 import { crawl as crawlHotels } from './suppliers/hotels.js'
 import { crawl as crawlPrivia } from './suppliers/priviatravel.js'
 import { crawl as crawlTourvis } from './suppliers/tourvis.js'
+import { crawl as crawlKyte } from './suppliers/kyte.js'
 import dotenv from "dotenv";
 import {deleteSqsMsg, getRandom, sleep, sqs, uploadFileToS3} from "../../utils/util.js";
 import {getBrowser} from "../../utils/playwright_browser.js";
@@ -13,22 +14,24 @@ import fs from "fs";
 import * as yaml from "js-yaml";
 import {execSync} from "child_process";
 import {SERVERS} from "../../constants/expressvpn.js";
+import {Suppliers} from "../../constants/suppliers.js";
 dotenv.config({path: '../../../.env'})
 
 const crawlDefault = (url) => {
 	return []
 }
 
-export const classify = link => {
+const classify = link => {
 	if (!link) return crawlDefault
-	if (link.includes('https://hotels.naver.com/')) return crawlNaver
-	if (link.includes('https://www.expedia.co.kr/')) return crawlExpedia
-	if (link.includes('https://www.agoda.com/ko-kr/')) return crawlAgoda
-	if (link.includes('https://www.booking.com/')) return crawlBooking
-	if (link.includes('https://kr.trip.com/')) return crawlTrip
-	if (link.includes('https://kr.hotels.com/')) return crawlHotels
-	if (link.includes('https://hotel.priviatravel.com/')) return crawlPrivia
-	if (link.includes('https://hotel.tourvis.com/')) return crawlTourvis
+	if (link.includes(Suppliers.Naver.url)) return crawlNaver
+	if (link.includes(Suppliers.Expedia.url)) return crawlExpedia
+	if (link.includes(Suppliers.Agoda.url)) return crawlAgoda
+	if (link.includes(Suppliers.Booking.url)) return crawlBooking
+	if (link.includes(Suppliers.Trip.url)) return crawlTrip
+	if (link.includes(Suppliers.Hotels.url)) return crawlHotels
+	if (link.includes(Suppliers.Priviatravel.url)) return crawlPrivia
+	if (link.includes(Suppliers.Tourvis.url)) return crawlTourvis
+	if (link.includes(Suppliers.Kyte.url)) return crawlKyte
 }
 
 const crawl = async (page, crawlInfo) => {

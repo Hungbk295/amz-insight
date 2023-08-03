@@ -9,7 +9,7 @@
  */
 
 import {Suppliers} from "../constants/suppliers.js";
-import {sendMessages, sleep} from "../utils/util.js";
+import {sendMessages} from "../utils/util.js";
 import axios from "axios";
 
 const createdAt = new Date()
@@ -60,9 +60,7 @@ function generateLink(keywords, checkinDate, checkoutDate){
                     task.url = Suppliers.Naver.url + `list?placeFileName=place%3ASeoul&includeTax=true&adultCnt=2&checkIn=${checkinDate}&checkOut=${checkoutDate}&sortField=popularityKR&sortDirection=descending`
                     break
                 case Suppliers.Trip.name:
-                    const checkin = checkinDate.replaceAll('-', '/')
-                    const checkout = checkoutDate.replaceAll('-', '/')
-                    task.url = Suppliers.Trip.url + `hotels/list?city=${item.trip_city_id}&provinceId=${item.trip_province_id}&cityName=${encodedKeyword}&checkin=${checkin}&checkout=${checkout}&barCurr=KRW&adult=2&children=0&curr=KRW`
+                    task.url = Suppliers.Trip.url + `hotels/list?city=${item.trip_city_id}&provinceId=${item.trip_province_id}&cityName=${encodedKeyword}&checkin=${checkinDate.replaceAll('-', '/')}&checkout=${checkoutDate.replaceAll('-', '/')}&barCurr=KRW&adult=2&children=0&curr=KRW`
                     task.devices = ['mobile']
                     break
                 case Suppliers.Priviatravel.name:
@@ -70,7 +68,11 @@ function generateLink(keywords, checkinDate, checkoutDate){
                     task.devices = ['mobile']
                     break
                 case Suppliers.Tourvis.name:
-                    task.url = Suppliers.Tourvis.url + `hotels?type=${item.privia_dest_type}&keyword=${encodedKeyword}&id=${item.privia_dest_id}&in=${checkinDate.replaceAll("-", "")}&out=${checkoutDate.replaceAll("-", "")}&guests=2`
+                    task.url = Suppliers.Tourvis.url + `hotels?type=${item.privia_dest_type}&keyword=${encodedKeyword}&id=${item.privia_dest_id}&in=${checkinDate.replaceAll('-', '')}&out=${checkoutDate.replaceAll('-', '')}&guests=2`
+                    task.devices = ['mobile']
+                    break
+                case Suppliers.Kyte.name:
+                    task.url = Suppliers.Kyte.url + `hotels/list?id=${item.kyte_city_id}&keyword=${keyword}&type=SEARCH_SOURCE_REGION_EPS&no_cal=true&guests=2&in=${checkinDate.replaceAll('-', '')}&out=${checkoutDate.replaceAll('-', '')}`
                     task.devices = ['mobile']
                     break
             }
