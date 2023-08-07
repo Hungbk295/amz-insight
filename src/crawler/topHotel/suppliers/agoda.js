@@ -44,5 +44,5 @@ export const crawl = async (page, crawlInfo) => {
 	hotels.forEach((item, index) => {
 		item.rank = index + 1;
 	})
-	return hotels.slice(0, 40)
+	return hotels.slice(0, 100)
 }

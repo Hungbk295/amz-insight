@@ -17,14 +17,14 @@ export const crawl = async (page, crawlInfo) => {
 	})
 
 	await page.goto(crawlInfo['url'], { timeout: 60000 })
-	await sleep(20)
+	await sleep(15)
 
 	try {
 		await page.locator('//*[@type="ic_popups_close"]').click()
 	} catch {}
-	for (let i = 0; i < 3; i++){
-		await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
-		await sleep(20)
+	for (let i = 0; i < 15; i++){
+		await page.mouse.wheel(0, 5000)
+		await sleep(3)
 	}
 
 	const handle = item => {
@@ -45,7 +45,7 @@ export const crawl = async (page, crawlInfo) => {
 		}
 	}
 
-	const hotels = _.map(data.slice(0, 30), handle)
+	const hotels = _.map(data.slice(0, 100), handle)
 	hotels.forEach((item, index) => {
 		item.rank = index + 1;
 	})
