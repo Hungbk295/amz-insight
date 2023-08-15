@@ -7,7 +7,7 @@ export const crawl = async (page, crawlInfo) => {
 		const urls = await response.url()
 		if (urls.includes('search?advert=KEYWORD') && response.status() === 200) {
 			let res = await response.json()
-			data = data.concat(res.motels.lists)
+			data = data.concat(res.accommodations.items)
 		}
 	})
 

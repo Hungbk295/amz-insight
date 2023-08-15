@@ -1,13 +1,11 @@
 import {run} from "./crawler.js";
 import dotenv from "dotenv";
-import {execSync} from "child_process";
-import {getRandom} from "../../utils/util.js";
-import {SERVERS} from "../../constants/expressvpn.js";
+
 dotenv.config({path: '../../../.env'})
 
-try {
-    const stdout = execSync(`expressvpn connect ${getRandom(SERVERS)}`);
-    console.log(stdout.toString())
-} catch (e) {
+if (!process.argv[2]) {
+    console.log("Missing worker name param")
+    process.exit()
 }
-await run(process.env.AWS_SQS_HOTELFLY_LINK_URL)
+
+await run(process.env.AWS_SQS_HOTELFLY_LINK_URL, process.argv[2])

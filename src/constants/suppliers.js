@@ -50,6 +50,9 @@ const Suppliers = {
     //     'id': 9
     // },
 }
+
+const internalSupplier = [7, 8, 12]
+
 const subSuppliers = {
     PriviaAPI: {
         'name': 'PriviaAPI',
@@ -78,4 +81,4 @@ const loggedInStates = {
     loggedIn: 1,
 }
 
-export { Suppliers, subSuppliers, loggedInStates }
+export {Suppliers, subSuppliers, internalSupplier, loggedInStates}

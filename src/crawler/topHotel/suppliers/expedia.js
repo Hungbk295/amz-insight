@@ -19,7 +19,7 @@ export const crawl = async (page, crawlInfo) => {
 	for (const info of hotel_infos) {
 		const hotel = {}
 		try {
-			const hotel_name = await (await info.$(`//div/h4`)).innerText()
+			const hotel_name = await (await info.$(`//div/h3[contains(@class, 'uitk-heading')]`)).innerText();
 			let hotel_price = (await info.innerText()).match(
 				/(₩((\d|,)+)\/1박)|(총 요금: ₩((\d|,)+))/gi
 			)

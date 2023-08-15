@@ -1,57 +1,53 @@
-# Setting with expressvpn 
-1. Install nodejs 18
-```
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
-sudo apt-get install -y nodejs
-```
+# Table of contents
 
-2. Install expressvpn
-Download expressvpn locally, and upload to worker server, then activate
-```
-sudo wget https://www.expressvpn.works/clients/linux/expressvpn_3.48.0.4-1_amd64.deb
-sudo dpkg -i expressvpn_3.48.0.4-1_amd64.deb
-expressvpn activate
-```
+* [Setup project](#setup-project)
+* [Notes](#setup-env)
 
-3. Setup env
-```
-AWS_QUEUE_NAME = "hotel-crawling-links-prod"
-AWS_UID = "836881754257"
-HOTELFLY_API_HOST = https://api.hotelfly.tidesquarevn.com
-AWS_SQS_HOTELFLY_LINK_URL=https://sqs.ap-northeast-2.amazonaws.com/836881754257/hotel-crawling-links-prod
-AWS_SQS_HOTELFLY_HOTEL_DETAILS_LINK_URL=https://sqs.ap-northeast-2.amazonaws.com/836881754257/hotel-details-link-prod
-AWS_S3_BUCKET_NAME=hn-hotel-fly
-```
+1. Setup project:
+    * Install modules:
+      ```npm install``` or ```yarn```
+    * Setup environment variables:
+        - ```nano .env```
+        - ```
+          AWS_UID=
+          HOTELFLY_API_HOST=
+          AWS_SQS_HOTELFLY_LINK_URL=
+          AWS_SQS_HOTELFLY_HOTEL_DETAILS_LINK_URL=
+          AWS_S3_BUCKET_NAME=
+          ```
+    * Run command:
+        - ```pm2 start --name hn-hotel-fly-0 entrypoint-normal.sh -- hn-hotel-fly-0```
+        - ```pm2 start --name hotel-fly-important-n entrypoint-important.sh -- hotel-fly-important-n```
 
-## Deprecated: Setting up crawler docker image for AWS Batch
-### Setup credential for AWS client:
-#### On local env:
+2. Notes
+    * Install [Node 18 for Ubuntu](https://github.com/nodesource/distributions)
+    * AWS configuration:
+        * Using aws cli: ```aws configure```
+        * Using credential files:
+            * ```nano ~/.aws/credentials```
+            * ```
+              [default]
+              aws_access_key_id=
+              aws_secret_access_key= 
+              ```
+            * ```nano ~/.aws/config```
+            * ```
+              [default]
+              region = ap-northeast-2
+              ```
+    * [Pm2 startup config](https://pm2.keymetrics.io/docs/usage/startup/)
+    * Fix problem with git pull:
+        * ```nano ~/.ssh/config```
+        *
+        ```
+        Host github.com
+          Hostname ssh.github.com
+          Port 443
+        Host bitbucket.org
+          Hostname altssh.bitbucket.org
+          Port 443
+        ```
 
-cat ~/.aws/credentials
-[default]
-aws_access_key_id = xxx
-aws_secret_access_key = xxx
-
-
-4. Run command
-```
-sudo apt install xvfb
-xvfb-run node crawlerNormal.js 
-xvfb-run node crawlerImportant.js 
-```
-
-5. SSH connection
-- ssh: error connect port 22: 
-```
- sudo nano ~/.ssh/config
- 
- Host github.com
- Hostname ssh.github.com
- Port 443
-```
-
-- install yarn:
-```sudo npm install --global yarn```
 
 
 
