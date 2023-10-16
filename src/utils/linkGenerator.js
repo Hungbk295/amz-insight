@@ -79,7 +79,7 @@ export async function execGetInternalPrices(action, createdAt) {
     const params = {
         FunctionName: 'hotel-internal-data', /* required */
         Payload: JSON.stringify({
-            'action': action, 'createdAt': createdAt.toISOString()
+            'action': action, 'createdAt': createdAt
         })
     };
     lambda.invoke(params, function (err, data) {
