@@ -1,8 +1,8 @@
 import {sleep} from '../../../utils/util.js'
-import {loggedInStates, subSuppliers, Suppliers} from '../../../constants/suppliers.js'
+import { Suppliers} from '../../../constants/suppliers.js'
 
 export const crawl = async (page, crawlInfo) => {
-    return crawlHelper(page, crawlInfo, loggedInStates.notLoggedIn)
+    return crawlHelper(page, crawlInfo)
 }
 
 const addListenerForHandlingSpecificAPI = (page, apiPattern, result) => {
@@ -15,7 +15,7 @@ const addListenerForHandlingSpecificAPI = (page, apiPattern, result) => {
     })
 }
 
-const convertRawData = (rawData, crawlInfo, loggedInState) => {
+const convertRawData = (rawData, crawlInfo) => {
     const {htlNameKr, salePrice, htlMasterId, addr, htlNameEn} = rawData
     let [urlPartInLink, queryPartInLink] = crawlInfo['url'].split('?')
     urlPartInLink = urlPartInLink
@@ -94,21 +94,21 @@ const getDataFromHomepage = async (page, crawlInfo, loggedInState) => {
     return Array.from(hotels.values()).slice(0, 100)
 }
 
-const getDataFromAPI = async (page, crawlInfo, loggedInState) => {
+const getDataFromAPI = async (page, crawlInfo) => {
     let totalDataFromAPI = []
     addListenerForHandlingSpecificAPI(page, 'prices?', totalDataFromAPI)
     await page.goto(crawlInfo['url'], {timeout: 60000})
     await sleep(20)
 
-    const dataFromAPI = totalDataFromAPI.slice(0, 100).map((item) => convertRawData(item, crawlInfo, loggedInState))
+    const dataFromAPI = totalDataFromAPI.slice(0, 100).map((item) => convertRawData(item, crawlInfo))
     dataFromAPI.forEach((item, index) => {
         item.rank = index + 1;
     })
     return dataFromAPI
 }
 
-const crawlHelper = async (page, crawlInfo, loggedInState) => {
-    return getDataFromAPI(page, crawlInfo, loggedInState)
+const crawlHelper = async (page, crawlInfo) => {
+    return getDataFromAPI(page, crawlInfo)
 }
 
 const loginPrivia = async (page) => {
