@@ -1,6 +1,6 @@
-import {scroll_step, sleep} from '../../../utils/util.js'
+import {sleep} from '../../../utils/util.js'
 import _ from 'lodash'
-import {subSuppliers, Suppliers} from "../../../constants/suppliers.js";
+import {Suppliers} from "../../../constants/suppliers.js";
 
 export const crawl = async (page, crawlInfo) => {
 	let data = []

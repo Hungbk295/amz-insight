@@ -34,7 +34,7 @@ const convertRawData = (rawData, crawlInfo, loggedInState) => {
         nameEn: htlNameEn,
         address: addr,
         price: salePrice,
-        siteId: loggedInState === loggedInStates.loggedIn ? subSuppliers.PriviaAPIAfterLoggedIn.id : subSuppliers.PriviaAPI.id,
+        siteId: null,
         supplierId: Suppliers.Priviatravel.id,
         identifier: htlMasterId + '',
         tag: htlNameEn,
@@ -44,7 +44,7 @@ const convertRawData = (rawData, crawlInfo, loggedInState) => {
     }
 }
 
-const getDataFromHomepage = async (page) => {
+const getDataFromHomepage = async (page, crawlInfo, loggedInState) => {
     const hotels = new Map()
     const getHomePagePrice = async xpath => {
         const list_hotel = await page.locator(xpath).elementHandles()
@@ -65,7 +65,7 @@ const getDataFromHomepage = async (page) => {
                 hotel.name = hotel_name
                 hotel.price = parseInt(hotel_price.replaceAll(',', ''))
                 hotel.identifier = identifier
-                hotel.siteId = loggedInState === loggedInStates.loggedIn ? subSuppliers.PriviaHomePageAfterLoggedIn.id : subSuppliers.PriviaHomePage.id
+                hotel.siteId = null
                 hotel.supplierId = Suppliers.Priviatravel.id
                 hotel.checkinDate = crawlInfo['checkinDate']
                 hotel.checkoutDate = crawlInfo['checkoutDate']

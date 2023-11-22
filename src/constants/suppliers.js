@@ -43,36 +43,19 @@ const Suppliers = {
         'name': 'Kyte',
         'url': 'https://kyte.travel/',
         'id': 12
-    },
-    // PriviaAfterDiscount: {
-    //     'name': 'Priviatravel',
-    //     'url': 'https://hotel.priviatravel.com/',
-    //     'id': 9
-    // },
+    }
 }
 
 const internalSupplier = [7, 8, 12]
 
 const subSuppliers = {
-    PriviaAPI: {
-        'name': 'PriviaAPI',
-        'id': null
+    detail: {
+        'name': 'detail',
+        'id': 4
     },
-    PriviaHomePage: {
-        'name': 'PriviaHomePage',
-        'id': 7000
-    },
-    PriviaAPIAfterLoggedIn: {
-        'name': 'PriviaAPIAfterLoggedIn',
-        'id': 7100
-    },
-    PriviaHomePageAfterLoggedIn: {
-        'name': 'PriviaHomePageAfterLoggedIn',
-        'id': 7200
-    },
-    TourvisHomePage: {
-        'name': 'Tourvis',
-        'id': 8000
+    detailDiscount: {
+        'name': 'detailDiscount',
+        'id': 5
     },
 }
 

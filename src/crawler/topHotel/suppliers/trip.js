@@ -1,4 +1,4 @@
-import { scroll, sleep } from '../../../utils/util.js'
+import { sleep } from '../../../utils/util.js'
 import _ from 'lodash'
 import {Suppliers} from "../../../constants/suppliers.js";
 
