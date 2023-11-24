@@ -1,6 +1,7 @@
 import {Suppliers} from "../constants/suppliers.js";
 import {Lambda} from 'aws-sdk';
 
+
 export function generateLink(keywords, checkinDate, checkoutDate, suppliers, createdAt) {
     let tasks = []
     for (const item of keywords) {

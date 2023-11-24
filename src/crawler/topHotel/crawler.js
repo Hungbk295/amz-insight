@@ -84,7 +84,6 @@ export const run = async (queueUrl, workerName) => {
                     await client.waitUntilServerAvailable();
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                     const crawlInfo = JSON.parse(msg.Body);
-                    console.log(crawlInfo);
                     const useProxy = !internalSupplier.includes(classify(crawlInfo["url"])[0])
                     const browser = await getBrowser({devices: crawlInfo.devices}, useProxy);
                     const context = await browser.contexts()[0]

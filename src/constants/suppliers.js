@@ -49,12 +49,12 @@ const Suppliers = {
 const internalSupplier = [7, 8, 12]
 
 const subSuppliers = {
-    detail: {
-        'name': 'detail',
-        'id': 4
-    },
     detailDiscount: {
         'name': 'detailDiscount',
+        'id': 4
+    },
+    detail: {
+        'name': 'detail',
         'id': 5
     },
 }

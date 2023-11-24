@@ -1,20 +1,16 @@
-import { getNumberInString } from '../../../utils/stringHandle.js'
-import { sleep } from '../../../utils/util.js'
-
 export const crawl = async (page, crawlInfo) => {
 	await page.goto(crawlInfo['url'], { timeout: 60000 })
 
-	await sleep(120)
-	const block = await page
-		.locator(`//*[@id="o-view-tab-detail"]`)
-		.elementHandle()
+	const minPrice = await page
+		.locator(`//span[contains(@class,'card-sale')]`).locator('xpath=..').locator(`em`)
+		.innerText();
 
-	const address = await (await block.$(`.htp-loca`)).innerText()
-	const phone = await (await block.$(`.hs-info`)).innerText()
-	const hotelId = crawlInfo['hotelId']
-	return {
-		hotelId,
-		address,
-		phone: getNumberInString(phone).trim(),
-	}
+	const min_room_info = await (await page
+		.locator(`//div[contains(@class,'room-tbl-cont')]/table/tbody/tr`)
+		.elementHandles())[0]
+	const minDetail = await (await min_room_info.$(`//div[contains(@class,'total-price-cnt')]/ul/li[2]/p[2]/em`)).innerText()
+
+	console.log(minDetail)
+	console.log(minPrice)
+
 }

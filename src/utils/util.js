@@ -138,3 +138,5 @@ export const swapTimeUrl = ({baseUrl, startTime, endTime}) => {
     return urlCrawl
 }
 
+ const res = await readSqsMessages('https://sqs.ap-northeast-2.amazonaws.com/836881754257/detail-hotel-fly-dev',1)
+console.log(res.Messages)

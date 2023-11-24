@@ -1,18 +1,11 @@
-import {sleep} from '../../../utils/util.js'
+import {createSqsMessages, sleep} from '../../../utils/util.js'
 import { Suppliers} from '../../../constants/suppliers.js'
+import dotenv from 'dotenv'
+
+dotenv.config({path: '../../../.env'})
 
 export const crawl = async (page, crawlInfo) => {
     return crawlHelper(page, crawlInfo)
-}
-
-const addListenerForHandlingSpecificAPI = (page, apiPattern, result) => {
-    page.on('response', async response => {
-        const urls = await response.url()
-        if (urls.includes(apiPattern) && response.status() === 200) {
-            let res = await response.json()
-            result = result.concat(res.hotelFareList)
-        }
-    })
 }
 
 const convertRawData = (rawData, crawlInfo) => {
@@ -93,17 +86,29 @@ const getDataFromHomepage = async (page, crawlInfo, loggedInState) => {
     }
     return Array.from(hotels.values()).slice(0, 100)
 }
+const getDataFromAPIDetails = async (dataApi) => {
+    dataApi.forEach(row => {
+
+    })
+}
 
 const getDataFromAPI = async (page, crawlInfo) => {
     let totalDataFromAPI = []
-    addListenerForHandlingSpecificAPI(page, 'prices?', totalDataFromAPI)
+    page.on('response', async response => {
+        const urls = await response.url()
+        if (urls.includes('price?') && response.status() === 200) {
+            let res = await response.json()
+            totalDataFromAPI = totalDataFromAPI.concat(res.hotelFareList)
+        }
+    })
     await page.goto(crawlInfo['url'], {timeout: 60000})
     await sleep(20)
 
-    const dataFromAPI = totalDataFromAPI.slice(0, 100).map((item) => convertRawData(item, crawlInfo))
+    const dataFromAPI = totalDataFromAPI.slice(0, 10).map((item) => convertRawData(item, crawlInfo))
     dataFromAPI.forEach((item, index) => {
         item.rank = index + 1;
     })
+    await createSqsMessages('https://sqs.ap-northeast-2.amazonaws.com/836881754257/detail-hotel-fly-dev', dataFromAPI)
     return dataFromAPI
 }
 
