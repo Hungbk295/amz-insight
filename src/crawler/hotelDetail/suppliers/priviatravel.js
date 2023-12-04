@@ -4,6 +4,8 @@ import {sleep} from "../../../utils/util.js";
 export const crawl = async (page, crawlInfo) => {
     await page.goto(crawlInfo['link'], {timeout: 60000})
     await sleep(30)
+    let {link, ...common} = crawlInfo
+    link = link.split('.com/')[1]
     let discountPrice = '0'
     try {
         discountPrice = await page.locator(`//span[contains(@class,'card-sale')]`).locator('xpath=..').locator(`em`).innerText();
@@ -18,8 +20,8 @@ export const crawl = async (page, crawlInfo) => {
     } catch (e) {
     }
     return [
-        {...crawlInfo, price: parseInt(discountPrice.replaceAll(',', '')), siteId: Sites.detailDiscount.id},
-        {...crawlInfo, price: parseInt(detailPrice.replaceAll(',', '')), siteId: Sites.detail.id}
+        {...common, link, price: parseInt(discountPrice.replaceAll(',', '')), siteId: Sites.detailDiscount.id},
+        {...common, link, price: parseInt(detailPrice.replaceAll(',', '')), siteId: Sites.detail.id}
     ]
 }
 
