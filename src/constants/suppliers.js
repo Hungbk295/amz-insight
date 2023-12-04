@@ -1,4 +1,9 @@
 const Suppliers = {
+    Priviatravel: {
+        'name': 'Priviatravel',
+        'url': 'https://hotel.priviatravel.com/',
+        'id': 7
+    },
     Agoda: {
         'name': 'Agoda',
         'url': 'https://www.agoda.com/',
@@ -29,11 +34,6 @@ const Suppliers = {
         'url': 'https://kr.trip.com/',
         'id': 4
     },
-    Priviatravel: {
-        'name': 'Priviatravel',
-        'url': 'https://hotel.priviatravel.com/',
-        'id': 7
-    },
     Tourvis: {
         'name': 'Tourvis',
         'url': 'https://hotel.tourvis.com/',
@@ -48,20 +48,15 @@ const Suppliers = {
 
 const internalSupplier = [7, 8, 12]
 
-const subSuppliers = {
+const Sites = {
     detailDiscount: {
         'name': 'detailDiscount',
-        'id': 4
+        'id': 8
     },
     detail: {
         'name': 'detail',
-        'id': 5
+        'id': 9
     },
 }
 
-const loggedInStates = {
-    notLoggedIn: 0,
-    loggedIn: 1,
-}
-
-export {Suppliers, subSuppliers, internalSupplier, loggedInStates}
+export {Suppliers, Sites, internalSupplier}
