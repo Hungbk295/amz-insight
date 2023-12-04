@@ -1,8 +1,8 @@
-import {scroll, sleep} from "../../../utils/util.js"
 import {Suppliers} from "../../../constants/suppliers.js";
+import {sleep} from "../../../utils/util.js";
 
 export const crawl = async (page, crawlInfo) => {
-    await page.goto(crawlInfo["url"],{ timeout: 60000 });
+    await page.goto(crawlInfo["url"], {timeout: 60000});
     await sleep(8)
     await page.locator("(//button[contains(@class, 'SearchBox_btn_location')])[1]").click()
     await sleep(3)
@@ -14,7 +14,7 @@ export const crawl = async (page, crawlInfo) => {
     await sleep(2)
     let hotels = await handleSinglePage(crawlInfo, page)
 
-    if (hotels.length < 30){
+    if (hotels.length < 30) {
         await page.locator("(//button[contains(@class, 'Pagination_next')])[1]").click()
         await sleep(15)
         await page.evaluate(scroll, {direction: "down", speed: "slow"});
@@ -29,7 +29,7 @@ export const crawl = async (page, crawlInfo) => {
 const handleSinglePage = async (crawlInfo, page) => {
     const hotel_infos = await page.locator(`//*[@id="__next"]/div/div/div/div[1]/div[3]/ul/li`).elementHandles()
     const hotels = []
-    for (const info of hotel_infos){
+    for (const info of hotel_infos) {
         const hotel = {};
         const hotel_name = await (await info.$(`//div[1]/div[2]/h4`)).innerText()
         const hotel_price = await (await info.$(`//div[2]/em`)).innerText()
