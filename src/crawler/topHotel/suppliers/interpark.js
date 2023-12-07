@@ -17,30 +17,18 @@ export const crawl = async (page, crawlInfo) => {
 	await page.mouse.wheel(0, 15000)
 	await sleep(5)
 	await page.mouse.wheel(15000, 45000)
-
-	// await page.evaluate(scroll, { direction: 'down', speed: 'fas' })
-	// await sleep(3)
-	// await page.evaluate(scroll, { direction: 'down', speed: 'fas' })
-	// await sleep(3)
-
-	// await sleep(3)
-	// await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
 	await sleep(15)
 
-	// console.log(data.length)
 	const handle = item => {
 		const { goodsname, price, id, mobile_coupon_price } = item
 
 		return {
 			name: goodsname,
-			// nameEn: null,
-			// phone: null,
 			price: mobile_coupon_price,
 			supplierId: 8,
 			identifier: id,
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],
-			// address: null,
 			link: `/checkinnow/goods/${id}`,
 		}
 	}

@@ -1,4 +1,4 @@
-import { scroll, sleep } from '../../../utils/util.js'
+import { sleep } from '../../../utils/util.js'
 import _ from 'lodash'
 
 export const crawl = async (page, crawlInfo) => {
@@ -22,14 +22,11 @@ export const crawl = async (page, crawlInfo) => {
 
 		return {
 			name,
-			// nameEn: null,
-			// phone: null,
 			price: displayPrices[0].rawDiscountPrice,
 			supplierId: 10,
 			identifier: key,
 			checkinDate: crawlInfo['checkinDate'],
 			checkoutDate: crawlInfo['checkoutDate'],
-			// address: null,
 			link: `https://place-site.yanolja.com/places/${key}`,
 		}
 	}

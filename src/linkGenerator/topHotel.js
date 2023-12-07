@@ -8,39 +8,17 @@
  *  - checkout date: checkout date
  */
 
-import { createSqsMessages } from '../utils/util.js'
 import axios from 'axios'
-import {
-    generateLink,
-    getTargetDate,
-    execGetInternalPrices,
-} from '../utils/linkGenerator.js'
-import {Suppliers} from "../constants/suppliers.js";
-
-const createdAt = new Date()
+import {execGetInternalPrices, generateLink} from './linkGenerator.js'
+import {Suppliers} from "../constants/suppliers.js"
 
 async function main() {
+    const createdAt = new Date()
     const dayTypes = ['weekday', 'weekend']
     const subsequentWeeks = [3, 5]
-    const keywords = (
-       await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')
-    ).data
+    const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
     await execGetInternalPrices('GET_HOTEL_INTERNATIONAL_INTERNAL_PRICES', createdAt)
-    for (const dayType of dayTypes) {
-        for (const subsequentWeek of subsequentWeeks) {
-            const [checkinDate, checkoutDate] = getTargetDate(
-               dayType,
-               subsequentWeek
-            )
-            const tasks = generateLink(
-               keywords,
-               checkinDate,
-               checkoutDate, Suppliers,
-               createdAt
-            )
-            await createSqsMessages(process.env.AWS_SQS_HOTELFLY_LINK_URL, tasks)
-        }
-    }
+    await generateLink(keywords, dayTypes, subsequentWeeks, Suppliers, createdAt)
 }
 
 await main()

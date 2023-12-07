@@ -1,4 +1,9 @@
 const Suppliers = {
+    Priviatravel: {
+        'name': 'Priviatravel',
+        'url': 'https://hotel.priviatravel.com/',
+        'id': 7
+    },
     Agoda: {
         'name': 'Agoda',
         'url': 'https://www.agoda.com/',
@@ -29,11 +34,6 @@ const Suppliers = {
         'url': 'https://kr.trip.com/',
         'id': 4
     },
-    Priviatravel: {
-        'name': 'Priviatravel',
-        'url': 'https://hotel.priviatravel.com/',
-        'id': 7
-    },
     Tourvis: {
         'name': 'Tourvis',
         'url': 'https://hotel.tourvis.com/',
@@ -43,42 +43,20 @@ const Suppliers = {
         'name': 'Kyte',
         'url': 'https://kyte.travel/',
         'id': 12
-    },
-    // PriviaAfterDiscount: {
-    //     'name': 'Priviatravel',
-    //     'url': 'https://hotel.priviatravel.com/',
-    //     'id': 9
-    // },
+    }
 }
 
 const internalSupplier = [7, 8, 12]
 
-const subSuppliers = {
-    PriviaAPI: {
-        'name': 'PriviaAPI',
-        'id': null
+const Sites = {
+    detailDiscount: {
+        'name': 'detailDiscount',
+        'id': 8
     },
-    PriviaHomePage: {
-        'name': 'PriviaHomePage',
-        'id': 7000
-    },
-    PriviaAPIAfterLoggedIn: {
-        'name': 'PriviaAPIAfterLoggedIn',
-        'id': 7100
-    },
-    PriviaHomePageAfterLoggedIn: {
-        'name': 'PriviaHomePageAfterLoggedIn',
-        'id': 7200
-    },
-    TourvisHomePage: {
-        'name': 'Tourvis',
-        'id': 8000
+    detail: {
+        'name': 'detail',
+        'id': 9
     },
 }
 
-const loggedInStates = {
-    notLoggedIn: 0,
-    loggedIn: 1,
-}
-
-export {Suppliers, subSuppliers, internalSupplier, loggedInStates}
+export {Suppliers, Sites, internalSupplier}
