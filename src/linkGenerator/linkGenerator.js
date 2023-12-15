@@ -16,7 +16,7 @@ const taskGenerators = {
     [Suppliers.Trip.name]: new Trip(),
 }
 
-export async function generateLink(keywords, dayTypes, subsequentWeeks, suppliers, createdAt) {
+export function generateLink(keywords, dayTypes, subsequentWeeks, suppliers, createdAt) {
     let tasks = []
     for (const keywordItem of keywords) {
         for (const dayType of dayTypes) {
@@ -29,7 +29,7 @@ export async function generateLink(keywords, dayTypes, subsequentWeeks, supplier
             }
         }
     }
-    await createSqsMessages(process.env.AWS_SQS_HOTELFLY_LINK_URL, tasks)
+    return tasks
 }
 
 export function getDateInString(date) {

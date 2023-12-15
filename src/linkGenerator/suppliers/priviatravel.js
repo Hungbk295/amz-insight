@@ -15,22 +15,15 @@ export class Priviatravel {
         }
     }
 
-    async generateTaskForHotelDetail(checkinDate, checkoutDate, keywordItem, createdAt, hotelId) {
-        const params = {
-            hotelId: hotelId,
-            supplierId: Suppliers.Priviatravel.id,
-        };
-        const hotelMetaData = (await axios.get(process.env.HOTELFLY_API_HOST + '/hotel/hotel-meta-data', {params})).data
-        const identifier = hotelMetaData['identifier']
-        const hotelLink = hotelMetaData['link'].split('?')[0]
-        const link = Suppliers.Priviatravel.url + hotelLink + `?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&htlMasterId=${identifier}`
+    async generateTaskForHotelDetail(checkinDate, checkoutDate, keywordItem, createdAt, hotelInfo) {
+        const link = Suppliers.Priviatravel.url + hotelInfo['link'].split('?')[0] + `?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&htlMasterId=${hotelInfo['identifier']}`
         return {
-            name: hotelMetaData['name'],
-            nameEn: hotelMetaData['name_en'],
-            address: hotelMetaData['address'],
-            supplierId: hotelMetaData['supplier_id'],
-            identifier: hotelMetaData['identifier'],
-            tag: hotelMetaData['tag'],
+            name: hotelInfo['name'],
+            nameEn: hotelInfo['name_en'],
+            address: hotelInfo['address'],
+            supplierId: hotelInfo['supplier_id'],
+            identifier: hotelInfo['identifier'],
+            tag: hotelInfo['tag'],
             checkinDate: checkinDate,
             checkoutDate: checkoutDate,
             createdAt: createdAt,

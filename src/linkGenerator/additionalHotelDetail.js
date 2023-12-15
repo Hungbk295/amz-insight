@@ -55,34 +55,26 @@ const groupHotelDataByHotelId = (hotelData, currentSupplier) => {
     return group;
 };
 
-const isSupplierPriceExist = (supplierData, comparedSupplier) => {
-    if (supplierData['supplier_id'] !== comparedSupplier.id) return false
-    return supplierData.siteId === Sites.detail.id || supplierData.siteId === Sites.detailDiscount.id
+const getHotelInfoIfMissingData = (hotelDataItems, supplier) => {
+    const mainPriceItem = hotelDataItems.find(item => item['supplier_id'] === supplier.id && !item['site_id'])
+    if (!mainPriceItem) return null
+    for (const item of hotelDataItems)
+        if (item['supplier_id'] === supplier && (item['site_id'] === Sites.detail.id || item['site_id'] === Sites.detailDiscount.id)) return null
+    return mainPriceItem
 }
 
 const generateAdditionalHotelDetailLinksBySupplier = async (hotelData, supplier, keywordItem, checkinDate, checkoutDate) => {
     const hotelDataGroupedByHotelId = groupHotelDataByHotelId(hotelData, supplier)
-    const comparedSuppliers = suppliersWithDetailPrice.filter(item => item.id !== supplier.id)
+    const checkingSuppliers = suppliersWithDetailPrice.filter(item => item.id !== supplier.id)
     const tasks = []
     for (let [hotelId, items] of Object.entries(hotelDataGroupedByHotelId)) {
         if (items.length === 0) return
         const createdAt = items[0]['created_at']
-        // check if data of the compared supplier is missing (init as missing)
-        const check = {}
-        comparedSuppliers.forEach(comparedSupplier => {
-            check[`${comparedSupplier.id}`] = false
-        })
-        items.forEach(item => {
-            comparedSuppliers.forEach(comparedSupplier => {
-                if (isSupplierPriceExist(item, comparedSupplier)) {
-                    check[`${comparedSupplier.id}`] = true
-                }
-            })
-        })
-        for (const supplierId in check) {
-            if (!check[supplierId]) {
-                const taskGenerator = taskGenerators[supplierId]
-                const task = await taskGenerator.generateTaskForHotelDetail(checkinDate, checkoutDate, keywordItem, createdAt, hotelId)
+        for (const supplier of checkingSuppliers) {
+            const hotelInfo = getHotelInfoIfMissingData(items, supplier)
+            if (hotelInfo) {
+                const taskGenerator = taskGenerators[supplier.id]
+                const task = await taskGenerator.generateTaskForHotelDetail(checkinDate, checkoutDate, keywordItem, createdAt, hotelInfo)
                 tasks.push(task)
             }
         }
