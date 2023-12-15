@@ -3,7 +3,6 @@ import AWS from "aws-sdk";
 import {DeleteMessageCommand, ReceiveMessageCommand, SendMessageBatchCommand, SendMessageCommand, SQSClient} from "@aws-sdk/client-sqs";
 import {randomUUID} from "crypto";
 import fs from "fs";
-import {Upload} from "@aws-sdk/lib-storage";
 import dotenv from 'dotenv'
 
 dotenv.config({path: '../../.env'})
@@ -45,19 +44,6 @@ export async function deleteSqsMessage(QueueUrl, receiptHandle) {
         QueueUrl: QueueUrl
     });
     return sqsClient.send(command);
-}
-
-export const uploadFile = async file => {
-    const fileContent = fs.readFileSync(file)
-    return new Upload({
-        client: s3,
-        params: {
-            Bucket: process.env.AWS_S3_BUCKET_NAME,
-            ACL: 'private',
-            Key: file,
-            Body: fileContent,
-        },
-    }).done()
 }
 
 export const uploadFileToS3 = async (key) => {

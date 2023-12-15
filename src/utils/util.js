@@ -35,17 +35,3 @@ export const scroll_step = async args => {
         await delay(delayTime)
     }
 }
-
-export const takeScreenshot = async page => {
-    let currentDate = new Date().toString().trim()
-    await page.screenshot({
-        path: 'temp/' + currentDate + '.jpeg',
-        fullPage: true,
-        quality: 20,
-        type: 'jpeg',
-    })
-    await uploadFile('temp/' + currentDate + '.jpeg')
-    let html = await page.innerHTML('//body')
-    fs.writeFileSync('temp/' + currentDate + '.html', html)
-    await uploadFile('temp/' + currentDate + '.html')
-}
