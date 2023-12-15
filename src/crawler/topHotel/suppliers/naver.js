@@ -14,8 +14,12 @@ export const crawl = async (page, crawlInfo) => {
     await sleep(2)
     let hotels = await handleSinglePage(crawlInfo, page)
 
-    if (hotels.length < 30) {
-        await page.locator("(//button[contains(@class, 'Pagination_next')])[1]").click()
+    while (hotels.length < 100) {
+        try {
+            await page.locator("(//button[contains(@class, 'Pagination_next')])[1]").click()
+        } catch (e) {
+            break
+        }
         await sleep(15)
         await page.evaluate(scroll, {direction: "down", speed: "slow"});
         hotels = hotels.concat(await handleSinglePage(crawlInfo, page))

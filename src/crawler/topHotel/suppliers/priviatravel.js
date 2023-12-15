@@ -71,13 +71,11 @@ const getDataFromAPI = async (page, crawlInfo) => {
     })
     await page.goto(crawlInfo['url'], {timeout: 60000})
     await sleep(20)
-    // await sleep(20)
-
-    const dataFromAPI = totalDataFromAPI.slice(0, 30).map((item) => convertRawCrawlData(item, crawlInfo))
+    const dataFromAPI = totalDataFromAPI.slice(0, 100).map((item) => convertRawCrawlData(item, crawlInfo))
     dataFromAPI.forEach((item, index) => {
         item.rank = index + 1;
     })
-    const hotelDetailTasks = createHotelDetailTasks(dataFromAPI)
+    const hotelDetailTasks = createHotelDetailTasks(dataFromAPI.slice(0, 30))
     await createSqsMessages(process.env.AWS_SQS_HOTELFLY_HOTEL_DETAILS_LINK_URL, hotelDetailTasks)
     return dataFromAPI
 }

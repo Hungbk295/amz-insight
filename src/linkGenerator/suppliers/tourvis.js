@@ -15,4 +15,8 @@ export class Tourvis {
             createdAt: createdAt
         }
     }
+
+    generateTaskForHotelDetail(checkinDate, checkoutDate, keywordItem, createdAt, hotelId) {
+        return {}
+    }
 }

@@ -16,6 +16,7 @@ import dotenv from "dotenv";
 import DaoTranClient from "daotran-client";
 import {internalSupplier, Suppliers} from "../../constants/suppliers.js";
 import {sleep} from "../../utils/util.js";
+import {generateAdditionalHotelDetailLinks} from "../../linkGenerator/additionalHotelDetail.js";
 
 dotenv.config({path: '../../../.env'})
 const server = process.env.VPN_PROXY_SERVER
@@ -40,9 +41,14 @@ export const run = async (queueUrl, workerName) => {
             const data = await readSqsMessage(queueUrl)
             if (data.Messages) {
                 for (const msg of data.Messages) {
+                    const crawlInfo = JSON.parse(msg.Body);
+                    if (crawlInfo['isLastTask']) {
+                        await sleep(10 * 60)
+                        await generateAdditionalHotelDetailLinks()
+                        break
+                    }
                     await client.waitUntilServerAvailable();
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
-                    const crawlInfo = JSON.parse(msg.Body);
                     const useProxy = !internalSupplier.includes(classify(crawlInfo["url"]).id)
                     const browser = await getBrowser({devices: crawlInfo.devices}, useProxy);
                     const context = await browser.contexts()[0]
@@ -59,6 +65,7 @@ export const run = async (queueUrl, workerName) => {
                         console.log(e);
                         try {
                             await client.requestChangeLocation();
+                            await sleep(5)
                         } catch (e) {
                         }
                     }

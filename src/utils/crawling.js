@@ -1,4 +1,4 @@
-import {Suppliers} from "../constants/suppliers.js";
+import {Sites, Suppliers} from "../constants/suppliers.js";
 import fs from "fs";
 import * as yaml from "js-yaml";
 import {uploadFileToS3} from "./awsSdk.js";
@@ -47,5 +47,6 @@ const uploadResultData = async (resultData, crawlInfo) => {
         await fs.unlinkSync(fileName)
     }
 }
+
 
 export {convertCrawlResult, classify, uploadResultData}
