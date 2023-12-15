@@ -17,20 +17,19 @@ const taskGenerators = {
 }
 
 export async function generateLink(keywords, dayTypes, subsequentWeeks, suppliers, createdAt) {
-    for (const idxSup in suppliers) {
-        let tasks = []
-        for (const keywordItem of keywords) {
-            for (const dayType of dayTypes) {
-                for (const subsequentWeek of subsequentWeeks) {
+    let tasks = []
+    for (const keywordItem of keywords) {
+        for (const dayType of dayTypes) {
+            for (const subsequentWeek of subsequentWeeks) {
+                for (const idxSup in suppliers) {
                     const [checkinDate, checkoutDate] = getTargetDate(dayType, subsequentWeek)
                     const task = taskGenerators[idxSup].generateTaskForTopHotel(checkinDate, checkoutDate, keywordItem, createdAt)
                     tasks.push(task)
                 }
             }
         }
-        console.log(tasks)
-        await createSqsMessages(process.env.AWS_SQS_HOTELFLY_LINK_URL, tasks)
     }
+    await createSqsMessages(process.env.AWS_SQS_HOTELFLY_LINK_URL, tasks)
 }
 
 export function getDateInString(date) {
