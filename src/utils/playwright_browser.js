@@ -2,8 +2,6 @@ import {FingerprintGenerator} from 'fingerprint-generator'
 import {FingerprintInjector} from 'fingerprint-injector'
 import {firefox} from 'playwright'
 import dotenv from "dotenv";
-import {uploadFile} from "./awsSdk.js";
-import fs from "fs";
 
 dotenv.config({path: '../../.env'})
 

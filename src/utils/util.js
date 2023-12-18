@@ -1,6 +1,3 @@
-import {uploadFile} from "./awsSdk.js";
-import fs from "fs";
-
 export const sleep = s => new Promise(r => setTimeout(r, s * 1000))
 export const getRandomInt = (min, max) => Math.random() * (max - min) + min
 export const getRandom = list => list[Math.floor(Math.random() * list.length)]
