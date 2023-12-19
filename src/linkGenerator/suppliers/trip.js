@@ -6,8 +6,6 @@ export class Trip {
         const encodedKeyword = encodeURIComponent(keyword)
         return {
             url: Suppliers.Trip.url + `hotels/list?city=${keywordItem['trip_city_id']}&provinceId=${keywordItem['trip_province_id']}&cityName=${encodedKeyword}&checkin=${checkinDate.replaceAll('-', '/')}&checkout=${checkoutDate.replaceAll('-', '/')}&barCurr=KRW&adult=2&children=0&curr=KRW`,
-            // Suppliers.Trip.url + `hotels/list?city=${item.trip_city_id}&provinceId=${item.trip_province_id}&cityName=${encodedKeyword}&checkin=${checkinDate.replaceAll('-', '/')}&checkout=${checkoutDate.replaceAll('-', '/')}&barCurr=KRW&adult=2&children=0&curr=KRW`
-            devices: ['mobile'],
             checkinDate: checkinDate,
             checkoutDate: checkoutDate,
             keywordId: keywordItem.id,

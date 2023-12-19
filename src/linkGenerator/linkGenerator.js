@@ -1,7 +1,6 @@
 import {Suppliers} from "../constants/suppliers.js";
 import pkg from 'aws-sdk';
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Priviatravel, Tourvis, Trip} from "./suppliers/index.js";
-import {createSqsMessages} from "../utils/awsSdk.js";
 
 const {Lambda} = pkg;
 const taskGenerators = {

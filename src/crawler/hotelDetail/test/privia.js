@@ -1,5 +1,5 @@
-import {getBrowser} from '../../../utils/playwright_browser.js'
-import {crawl} from '../suppliers/priviatravel.js'
+import {getBrowser} from '../../../utils/browserManager.js'
+import {crawl} from '../suppliers/privia.js'
 
 const crawlInfo = {
     link: 'https://hotel.priviatravel.com/view/us/unitedstates/hawaii-ohau-honolulu/hyattregencywaikikibeachresortspa.html?hotelInFlowPath=B33&checkIn=2023-12-25&checkOut=2023-12-26&occupancies=1~1~0&htlMasterId=103690&salePrice=716741&h=3',

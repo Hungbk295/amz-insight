@@ -1,4 +1,4 @@
-import {handle} from './handler.js'
+import {handle} from "../../../utils/handler.js";
 import {crawl} from '../suppliers/kyte.js'
 
 const crawlInfo = {

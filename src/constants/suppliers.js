@@ -2,7 +2,10 @@ const Suppliers = {
     Priviatravel: {
         'name': 'Priviatravel',
         'url': 'https://hotel.priviatravel.com/',
-        'id': 7
+        'id': 7,
+        'devices': ['mobile'],
+        'userName': 'furmi78',
+        'password': 'sjymirr0909!'
     },
     Agoda: {
         'name': 'Agoda',
@@ -12,7 +15,8 @@ const Suppliers = {
     Booking: {
         'name': 'Booking',
         'url': 'https://www.booking.com/',
-        'id': 3
+        'id': 3,
+        'devices': ['mobile']
     },
     Expedia: {
         'name': 'Expedia',
@@ -32,18 +36,25 @@ const Suppliers = {
     Trip: {
         'name': 'Trip',
         'url': 'https://kr.trip.com/',
-        'id': 4
+        'id': 4,
+        'devices': ['mobile']
     },
     Tourvis: {
         'name': 'Tourvis',
         'url': 'https://hotel.tourvis.com/',
-        'id': 8
+        'id': 8,
+        'devices': ['mobile']
     },
     Kyte: {
         'name': 'Kyte',
         'url': 'https://kyte.travel/',
-        'id': 12
+        'id': 12,
+        'devices': ['mobile']
     }
+}
+
+export const getConfigBySupplierId = (supplierId) => {
+    return Object.values(Suppliers).find(item => item.id === supplierId)
 }
 
 const internalSupplier = [7, 8, 12]
@@ -56,6 +67,16 @@ const Sites = {
     detail: {
         'name': 'detail',
         'id': 9
+    },
+    discountDetailLoggedIn: {
+        id: 10008,
+        name: 'detaildiscountLoggedIn',
+        domain: '',
+    },
+    detailLoggedIn: {
+        id: 10009,
+        name: 'detailLoggedIn',
+        domain: '',
     },
 }
 

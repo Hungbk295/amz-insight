@@ -1,26 +1,17 @@
 import {deleteSqsMessage, readSqsMessage} from "../../utils/awsSdk.js";
-import {getBrowser} from "../../utils/playwright_browser.js";
+import {getBrowser} from "../../utils/browserManager.js";
 import {classify, convertCrawlResult, uploadResultData} from "../../utils/crawling.js";
 import {sleep} from "../../utils/util.js";
 import dotenv from "dotenv";
 import {internalSupplier, Suppliers} from "../../constants/suppliers.js";
 
-import {crawl as crawlPrivia} from './suppliers/priviatravel.js'
-import {crawl as crawlTourvis} from './suppliers/tourvis.js'
-import {crawl as crawlKyte} from './suppliers/kyte.js'
+import {Privia} from './suppliers/privia.js'
 import DaoTranClient from "daotran-client";
+import {login} from "../loginHandlers/index.js";
 
 dotenv.config({path: '../../../.env'})
 const crawlers = {
-    // Naver: crawlNaver,
-    // Expedia: crawlExpedia,
-    // Agoda: crawlAgoda,
-    // Booking: crawlBooking,
-    // Trip: crawlTrip,
-    // Hotels: crawlHotels,
-    [Suppliers.Priviatravel.id]: crawlPrivia,
-    [Suppliers.Tourvis.id]: crawlTourvis,
-    [Suppliers.Kyte.id]: crawlKyte
+    [Suppliers.Priviatravel.id]: new Privia(),
 }
 
 const server = process.env.VPN_PROXY_SERVER
@@ -34,16 +25,17 @@ export const run = async (queueUrl, workerName) => {
                 for (const msg of data.Messages) {
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                     const crawlInfo = JSON.parse(msg.Body);
-                    const useProxy = !internalSupplier.includes(classify(crawlInfo["link"]).id)
-                    const browser = await getBrowser({devices: crawlInfo.devices}, useProxy);
-                    const context = await browser.contexts()[0]
-                    const page = context.pages().length > 0 ? context.pages()[0] : await context.newPage();
+                    const supplierId = classify(crawlInfo["link"]).id
+                    const browser = await getBrowser(supplierId);
+                    const page = await browser.contexts()[0].newPage();
                     try {
-                        const crawlResult = await crawlers[classify(crawlInfo["link"]).id](page, crawlInfo);
-                        const resultData = convertCrawlResult(crawlResult, crawlInfo);
-                        console.log(resultData);
-                        console.log('length: ', resultData.length);
-                        await uploadResultData(resultData, crawlInfo);
+                        const crawlResult = await crawlers[supplierId].crawl(page, crawlInfo);
+                        await finish(crawlResult, crawlInfo)
+                        if(internalSupplier.includes(supplierId)) {
+                            await login(supplierId, page)
+                            const crawlResultAfterLogin = await crawlers[supplierId].crawlLoggedIn(page, crawlInfo);
+                            await finish(crawlResultAfterLogin, crawlInfo)
+                        }
                         await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
                     } catch (e) {
                         console.log("Error", msg.Body);
@@ -59,3 +51,9 @@ export const run = async (queueUrl, workerName) => {
     }
 }
 
+async function finish(crawlResult, crawlInfo) {
+    const resultData = convertCrawlResult(crawlResult, crawlInfo);
+    console.log(resultData);
+    console.log('length: ', resultData.length);
+    return await uploadResultData(resultData, crawlInfo);
+}

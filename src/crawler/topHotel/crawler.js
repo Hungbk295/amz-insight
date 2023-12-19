@@ -1,7 +1,6 @@
-import {deleteSqsMessage, readSqsMessage} from "../../utils/awsSdk.js";
-import {getBrowser} from "../../utils/playwright_browser.js";
+import {deleteSqsMessage, readSqsMessages} from "../../utils/awsSdk.js";
+import {getBrowser} from "../../utils/browserManager.js";
 import {classify, convertCrawlResult, uploadResultData} from "../../utils/crawling.js";
-
 import {crawl as crawlNaver} from './suppliers/naver.js'
 import {crawl as crawlExpedia} from './suppliers/expedia.js'
 import {crawl as crawlAgoda} from './suppliers/agoda.js'
@@ -11,10 +10,9 @@ import {crawl as crawlHotels} from './suppliers/hotels.js'
 import {crawl as crawlPrivia} from './suppliers/priviatravel.js'
 import {crawl as crawlTourvis} from './suppliers/tourvis.js'
 import {crawl as crawlKyte} from './suppliers/kyte.js'
-
 import dotenv from "dotenv";
 import DaoTranClient from "daotran-client";
-import {internalSupplier, Suppliers} from "../../constants/suppliers.js";
+import {Suppliers} from "../../constants/suppliers.js";
 import {sleep} from "../../utils/util.js";
 import {generateAdditionalHotelDetailLinks} from "../../linkGenerator/additionalHotelDetail.js";
 
@@ -38,7 +36,7 @@ export const run = async (queueUrl, workerName) => {
     await client.register();
     while (true) {
         try {
-            const data = await readSqsMessage(queueUrl)
+            const data = await readSqsMessages(queueUrl, 5)
             if (data.Messages) {
                 for (const msg of data.Messages) {
                     const crawlInfo = JSON.parse(msg.Body);
@@ -49,12 +47,11 @@ export const run = async (queueUrl, workerName) => {
                     }
                     await client.waitUntilServerAvailable();
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
-                    const useProxy = !internalSupplier.includes(classify(crawlInfo["url"]).id)
-                    const browser = await getBrowser({devices: crawlInfo.devices}, useProxy);
-                    const context = await browser.contexts()[0]
-                    const page = context.pages().length > 0 ? context.pages()[0] : await context.newPage();
+                    const supplierId = classify(crawlInfo["url"]).id
+                    const browser = await getBrowser(supplierId);
+                    const page = await browser.contexts()[0].newPage();
                     try {
-                        const crawlResult = await crawlers[classify(crawlInfo["url"]).id](page, crawlInfo);
+                        const crawlResult = await crawlers[supplierId](page, crawlInfo);
                         const resultData = convertCrawlResult(crawlResult, crawlInfo);
                         console.log(resultData);
                         console.log('length: ', resultData.length);

@@ -1,4 +1,4 @@
-import { handle } from './handler.js'
+import { handle } from '../../handler.js'
 import { crawl } from '../suppliers/yanolja.js'
 
 const crawlInfo = {

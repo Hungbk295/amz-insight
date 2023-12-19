@@ -1,5 +1,5 @@
-import { handle } from './handler.js'
 import { crawl } from '../suppliers/goodchoice.js'
+import {handle} from "../../../utils/handler.js";
 
 const crawlInfo = {
 	url: 'https://www.goodchoice.kr/product/result?keyword=%EC%84%9C%EC%9A%B8',

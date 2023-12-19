@@ -24,7 +24,7 @@ export const crawl = async (page, crawlInfo) => {
 			let hotel_price = ''
 			try {
 				hotel_price = await (
-					await info.$(`//span[contains(@data-selenium,'display-price')]`)
+					await info.$(`//*[contains(@data-selenium,'display-price')]`)
 				).innerText()
 			} catch (e) {}
 			const hotel_link = await (await info.$(`//div/a`)).getAttribute('href')
