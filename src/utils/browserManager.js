@@ -24,8 +24,8 @@ export const getBrowser = async (supplierId) => {
 
     const browser = await firefox.launch(options)
     const context = await browser.newContext({
-        userAgent: fingerprint.userAgent,
-        locale: 'ko_KR',
+        userAgent: fingerprint.navigator.userAgent,
+        locale: fingerprint.navigator.language,
         viewport: fingerprint.screen,
     })
     await fingerprintInjector.attachFingerprintToPlaywright(

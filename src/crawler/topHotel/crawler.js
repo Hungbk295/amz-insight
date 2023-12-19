@@ -41,9 +41,10 @@ export const run = async (queueUrl, workerName) => {
                 for (const msg of data.Messages) {
                     const crawlInfo = JSON.parse(msg.Body);
                     if (crawlInfo['isLastTask']) {
-                        await sleep(10 * 60)
-                        await generateAdditionalHotelDetailLinks()
-                        break
+                        await sleep(10 * 60);
+                        await generateAdditionalHotelDetailLinks();
+                        await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
+                        break;
                     }
                     await client.waitUntilServerAvailable();
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);

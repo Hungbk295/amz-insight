@@ -2,6 +2,7 @@ import {Suppliers} from '../../../constants/suppliers.js'
 import dotenv from 'dotenv'
 import {sleep} from "../../../utils/util.js";
 import {createSqsMessages} from "../../../utils/awsSdk.js";
+import {MAX_RANK_WITH_DETAIL_PRICE} from "../../../constants/app.js";
 
 dotenv.config({path: '../../../../.env'})
 
@@ -75,7 +76,7 @@ const getDataFromAPI = async (page, crawlInfo) => {
     dataFromAPI.forEach((item, index) => {
         item.rank = index + 1;
     })
-    const hotelDetailTasks = createHotelDetailTasks(dataFromAPI.slice(0, 30))
+    const hotelDetailTasks = createHotelDetailTasks(dataFromAPI.slice(0, MAX_RANK_WITH_DETAIL_PRICE))
     await createSqsMessages(process.env.AWS_SQS_HOTELFLY_HOTEL_DETAILS_LINK_URL, hotelDetailTasks)
     return dataFromAPI
 }

@@ -1,17 +1,10 @@
-import {Sites, Suppliers} from "../constants/suppliers.js";
+import {Suppliers} from "../constants/suppliers.js";
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Priviatravel, Tourvis, Trip} from "./suppliers/index.js";
 import axios from "axios";
 import {getTargetDate} from "./linkGenerator.js";
+import {importantSuppliers, MAX_RANK_WITH_DETAIL_PRICE, suppliersWithDetailPrice} from "../constants/app.js";
+import {createSqsMessages} from "../utils/awsSdk.js";
 
-const importantSuppliers = [
-    Suppliers.Tourvis,
-    Suppliers.Priviatravel,
-    Suppliers.Naver
-]
-const suppliersWithDetailPrice = [
-    Suppliers.Priviatravel,
-    // Suppliers.Tourvis.id
-]
 const taskGenerators = {
     [Suppliers.Agoda.id]: new Agoda(),
     [Suppliers.Booking.id]: new Booking(),
@@ -24,9 +17,14 @@ const taskGenerators = {
     [Suppliers.Trip.id]: new Trip(),
 }
 
+const getRankForHotelData = (items, supplier) => {
+    for (const item of items)
+        if (item['supplier_id'] === supplier.id && !item['site_id']) return item['rank']
+    return Infinity
+}
+
 const groupHotelDataByHotelId = (hotelData, currentSupplier) => {
     const supplierData = hotelData['supplierData']
-    const subSupplierData = hotelData['subSupplierData']
     const group = {};
     if (supplierData) {
         const supplierDataOfOthers = [];
@@ -37,43 +35,40 @@ const groupHotelDataByHotelId = (hotelData, currentSupplier) => {
                     group[key] = group[key] ?? [];
                     group[key].push(item);
                 } else supplierDataOfOthers.push(item);
+            } else {
+                const key = `${item.identifier},${item['supplier_id']}`;
+                group[key] = group[key] ?? [];
+                group[key].push(item);
             }
         });
-        //ignore if currentSupplier does not have that hotel_id
         supplierDataOfOthers.forEach((item) => {
             const key = item['hotel_id'];
             if (group[key]) group[key].push(item);
         });
     }
-
-    if (subSupplierData) {
-        subSupplierData.forEach((item) => {
-            const key = item['hotel_id'];
-            if (group[key]) group[key].push(item);
-        });
-    }
-    return group;
+    const res = Object.values(group).sort((a, b) => {
+        return getRankForHotelData(a, currentSupplier) - getRankForHotelData(b, currentSupplier)
+    })
+    return res.slice(0, MAX_RANK_WITH_DETAIL_PRICE);
 };
 
 const getHotelInfoIfMissingData = (hotelDataItems, supplier) => {
     const mainPriceItem = hotelDataItems.find(item => item['supplier_id'] === supplier.id && !item['site_id'])
-    if (!mainPriceItem) return null
-    for (const item of hotelDataItems)
-        if (item['supplier_id'] === supplier && (item['site_id'] === Sites.detail.id || item['site_id'] === Sites.detailDiscount.id)) return null
-    return mainPriceItem
+    if (mainPriceItem && mainPriceItem['rank'] > MAX_RANK_WITH_DETAIL_PRICE) return mainPriceItem
+    return null
 }
 
 const generateAdditionalHotelDetailLinksBySupplier = async (hotelData, supplier, keywordItem, checkinDate, checkoutDate) => {
     const hotelDataGroupedByHotelId = groupHotelDataByHotelId(hotelData, supplier)
     const checkingSuppliers = suppliersWithDetailPrice.filter(item => item.id !== supplier.id)
     const tasks = []
-    for (let [hotelId, items] of Object.entries(hotelDataGroupedByHotelId)) {
+    for (let items of hotelDataGroupedByHotelId) {
         if (items.length === 0) return
         const createdAt = items[0]['created_at']
-        for (const supplier of checkingSuppliers) {
-            const hotelInfo = getHotelInfoIfMissingData(items, supplier)
+        for (const checkingSupplier of checkingSuppliers) {
+            const hotelInfo = getHotelInfoIfMissingData(items, checkingSupplier)
             if (hotelInfo) {
-                const taskGenerator = taskGenerators[supplier.id]
+                const taskGenerator = taskGenerators[checkingSupplier.id]
                 const task = await taskGenerator.generateTaskForHotelDetail(checkinDate, checkoutDate, keywordItem, createdAt, hotelInfo)
                 tasks.push(task)
             }
@@ -86,7 +81,6 @@ const generateAdditionalHotelDetailLinks = async () => {
     const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
     const dayTypes = ['weekday', 'weekend']
     const subsequentWeeks = [3, 5]
-    let result = []
     for (const keywordItem of keywords) {
         for (const dayType of dayTypes) {
             for (const subsequentWeek of subsequentWeeks) {
@@ -98,12 +92,11 @@ const generateAdditionalHotelDetailLinks = async () => {
                 const hotelData = (await axios.get(process.env.HOTELFLY_API_HOST + '/hotel/hotel-result-data', {params})).data
                 for (const supplier of importantSuppliers) {
                     const tasks = await generateAdditionalHotelDetailLinksBySupplier(hotelData, supplier, keywordItem, checkinDate, checkoutDate)
-                    result.push(...tasks)
+                    await createSqsMessages(process.env.AWS_SQS_HOTELFLY_HOTEL_DETAILS_LINK_URL, tasks)
                 }
             }
         }
     }
-    return result
 }
 
 export {generateAdditionalHotelDetailLinks}
