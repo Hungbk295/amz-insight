@@ -2,7 +2,7 @@ import {FingerprintGenerator} from 'fingerprint-generator'
 import {FingerprintInjector} from 'fingerprint-injector'
 import {firefox} from 'playwright'
 import dotenv from "dotenv";
-import {getConfigBySupplierId, internalSupplier} from "../constants/suppliers.js";
+import {getConfigBySupplierId} from "../config/suppliers.js";
 
 dotenv.config({path: '../../.env'})
 
@@ -16,8 +16,7 @@ export const getBrowser = async (supplierId) => {
 
     const fingerprintInjector = new FingerprintInjector()
     const {fingerprint} = browserFingerprintWithHeaders
-    const useProxy = !internalSupplier.includes(supplierId)
-    const options = useProxy ? {
+    const options = configForSite.proxy && process.env.ENV === 'prod' ? {
         headless: false,
         proxy: {server: process.env.VPN_PROXY_CONNECTION}
     } : {headless: false}
@@ -25,7 +24,7 @@ export const getBrowser = async (supplierId) => {
     const browser = await firefox.launch(options)
     const context = await browser.newContext({
         userAgent: fingerprint.navigator.userAgent,
-        locale: fingerprint.navigator.language,
+        locale: 'ko_KR',
         viewport: fingerprint.screen,
     })
     await fingerprintInjector.attachFingerprintToPlaywright(

@@ -10,7 +10,7 @@
 
 import axios from 'axios'
 import {execGetInternalPrices, generateLink} from './linkGenerator.js'
-import {Suppliers} from "../constants/suppliers.js"
+import {Suppliers} from "../config/suppliers.js"
 import {createSqsMessages} from "../utils/awsSdk.js";
 
 async function main() {

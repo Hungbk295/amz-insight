@@ -10,34 +10,40 @@ const Suppliers = {
     Agoda: {
         'name': 'Agoda',
         'url': 'https://www.agoda.com/',
-        'id': 2
+        'id': 2,
+        'proxy': true
     },
     Booking: {
         'name': 'Booking',
         'url': 'https://www.booking.com/',
         'id': 3,
-        'devices': ['mobile']
+        'devices': ['mobile'],
+        'proxy': true
     },
     Expedia: {
         'name': 'Expedia',
         'url': 'https://www.expedia.co.kr/',
-        'id': 1
+        'id': 1,
+        'proxy': true
     },
     Hotels: {
         'name': 'Hotels',
         'url': 'https://kr.hotels.com/',
-        'id': 6
+        'id': 6,
+        'proxy': true
     },
     Naver: {
         'name': 'Naver',
         'url': 'https://hotels.naver.com/',
-        'id': 5
+        'id': 5,
+        'proxy': true
     },
     Trip: {
         'name': 'Trip',
         'url': 'https://kr.trip.com/',
         'id': 4,
-        'devices': ['mobile']
+        'devices': ['mobile'],
+        'proxy': true
     },
     Tourvis: {
         'name': 'Tourvis',

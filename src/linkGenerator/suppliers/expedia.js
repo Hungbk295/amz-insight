@@ -1,4 +1,4 @@
-import {Suppliers} from "../../constants/suppliers.js";
+import {Suppliers} from "../../config/suppliers.js";
 
 export class Expedia {
     generateTaskForTopHotel(checkinDate, checkoutDate, keywordItem, createdAt) {

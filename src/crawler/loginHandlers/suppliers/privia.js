@@ -1,5 +1,5 @@
 import {sleep} from "../../../utils/util.js";
-import {Suppliers} from "../../../constants/suppliers.js";
+import {Suppliers} from "../../../config/suppliers.js";
 import {getCookie, setCookie} from "../cookieManager.js";
 
 const siteId = Suppliers.Priviatravel.id;

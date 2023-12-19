@@ -1,4 +1,4 @@
-import {Sites} from "../../../constants/suppliers.js";
+import {Sites} from "../../../config/suppliers.js";
 import {sleep} from "../../../utils/util.js";
 
 export class Privia {

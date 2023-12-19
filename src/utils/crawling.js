@@ -1,4 +1,4 @@
-import {Sites, Suppliers} from "../constants/suppliers.js";
+import {Sites, Suppliers} from "../config/suppliers.js";
 import fs from "fs";
 import * as yaml from "js-yaml";
 import {uploadFileToS3} from "./awsSdk.js";

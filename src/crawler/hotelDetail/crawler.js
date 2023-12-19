@@ -3,7 +3,7 @@ import {getBrowser} from "../../utils/browserManager.js";
 import {classify, convertCrawlResult, uploadResultData} from "../../utils/crawling.js";
 import {sleep} from "../../utils/util.js";
 import dotenv from "dotenv";
-import {internalSupplier, Suppliers} from "../../constants/suppliers.js";
+import {internalSupplier, Suppliers} from "../../config/suppliers.js";
 
 import {Privia} from './suppliers/privia.js'
 import DaoTranClient from "daotran-client";

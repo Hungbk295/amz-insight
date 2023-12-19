@@ -1,4 +1,4 @@
-import {Suppliers} from "../constants/suppliers.js";
+import {Suppliers} from "../config/suppliers.js";
 import pkg from 'aws-sdk';
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Priviatravel, Tourvis, Trip} from "./suppliers/index.js";
 

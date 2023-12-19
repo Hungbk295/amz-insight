@@ -1,1 +1,0 @@
-export const SERVERS = ["jpsh", "jpto", "jpto2", "jpyo", "sgju", "sgcb", "sgmb", "hk1", "hk2", "kr2", "ausy", "aume", "ph", "my", "inuk", "insi", "th", "id", "br", "br2", "tw3", "vn", "mo", "kh"]

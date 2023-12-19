@@ -1,8 +1,8 @@
-import {Suppliers} from "../constants/suppliers.js";
+import {Suppliers} from "../config/suppliers.js";
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Priviatravel, Tourvis, Trip} from "./suppliers/index.js";
 import axios from "axios";
 import {getTargetDate} from "./linkGenerator.js";
-import {importantSuppliers, MAX_RANK_WITH_DETAIL_PRICE, suppliersWithDetailPrice} from "../constants/app.js";
+import {importantSuppliers, MAX_RANK_WITH_DETAIL_PRICE, suppliersWithDetailPrice} from "../config/app.js";
 import {createSqsMessages} from "../utils/awsSdk.js";
 
 const taskGenerators = {

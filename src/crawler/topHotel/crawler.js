@@ -1,18 +1,10 @@
 import {deleteSqsMessage, readSqsMessages} from "../../utils/awsSdk.js";
 import {getBrowser} from "../../utils/browserManager.js";
 import {classify, convertCrawlResult, uploadResultData} from "../../utils/crawling.js";
-import {crawl as crawlNaver} from './suppliers/naver.js'
-import {crawl as crawlExpedia} from './suppliers/expedia.js'
-import {crawl as crawlAgoda} from './suppliers/agoda.js'
-import {crawl as crawlBooking} from './suppliers/booking.js'
-import {crawl as crawlTrip} from './suppliers/trip.js'
-import {crawl as crawlHotels} from './suppliers/hotels.js'
-import {crawl as crawlPrivia} from './suppliers/priviatravel.js'
-import {crawl as crawlTourvis} from './suppliers/tourvis.js'
-import {crawl as crawlKyte} from './suppliers/kyte.js'
+import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from 'suppliers/index.js'
 import dotenv from "dotenv";
 import DaoTranClient from "daotran-client";
-import {Suppliers} from "../../constants/suppliers.js";
+import {internalSupplier, Suppliers} from "../../config/suppliers.js";
 import {sleep} from "../../utils/util.js";
 import {generateAdditionalHotelDetailLinks} from "../../linkGenerator/additionalHotelDetail.js";
 
@@ -20,15 +12,15 @@ dotenv.config({path: '../../../.env'})
 const server = process.env.VPN_PROXY_SERVER
 
 const crawlers = {
-    [Suppliers.Naver.id]: crawlNaver,
-    [Suppliers.Expedia.id]: crawlExpedia,
-    [Suppliers.Agoda.id]: crawlAgoda,
-    [Suppliers.Booking.id]: crawlBooking,
-    [Suppliers.Trip.id]: crawlTrip,
-    [Suppliers.Hotels.id]: crawlHotels,
-    [Suppliers.Priviatravel.id]: crawlPrivia,
-    [Suppliers.Tourvis.id]: crawlTourvis,
-    [Suppliers.Kyte.id]: crawlKyte
+    [Suppliers.Naver.id]: new Naver(),
+    [Suppliers.Expedia.id]: new Expedia(),
+    [Suppliers.Agoda.id]: new Agoda(),
+    [Suppliers.Booking.id]: new Booking(),
+    [Suppliers.Trip.id]: new Trip(),
+    [Suppliers.Hotels.id]: new Hotels(),
+    [Suppliers.Priviatravel.id]: new Privia(),
+    [Suppliers.Tourvis.id]: new Tourvis(),
+    [Suppliers.Kyte.id]: new Kyte()
 }
 
 export const run = async (queueUrl, workerName) => {
@@ -52,11 +44,13 @@ export const run = async (queueUrl, workerName) => {
                     const browser = await getBrowser(supplierId);
                     const page = await browser.contexts()[0].newPage();
                     try {
-                        const crawlResult = await crawlers[supplierId](page, crawlInfo);
+                        const crawlResult = await crawlers[supplierId].crawl(page, crawlInfo);
                         const resultData = convertCrawlResult(crawlResult, crawlInfo);
                         console.log(resultData);
                         console.log('length: ', resultData.length);
                         await uploadResultData(resultData, crawlInfo);
+                        if(internalSupplier.includes(supplierId))
+                            await crawlers[supplierId].generateDetailTasks(crawlResult)
                         await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
                     } catch (e) {
                         console.log("Error", msg.Body);
