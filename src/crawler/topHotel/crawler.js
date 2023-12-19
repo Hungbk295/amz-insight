@@ -42,6 +42,12 @@ export const run = async (queueUrl, workerName) => {
             if (data.Messages) {
                 for (const msg of data.Messages) {
                     const crawlInfo = JSON.parse(msg.Body);
+                    if (crawlInfo['isLastTask']) {
+                        await sleep(10 * 60);
+                        await generateAdditionalHotelDetailLinks();
+                        await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
+                        break;
+                    }
                     await client.waitUntilServerAvailable();
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                     const useProxy = !internalSupplier.includes(classify(crawlInfo["url"]).id)
@@ -63,11 +69,6 @@ export const run = async (queueUrl, workerName) => {
                             await sleep(5)
                         } catch (e) {
                         }
-                    }
-                    if (crawlInfo['isLastTask']) {
-                        await sleep(10 * 60)
-                        await generateAdditionalHotelDetailLinks()
-                        break
                     }
                     await browser.close();
                 }
