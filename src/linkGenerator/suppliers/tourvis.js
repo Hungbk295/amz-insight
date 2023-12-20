@@ -14,7 +14,14 @@ export class Tourvis {
         }
     }
 
-    generateTaskForHotelDetail(checkinDate, checkoutDate, keywordItem, createdAt, hotelId) {
-        return {}
+    generateTaskForHotelDetail(checkinDate, checkoutDate, keywordItem, createdAt, hotelInfo) {
+        return {
+            checkinDate,
+            checkoutDate,
+            identifier: hotelInfo['identifier'],
+            supplierId: hotelInfo['supplier_id'],
+            keywordId: keywordItem['id'],
+            createdAt,
+        }
     }
 }

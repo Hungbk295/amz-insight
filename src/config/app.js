@@ -7,7 +7,6 @@ const importantSuppliers = [
 ]
 const suppliersWithDetailPrice = [
     Suppliers.Priviatravel,
-    // Suppliers.Tourvis.id
 ]
 const MAX_RANK_WITH_DETAIL_PRICE = 20
 
