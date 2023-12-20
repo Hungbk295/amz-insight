@@ -10,7 +10,9 @@ async function isLoggedIn(cookies) {
 }
 
 async function loginByCookie(page) {
-    await page.context().addCookies(getCookie(siteId))
+    const cookies = getCookie(siteId)
+    if (cookies)
+        await page.context().addCookies(cookies)
 }
 
 async function loginByUserPass(page) {
