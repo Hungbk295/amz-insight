@@ -6,7 +6,7 @@ export class Privia {
         let {link, ...common} = crawlInfo
         link = link.split('.com/')[1]
 
-        const {discountPrice, detailPrice} = this.crawlHelper(page, crawlInfo)
+        const {discountPrice, detailPrice} = await this.crawlHelper(page, crawlInfo)
 
         return [{...common, link, price: parseInt(discountPrice.replaceAll(',', '')), siteId: Sites.detailDiscount.id},
             {...common, link, price: parseInt(detailPrice.replaceAll(',', '')), siteId: Sites.detail.id}]
@@ -16,7 +16,7 @@ export class Privia {
         let {link, ...common} = crawlInfo
         link = link.split('.com/')[1]
 
-        const {discountPrice, detailPrice} = this.crawlHelper(page, crawlInfo)
+        const {discountPrice, detailPrice} = await this.crawlHelper(page, crawlInfo)
 
         return [{
             ...common, link, price: parseInt(discountPrice.replaceAll(',', '')), siteId: Sites.discountDetailLoggedIn.id
@@ -40,8 +40,6 @@ export class Privia {
         } catch (e) {
         }
 
-        return {
-            discountPrice, detailPrice
-        }
+        return {discountPrice, detailPrice}
     }
 }

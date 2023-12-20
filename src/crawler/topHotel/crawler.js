@@ -1,12 +1,13 @@
 import {deleteSqsMessage, readSqsMessages} from "../../utils/awsSdk.js";
 import {getBrowser} from "../../utils/browserManager.js";
 import {classify, convertCrawlResult, uploadResultData} from "../../utils/crawling.js";
-import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from 'suppliers/index.js'
+import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from './suppliers/index.js'
 import dotenv from "dotenv";
 import DaoTranClient from "daotran-client";
 import {internalSupplier, Suppliers} from "../../config/suppliers.js";
 import {sleep} from "../../utils/util.js";
 import {generateAdditionalHotelDetailLinks} from "../../linkGenerator/additionalHotelDetail.js";
+import {suppliersWithDetailPrice} from "../../config/app.js";
 
 dotenv.config({path: '../../../.env'})
 const server = process.env.VPN_PROXY_SERVER
@@ -49,7 +50,7 @@ export const run = async (queueUrl, workerName) => {
                         console.log(resultData);
                         console.log('length: ', resultData.length);
                         await uploadResultData(resultData, crawlInfo);
-                        if(internalSupplier.includes(supplierId))
+                        if (suppliersWithDetailPrice.map(item => item.id).includes(supplierId))
                             await crawlers[supplierId].generateDetailTasks(crawlResult)
                         await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
                     } catch (e) {

@@ -1,6 +1,4 @@
-const cookies = {
-
-}
+const cookies = {}
 
 export const getCookie = (siteId) => {
     return cookies[siteId];
