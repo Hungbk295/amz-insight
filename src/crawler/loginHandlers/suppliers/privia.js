@@ -6,7 +6,7 @@ const siteId = Suppliers.Priviatravel.id;
 
 async function isLoggedIn(cookies) {
     const keyCookie = 'memberNo'
-    return cookies.includes(keyCookie)
+    return cookies.find(cookie => cookie['name'] === keyCookie) !== undefined
 }
 
 async function loginByCookie(page) {
@@ -18,12 +18,12 @@ async function loginByCookie(page) {
 async function loginByUserPass(page) {
     for (let i = 0; i < 3; i++) {
         await page.goto('https://priviatravel.com/common/sso/login/', {timeout: 60000})
-        await sleep(10)
+        await sleep(5)
         await page.locator('//*[@id="txt_id"]').fill(Suppliers.Priviatravel.userName)
         await page.locator('//*[@id="txt_pw"]').fill(Suppliers.Priviatravel.password)
         await page.locator('//*[@id="btnLogin"]').click()
         await page.waitForNavigation()
-        const cookies = page.context().cookies(Suppliers.Priviatravel.url)
+        const cookies = await page.context().cookies(Suppliers.Priviatravel.url)
         await sleep(5)
         if (await isLoggedIn(cookies)) return true;
     }
@@ -32,10 +32,10 @@ async function loginByUserPass(page) {
 
 export const login = async (page) => {
     await loginByCookie(page)
-    const cookies = page.context().cookies(Suppliers.Priviatravel.url)
+    const cookies = await page.context().cookies(Suppliers.Priviatravel.url)
 
     if (await isLoggedIn(cookies) || await loginByUserPass(page)) {
-        setCookie(siteId, cookies)
+        setCookie(siteId, await page.context().cookies(Suppliers.Priviatravel.url))
     }
 }
 
