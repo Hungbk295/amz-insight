@@ -1,10 +1,7 @@
 import {Suppliers} from '../../../config/suppliers.js'
-import dotenv from 'dotenv'
 import {sleep} from "../../../utils/util.js";
 import {createSqsMessages} from "../../../utils/awsSdk.js";
 import {MAX_RANK_WITH_DETAIL_PRICE} from "../../../config/app.js";
-
-dotenv.config({path: '../../../../.env'})
 
 export class Privia {
     async crawl (page, crawlInfo) {

@@ -3,18 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "scripts": {
-    "expedia30": "nodemon src/crawler/topHotel/test/expedia.js",
-    "trip": "nodemon src/crawler/topHotel/test/testTrip.js",
-    "agoda30": "nodemon src/crawler/topHotel/test/test.js",
-    "trip30": "nodemon src/crawler/topHotel/test/trip.js",
-    "privia30": "nodemon src/crawler/topHotel/test/priviatravel.js",
-    "kyte30": "nodemon src/crawler/topHotel/test/kyte.js",
-    "interpark30": "nodemon src/crawler/topHotel/test/interpark.js",
-    "goodchoice30": "nodemon src/crawler/topHotel/test/goodchoice.js",
-    "yanolja30": "nodemon src/crawler/topHotel/test/yanolja.js",
-    "tourvis30": "nodemon src/crawler/topHotel/test/tourvis.js"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -22,6 +10,7 @@
     "@aws-sdk/client-s3": "^3.301.0",
     "@aws-sdk/client-sqs": "^3.301.0",
     "@aws-sdk/lib-storage": "^3.301.0",
+    "@sentry/node": "^7.89.0",
     "aws-sdk": "^2.1287.0",
     "axios": "^1.2.2",
     "daotran-client": "^1.0.22",

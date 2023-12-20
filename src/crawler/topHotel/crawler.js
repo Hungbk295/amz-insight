@@ -1,17 +1,15 @@
-import {deleteSqsMessage, readSqsMessages} from "../../utils/awsSdk.js";
+import {createSqsMessages, deleteSqsMessage, readSqsMessages} from "../../utils/awsSdk.js";
 import {getBrowser} from "../../utils/browserManager.js";
-import {classify, convertCrawlResult, uploadResultData} from "../../utils/crawling.js";
+import {classify, convertCrawlResult} from "../../utils/crawling.js";
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from './suppliers/index.js'
-import dotenv from "dotenv";
 import DaoTranClient from "daotran-client";
-import {internalSupplier, Suppliers} from "../../config/suppliers.js";
+import {getConfigBySupplierId, Suppliers} from "../../config/suppliers.js";
 import {sleep} from "../../utils/util.js";
 import {generateAdditionalHotelDetailLinks} from "../../linkGenerator/additionalHotelDetail.js";
 import {suppliersWithDetailPrice} from "../../config/app.js";
+import _ from "lodash";
 
-dotenv.config({path: '../../../.env'})
 const server = process.env.VPN_PROXY_SERVER
-
 const crawlers = {
     [Suppliers.Naver.id]: new Naver(),
     [Suppliers.Expedia.id]: new Expedia(),
@@ -42,14 +40,14 @@ export const run = async (queueUrl, workerName) => {
                     await client.waitUntilServerAvailable();
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                     const supplierId = classify(crawlInfo["url"]).id
-                    const browser = await getBrowser(supplierId);
+                    const browser = await getBrowser(getConfigBySupplierId(supplierId));
                     const page = await browser.contexts()[0].newPage();
                     try {
                         const crawlResult = await crawlers[supplierId].crawl(page, crawlInfo);
                         const resultData = convertCrawlResult(crawlResult, crawlInfo);
                         console.log(resultData);
                         console.log('length: ', resultData.length);
-                        await uploadResultData(resultData, crawlInfo);
+                        await createSqsMessages(process.env.AWS_SQS_HOTELFLY_RESULT, _.chunk(resultData, 10));
                         if (suppliersWithDetailPrice.map(item => item.id).includes(supplierId))
                             await crawlers[supplierId].generateDetailTasks(crawlResult)
                         await deleteSqsMessage(queueUrl, msg.ReceiptHandle);

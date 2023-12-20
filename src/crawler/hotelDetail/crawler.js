@@ -1,15 +1,13 @@
-import {deleteSqsMessage, readSqsMessage} from "../../utils/awsSdk.js";
+import {createSqsMessages, deleteSqsMessage, readSqsMessages} from "../../utils/awsSdk.js";
 import {getBrowser} from "../../utils/browserManager.js";
-import {classify, convertCrawlResult, uploadResultData} from "../../utils/crawling.js";
+import {classify, convertCrawlResult} from "../../utils/crawling.js";
 import {sleep} from "../../utils/util.js";
-import dotenv from "dotenv";
-import {internalSupplier, Suppliers} from "../../config/suppliers.js";
-
+import {getConfigBySupplierId, internalSupplier, Suppliers} from "../../config/suppliers.js";
 import {Privia} from './suppliers/privia.js'
 import DaoTranClient from "daotran-client";
 import {login} from "../loginHandlers/index.js";
+import _ from "lodash";
 
-dotenv.config({path: '../../../.env'})
 const crawlers = {
     [Suppliers.Priviatravel.id]: new Privia(),
 }
@@ -20,13 +18,13 @@ export const run = async (queueUrl, workerName) => {
     await client.register();
     while (true) {
         try {
-            const data = await readSqsMessage(queueUrl)
+            const data = await readSqsMessages(queueUrl, 10)
             if (data.Messages) {
                 for (const msg of data.Messages) {
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                     const crawlInfo = JSON.parse(msg.Body);
                     const supplierId = classify(crawlInfo["link"]).id
-                    const browser = await getBrowser(supplierId);
+                    const browser = await getBrowser(getConfigBySupplierId(supplierId));
                     const page = await browser.contexts()[0].newPage();
                     try {
                         const crawlResult = await crawlers[supplierId].crawl(page, crawlInfo);
@@ -55,5 +53,5 @@ async function finish(crawlResult, crawlInfo) {
     const resultData = convertCrawlResult(crawlResult, crawlInfo);
     console.log(resultData);
     console.log('length: ', resultData.length);
-    return await uploadResultData(resultData, crawlInfo);
+    await createSqsMessages(process.env.AWS_SQS_HOTELFLY_RESULT, _.chunk(resultData, 10));
 }

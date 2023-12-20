@@ -1,16 +1,13 @@
-import {PutObjectCommand, S3} from "@aws-sdk/client-s3";
 import AWS from "aws-sdk";
-import {DeleteMessageCommand, ReceiveMessageCommand, SendMessageBatchCommand, SendMessageCommand, SQSClient} from "@aws-sdk/client-sqs";
+import {
+    DeleteMessageBatchCommand,
+    DeleteMessageCommand,
+    ReceiveMessageCommand,
+    SendMessageBatchCommand,
+    SendMessageCommand,
+    SQSClient
+} from "@aws-sdk/client-sqs";
 import {randomUUID} from "crypto";
-import fs from "fs";
-import dotenv from 'dotenv'
-
-dotenv.config({path: '../../.env'})
-
-const s3 = new S3({
-    apiVersion: '2006-03-01',
-    region: 'ap-northeast-2',
-})
 
 AWS.config.update({region: 'ap-northeast-2'})
 
@@ -46,16 +43,19 @@ export async function deleteSqsMessage(QueueUrl, receiptHandle) {
     return sqsClient.send(command);
 }
 
-export const uploadFileToS3 = async (key) => {
-    const fileContent = fs.readFileSync(key)
-    const command = new PutObjectCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
-        Key: key,
-        Body: fileContent,
-    });
-    try {
-        await s3.send(command);
-    } catch (err) {
-        console.error(err);
+export async function deleteSqsMessages(QueueUrl, receiptHandles) {
+    if(receiptHandles.length > 0) {
+        const input = {
+            QueueUrl: QueueUrl,
+            Entries: receiptHandles.map(receiptHandle => {
+                return {
+                    Id:  randomUUID(),
+                    ReceiptHandle: receiptHandle
+                }
+            })
+        };
+
+        const command = new DeleteMessageBatchCommand(input);
+        return sqsClient.send(command);
     }
 }

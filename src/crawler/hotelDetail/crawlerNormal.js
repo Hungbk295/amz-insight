@@ -1,7 +1,5 @@
+import '../../config/env.js'
 import {run} from "./crawler.js";
-import dotenv from "dotenv";
-
-dotenv.config({path: '../../../.env'})
 
 if (!process.argv[2]) {
     console.log("Missing worker name param")

@@ -1,5 +1,5 @@
 import {handle} from "../../../utils/handler.js";
-import {Privia} from '../suppliers/priviatravel.js'
+import {Privia} from '../suppliers/privia.js'
 
 const crawlInfo = {
     url: 'https://hotel.priviatravel.com/search/us/unitedstates/hawaii-ohau-honolulu.html?checkIn=2024-02-30&checkOut=2024-02-31&occupancies=1~1~0&destinationType=CITY&destinationId=12728',

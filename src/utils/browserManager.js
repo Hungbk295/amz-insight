@@ -1,22 +1,17 @@
 import {FingerprintGenerator} from 'fingerprint-generator'
 import {FingerprintInjector} from 'fingerprint-injector'
 import {firefox} from 'playwright'
-import dotenv from "dotenv";
-import {getConfigBySupplierId} from "../config/suppliers.js";
 
-dotenv.config({path: '../../.env'})
-
-export const getBrowser = async (supplierId) => {
-    const configForSite = getConfigBySupplierId(supplierId)
+export const getBrowser = async (config) => {
     const fingerprintGenerator = new FingerprintGenerator()
     const browserFingerprintWithHeaders = fingerprintGenerator.getFingerprint({
-        devices: configForSite.devices || ['desktop'],
+        devices: config.devices || ['desktop'],
         browsers: ['chrome', 'firefox'],
     })
 
     const fingerprintInjector = new FingerprintInjector()
     const {fingerprint} = browserFingerprintWithHeaders
-    const options = configForSite.proxy && process.env.ENV === 'prod' ? {
+    const options = config.proxy && process.env.ENV === 'prod' ? {
         headless: false,
         proxy: {server: process.env.VPN_PROXY_CONNECTION}
     } : {headless: false}

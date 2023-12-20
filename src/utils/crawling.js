@@ -1,7 +1,4 @@
-import {Sites, Suppliers} from "../config/suppliers.js";
-import fs from "fs";
-import * as yaml from "js-yaml";
-import {uploadFileToS3} from "./awsSdk.js";
+import {Suppliers} from "../config/suppliers.js";
 
 const convertCrawlResult = (crawlResult, crawlInfo) => {
     const resultData = [];
@@ -39,14 +36,4 @@ const classify = link => {
     if (link.includes(Suppliers.Kyte.url)) return Suppliers.Kyte
 }
 
-const uploadResultData = async (resultData, crawlInfo) => {
-    if (resultData.length > 0) {
-        const fileName = crawlInfo["checkinDate"] + "_" + crawlInfo["keywordId"] + "_" + resultData[0]["supplierId"] + "_" + (resultData[0]["siteId"] ? 1 : 0) + "_" + resultData[0]["identifier"] + ".yaml"
-        await fs.writeFileSync(fileName, yaml.dump(resultData, {}), 'utf8');
-        await uploadFileToS3(fileName)
-        await fs.unlinkSync(fileName)
-    }
-}
-
-
-export {convertCrawlResult, classify, uploadResultData}
+export {convertCrawlResult, classify}

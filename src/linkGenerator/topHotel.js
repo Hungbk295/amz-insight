@@ -1,26 +1,51 @@
-/**
- * Input: List of destination (province), a checking date, a checkout date
- * Output: List of tasks having this format:
- *  - url: url of supplier page after searching with destination
- *      Optional (for agoda):
- *  - destination or keyword: name of destination (Hanoi, Seoul)
- *  - checkin date: checkin date
- *  - checkout date: checkout date
- */
+import {Suppliers} from "../config/suppliers.js";
+import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Priviatravel, Tourvis, Trip} from "./suppliers/index.js";
 
-import axios from 'axios'
-import {execGetInternalPrices, generateLink} from './linkGenerator.js'
-import {Suppliers} from "../config/suppliers.js"
-import {createSqsMessages} from "../utils/awsSdk.js";
-
-async function main() {
-    const createdAt = new Date()
-    const dayTypes = ['weekday', 'weekend']
-    const subsequentWeeks = [3, 5]
-    const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
-    await execGetInternalPrices('GET_HOTEL_INTERNATIONAL_INTERNAL_PRICES', createdAt)
-    const tasks = generateLink(keywords, dayTypes, subsequentWeeks, Suppliers, createdAt)
-    await createSqsMessages(process.env.AWS_SQS_HOTELFLY_LINK_URL, tasks)
+const taskGenerators = {
+    [Suppliers.Agoda.name]: new Agoda(),
+    [Suppliers.Booking.name]: new Booking(),
+    [Suppliers.Expedia.name]: new Expedia(),
+    [Suppliers.Hotels.name]: new Hotels(),
+    [Suppliers.Kyte.name]: new Kyte(),
+    [Suppliers.Naver.name]: new Naver(),
+    [Suppliers.Priviatravel.name]: new Priviatravel(),
+    [Suppliers.Tourvis.name]: new Tourvis(),
+    [Suppliers.Trip.name]: new Trip(),
 }
 
-await main()
+export function generateLink(keywords, dayTypes, subsequentWeeks, suppliers, createdAt) {
+    let tasks = []
+    for (const keywordItem of keywords) {
+        for (const dayType of dayTypes) {
+            for (const subsequentWeek of subsequentWeeks) {
+                for (const idxSup in suppliers) {
+                    const [checkinDate, checkoutDate] = getTargetDate(dayType, subsequentWeek)
+                    const task = taskGenerators[idxSup].generateTaskForTopHotel(checkinDate, checkoutDate, keywordItem, createdAt)
+                    tasks.push(task)
+                }
+            }
+        }
+    }
+    return tasks
+}
+
+export function getDateInString(date) {
+    let month = date.getMonth() + 1
+    month = month < 10 ? `0${month}` : month
+    let day = date.getDate()
+    day = day < 10 ? `0${day}` : day
+    const year = date.getFullYear()
+    return `${year}-${month}-${day}`
+}
+
+export function getTargetDate(dayType, subsequentWeek) {
+    const targetDayInWeek = dayType === 'weekday' ? 1 : 6
+    let date = new Date()
+    date.setDate(date.getDate() + (targetDayInWeek - (date.getDay() % 7)) + 7 * subsequentWeek)
+    const checkin = getDateInString(date)
+    date = new Date()
+    date.setDate(date.getDate() + (targetDayInWeek + 1 - (date.getDay() % 7)) + 7 * subsequentWeek)
+    const checkout = getDateInString(date)
+
+    return [checkin, checkout]
+}
