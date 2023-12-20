@@ -35,6 +35,7 @@ export const run = async (queueUrl, workerName) => {
                             await finish(crawlResultAfterLogin, crawlInfo)
                         }
                         await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
+                        await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
                     } catch (e) {
                         console.log("Error", msg.Body);
                         console.log(e);

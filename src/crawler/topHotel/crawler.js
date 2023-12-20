@@ -51,6 +51,7 @@ export const run = async (queueUrl, workerName) => {
                         if (suppliersWithDetailPrice.map(item => item.id).includes(supplierId))
                             await crawlers[supplierId].generateDetailTasks(crawlResult)
                         await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
+                        await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
                     } catch (e) {
                         console.log("Error", msg.Body);
                         console.log(e);
@@ -65,7 +66,6 @@ export const run = async (queueUrl, workerName) => {
             }
         } catch (error) {
         }
-        await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
         await sleep(5)
     }
 }

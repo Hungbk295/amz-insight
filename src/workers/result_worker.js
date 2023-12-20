@@ -1,4 +1,4 @@
-import '../../config/env.js'
+import '../config/env.js'
 import {sleep} from "../utils/util.js";
 import {deleteSqsMessages, readSqsMessages} from "../utils/awsSdk.js";
 import Sentry from "../utils/sentry.js";

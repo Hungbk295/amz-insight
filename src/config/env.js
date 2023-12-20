@@ -1,2 +1,5 @@
 import dotenv from "dotenv";
-dotenv.config({path: '../../../.env'})
+import * as path from "path";
+
+const srcPath = path.resolve().split('src')[0]
+dotenv.config({path: srcPath + '/.env'})
