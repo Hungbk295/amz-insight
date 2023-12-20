@@ -3,7 +3,6 @@ const Suppliers = {
         'name': 'Priviatravel',
         'url': 'https://hotel.priviatravel.com/',
         'id': 7,
-        'devices': ['mobile'],
         'userName': 'furmi78',
         'password': 'sjymirr0909!'
     },
