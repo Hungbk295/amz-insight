@@ -27,7 +27,6 @@ export async function generateLink(keywords, dayTypes, subsequentWeeks, supplier
             }
         }
     }
-    await execGetInternalPrices('GET_HOTEL_INTERNATIONAL_INTERNAL_PRICES', createdAt);
     return tasks
 }
 
