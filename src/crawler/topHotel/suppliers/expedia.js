@@ -1,9 +1,9 @@
 import {scroll, sleep} from '../../../utils/util.js'
-import {Suppliers} from "../../../config/suppliers.js";
+import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Expedia {
 	async crawl(page, crawlInfo) {
-		await page.goto(crawlInfo['url'], {timeout: 60000})
+		await page.goto(crawlInfo['link'], {timeout: 60000})
 		await sleep(30)
 		try {
 			await page.locator(`//button[contains(@data-stid,'show-more-results')]`).click({timeout: 10000})
@@ -40,7 +40,7 @@ export class Expedia {
 				hotel.tag = hotel_tag
 				hotel.checkinDate = crawlInfo['checkinDate']
 				hotel.checkinDate = crawlInfo['checkoutDate']
-				hotel.supplierId = Suppliers.Expedia.id
+				hotel.supplierId = SUPPLIERS.Expedia.id
 				hotels.push(hotel)
 			} catch (e) {
 				console.log(e)

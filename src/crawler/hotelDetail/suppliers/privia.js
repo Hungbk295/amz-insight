@@ -4,23 +4,26 @@ import {sleep} from "../../../utils/util.js";
 export class Privia {
     async crawl(page, crawlInfo) {
         let {link, ...common} = crawlInfo
-        link = link.split('.com/')[1]
-
+        const path = this.getPath(link)
         const {discountPrice, detailPrice} = await this.crawlHelper(page, crawlInfo)
 
-        return [{...common, link, price: parseInt(discountPrice.replaceAll(',', '')), siteId: Sites.detailDiscount.id},
-            {...common, link, price: parseInt(detailPrice.replaceAll(',', '')), siteId: Sites.detail.id}]
+        return [{...common, link: path, price: parseInt(discountPrice.replaceAll(',', '')), siteId: Sites.detailDiscount.id},
+            {...common, link: path, price: parseInt(detailPrice.replaceAll(',', '')), siteId: Sites.detail.id}]
     }
 
     async crawlLoggedIn(page, crawlInfo) {
         let {link, ...common} = crawlInfo
-        link = link.split('.com/')[1]
+        const path = this.getPath(link)
 
         const {discountPrice, detailPrice} = await this.crawlHelper(page, crawlInfo)
 
         return [{
-            ...common, link, price: parseInt(discountPrice.replaceAll(',', '')), siteId: Sites.discountDetailLoggedIn.id
-        }, {...common, link, price: parseInt(detailPrice.replaceAll(',', '')), siteId: Sites.detailLoggedIn.id}]
+            ...common, link: path, price: parseInt(discountPrice.replaceAll(',', '')), siteId: Sites.discountDetailLoggedIn.id
+        }, {...common, link: path, price: parseInt(detailPrice.replaceAll(',', '')), siteId: Sites.detailLoggedIn.id}]
+    }
+
+    getPath(link) {
+        return link.split('.com/')[1]
     }
 
     async crawlHelper(page, crawlInfo) {

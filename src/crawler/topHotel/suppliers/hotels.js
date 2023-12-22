@@ -1,9 +1,9 @@
 import {scroll, sleep} from "../../../utils/util.js"
-import {Suppliers} from "../../../config/suppliers.js";
+import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Hotels {
     async crawl(page, crawlInfo) {
-        await page.goto(crawlInfo["url"], {timeout: 60000});
+        await page.goto(crawlInfo["link"], {timeout: 60000});
         await sleep(30)
         await page.evaluate(scroll, {direction: "down", speed: "slow"});
         try {
@@ -31,7 +31,7 @@ export class Hotels {
                 hotel.identifier = hotel_unique;
                 hotel.tag = hotel_unique
                 hotel.link = hotel_link;
-                hotel.supplierId = Suppliers.Hotels.id
+                hotel.supplierId = SUPPLIERS.Hotels.id
                 hotel.checkinDate = crawlInfo["checkinDate"]
                 hotel.checkoutDate = crawlInfo["checkoutDate"]
                 hotels.push(hotel);

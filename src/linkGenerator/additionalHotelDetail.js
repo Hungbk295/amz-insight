@@ -1,20 +1,20 @@
-import {Suppliers} from "../config/suppliers.js";
-import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Priviatravel, Tourvis, Trip} from "./suppliers/index.js";
+import {SUPPLIERS} from "../config/suppliers.js";
+import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from "./suppliers/index.js";
 import axios from "axios";
 import {getTargetDate} from "./topHotel.js";
-import {importantSuppliers, MAX_RANK_WITH_DETAIL_PRICE, suppliersWithDetailPrice} from "../config/app.js";
+import {IMPORTANT_SUPPLIERS, MAX_RANK_WITH_DETAIL_PRICE, SUPPLIERS_WITH_DETAIL_PRICE} from "../config/app.js";
 import {createSqsMessages} from "../utils/awsSdk.js";
 
 const taskGenerators = {
-    [Suppliers.Agoda.id]: new Agoda(),
-    [Suppliers.Booking.id]: new Booking(),
-    [Suppliers.Expedia.id]: new Expedia(),
-    [Suppliers.Hotels.id]: new Hotels(),
-    [Suppliers.Kyte.id]: new Kyte(),
-    [Suppliers.Naver.id]: new Naver(),
-    [Suppliers.Priviatravel.id]: new Priviatravel(),
-    [Suppliers.Tourvis.id]: new Tourvis(),
-    [Suppliers.Trip.id]: new Trip(),
+    [SUPPLIERS.Agoda.id]: new Agoda(),
+    [SUPPLIERS.Booking.id]: new Booking(),
+    [SUPPLIERS.Expedia.id]: new Expedia(),
+    [SUPPLIERS.Hotels.id]: new Hotels(),
+    [SUPPLIERS.Kyte.id]: new Kyte(),
+    [SUPPLIERS.Naver.id]: new Naver(),
+    [SUPPLIERS.Privia.id]: new Privia(),
+    [SUPPLIERS.Tourvis.id]: new Tourvis(),
+    [SUPPLIERS.Trip.id]: new Trip(),
 }
 
 const getRankForHotelData = (items, supplier) => {
@@ -60,7 +60,7 @@ const getHotelInfoIfMissingData = (hotelDataItems, supplier) => {
 
 const generateAdditionalHotelDetailLinksBySupplier = async (hotelData, supplier, keywordItem, checkinDate, checkoutDate) => {
     const hotelDataGroupedByHotelId = groupHotelDataByHotelId(hotelData, supplier)
-    const checkingSuppliers = suppliersWithDetailPrice.filter(item => item.id !== supplier.id)
+    const checkingSuppliers = SUPPLIERS_WITH_DETAIL_PRICE.filter(item => item.id !== supplier.id)
     const tasks = []
     for (let items of hotelDataGroupedByHotelId) {
         if (items.length === 0) return
@@ -78,7 +78,7 @@ const generateAdditionalHotelDetailLinksBySupplier = async (hotelData, supplier,
 }
 
 const generateAdditionalHotelDetailLinks = async () => {
-    const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
+    const keywords = (await axios.get(process.env.API_HOST + '/keyword')).data
     const dayTypes = ['weekday', 'weekend']
     const subsequentWeeks = [3, 5]
     for (const keywordItem of keywords) {
@@ -89,10 +89,10 @@ const generateAdditionalHotelDetailLinks = async () => {
                     keyword_id: keywordItem.id,
                     checkin: checkinDate,
                 };
-                const hotelData = (await axios.get(process.env.HOTELFLY_API_HOST + '/hotel/hotel-result-data', {params})).data
-                for (const supplier of importantSuppliers) {
+                const hotelData = (await axios.get(process.env.API_HOST + '/hotel/hotel-result-data', {params})).data
+                for (const supplier of IMPORTANT_SUPPLIERS) {
                     const tasks = await generateAdditionalHotelDetailLinksBySupplier(hotelData, supplier, keywordItem, checkinDate, checkoutDate)
-                    await createSqsMessages(process.env.AWS_SQS_HOTELFLY_HOTEL_DETAILS_LINK_URL, tasks)
+                    await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, tasks)
                 }
             }
         }

@@ -1,6 +1,6 @@
 import {sleep} from '../../../utils/util.js'
 import _ from 'lodash'
-import {Suppliers} from "../../../config/suppliers.js";
+import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Trip {
     async crawl(page, crawlInfo) {
@@ -14,7 +14,7 @@ export class Trip {
             }
         })
 
-        await page.goto(crawlInfo['url'], {timeout: 60000})
+        await page.goto(crawlInfo['link'], {timeout: 60000})
         await sleep(15)
 
         try {
@@ -33,7 +33,7 @@ export class Trip {
                 name: hotelBasicInfo.hotelName,
                 nameEn: hotelBasicInfo.hotelEnName, // phone: null,
                 price: hotelBasicInfo.price,
-                supplierId: Suppliers.Trip.id,
+                supplierId: SUPPLIERS.Trip.id,
                 identifier: hotelBasicInfo.hotelId + '',
                 checkinDate: crawlInfo['checkinDate'],
                 checkoutDate: crawlInfo['checkoutDate'],

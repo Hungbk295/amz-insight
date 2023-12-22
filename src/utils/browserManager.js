@@ -13,7 +13,7 @@ export const getBrowser = async (config) => {
     const {fingerprint} = browserFingerprintWithHeaders
     const options = config.proxy && process.env.ENV === 'prod' ? {
         headless: false,
-        proxy: {server: process.env.VPN_PROXY_CONNECTION}
+        proxy: {server: process.env.PROXY_SERVER}
     } : {headless: false}
 
     const browser = await firefox.launch(options)

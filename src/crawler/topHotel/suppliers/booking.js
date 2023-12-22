@@ -1,9 +1,9 @@
 import {scroll, sleep} from "../../../utils/util.js"
-import {Suppliers} from "../../../config/suppliers.js";
+import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Booking {
     async crawl(page, crawlInfo) {
-        await page.goto(crawlInfo["url"], {timeout: 60000});
+        await page.goto(crawlInfo["link"], {timeout: 60000});
         await sleep(8)
         await page.mouse.click(1, 2);
         await page.evaluate(scroll, {direction: "down", speed: "slow"});
@@ -15,7 +15,7 @@ export class Booking {
                 const hotel = {};
                 const hotel_name = await (await info.$(`//h2`)).innerText()
                 const hotel_price = await (await info.$(`//span[contains(@data-testid,'price-and-discounted-price')]`)).innerText()
-                const hotel_link = (await (await info.$(`//a[contains(@data-testid,'title')]`)).getAttribute('href')).replace(Suppliers.Booking.url, "/")
+                const hotel_link = (await (await info.$(`//a[contains(@data-testid,'title')]`)).getAttribute('href')).replace(SUPPLIERS.Booking.link, "/")
                 const hotel_identifier = hotel_link.split('/')[3].split('.')[0]
                 const hotel_tag = hotel_identifier
 
@@ -24,7 +24,7 @@ export class Booking {
                 hotel.link = hotel_link
                 hotel.identifier = hotel_identifier
                 hotel.tag = hotel_tag
-                hotel.supplierId = Suppliers.Booking.id
+                hotel.supplierId = SUPPLIERS.Booking.id
                 hotel.checkinDate = crawlInfo['checkinDate']
                 hotel.checkoutDate = crawlInfo['checkoutDate']
                 hotels.push(hotel)

@@ -6,4 +6,4 @@ if (!process.argv[2]) {
     process.exit()
 }
 
-await run(process.env.AWS_SQS_HOTELFLY_HOTEL_DETAILS_LINK_URL, process.argv[2])
+await run(process.env.QUEUE_DETAIL_TASKS_URL, process.argv[2])

@@ -1,16 +1,17 @@
-import {Suppliers} from "../config/suppliers.js";
-import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Priviatravel, Tourvis, Trip} from "./suppliers/index.js";
+import '../config/env.js'
+import {SUPPLIERS} from "../config/suppliers.js";
+import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from "./suppliers/index.js";
 
 const taskGenerators = {
-    [Suppliers.Agoda.name]: new Agoda(),
-    [Suppliers.Booking.name]: new Booking(),
-    [Suppliers.Expedia.name]: new Expedia(),
-    [Suppliers.Hotels.name]: new Hotels(),
-    [Suppliers.Kyte.name]: new Kyte(),
-    [Suppliers.Naver.name]: new Naver(),
-    [Suppliers.Priviatravel.name]: new Priviatravel(),
-    [Suppliers.Tourvis.name]: new Tourvis(),
-    [Suppliers.Trip.name]: new Trip(),
+    [SUPPLIERS.Agoda.name]: new Agoda(),
+    [SUPPLIERS.Booking.name]: new Booking(),
+    [SUPPLIERS.Expedia.name]: new Expedia(),
+    [SUPPLIERS.Hotels.name]: new Hotels(),
+    [SUPPLIERS.Kyte.name]: new Kyte(),
+    [SUPPLIERS.Naver.name]: new Naver(),
+    [SUPPLIERS.Privia.name]: new Privia(),
+    [SUPPLIERS.Tourvis.name]: new Tourvis(),
+    [SUPPLIERS.Trip.name]: new Trip(),
 }
 
 export function generateLink(keywords, dayTypes, subsequentWeeks, suppliers, createdAt) {

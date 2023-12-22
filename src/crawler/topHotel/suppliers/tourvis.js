@@ -1,6 +1,6 @@
 import {sleep} from '../../../utils/util.js'
 import _ from 'lodash'
-import {Suppliers} from "../../../config/suppliers.js";
+import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Tourvis {
     async crawl(page, crawlInfo) {
@@ -14,7 +14,7 @@ export class Tourvis {
             }
         })
 
-        await page.goto(crawlInfo['url'], {timeout: 60000})
+        await page.goto(crawlInfo['link'], {timeout: 60000})
 
         await sleep(60)
         const handle = item => {
@@ -23,7 +23,7 @@ export class Tourvis {
                 name: htlNameKr,
                 nameEn: htlNameEn,
                 price: salePrice,
-                supplierId: Suppliers.Tourvis.id,
+                supplierId: SUPPLIERS.Tourvis.id,
                 identifier: htlMasterId + '',
                 checkinDate: crawlInfo['checkinDate'],
                 checkoutDate: crawlInfo['checkoutDate'],

@@ -1,13 +1,14 @@
-import {Suppliers} from "./suppliers.js";
+import {SUPPLIERS} from "./suppliers.js";
 
-const importantSuppliers = [
-    Suppliers.Tourvis,
-    Suppliers.Priviatravel,
-    Suppliers.Naver
+const IMPORTANT_SUPPLIERS = [
+    SUPPLIERS.Tourvis,
+    SUPPLIERS.Privia,
+    SUPPLIERS.Naver
 ]
-const suppliersWithDetailPrice = [
-    Suppliers.Priviatravel,
+const SUPPLIERS_WITH_DETAIL_PRICE = [
+    SUPPLIERS.Privia,
+    SUPPLIERS.Tourvis,
 ]
 const MAX_RANK_WITH_DETAIL_PRICE = 20
 
-export {importantSuppliers, suppliersWithDetailPrice, MAX_RANK_WITH_DETAIL_PRICE}
+export {IMPORTANT_SUPPLIERS, SUPPLIERS_WITH_DETAIL_PRICE, MAX_RANK_WITH_DETAIL_PRICE}

@@ -1,4 +1,4 @@
-import {Suppliers} from '../../../config/suppliers.js'
+import {SUPPLIERS} from '../../../config/suppliers.js'
 import {sleep} from "../../../utils/util.js";
 import {createSqsMessages} from "../../../utils/awsSdk.js";
 import {MAX_RANK_WITH_DETAIL_PRICE} from "../../../config/app.js";
@@ -13,7 +13,7 @@ export class Privia {
                 totalDataFromAPI = totalDataFromAPI.concat(res.hotelFareList)
             }
         })
-        await page.goto(crawlInfo['url'], {timeout: 60000})
+        await page.goto(crawlInfo['link'], {timeout: 60000})
         await sleep(20)
         const dataFromAPI = totalDataFromAPI.slice(0, 100).map((item) => this.convertRawCrawlData(item, crawlInfo))
         dataFromAPI.forEach((item, index) => {
@@ -23,13 +23,13 @@ export class Privia {
     }
 
     async generateDetailTasks(data) {
-        const hotelDetailTasks = this.createHotelDetailTasks(data.slice(0, MAX_RANK_WITH_DETAIL_PRICE))
-        await createSqsMessages(process.env.AWS_SQS_HOTELFLY_HOTEL_DETAILS_LINK_URL, hotelDetailTasks)
+        const hotelDetailTasks = data.slice(0, MAX_RANK_WITH_DETAIL_PRICE)
+        await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, hotelDetailTasks)
     }
 
     convertRawCrawlData (rawData, crawlInfo) {
         const {htlNameKr, salePrice, htlMasterId, addr, htlNameEn} = rawData
-        let [urlPartInLink, queryPartInLink] = crawlInfo['url'].split('?')
+        let [urlPartInLink, queryPartInLink] = crawlInfo['link'].split('?')
         urlPartInLink = urlPartInLink
             .replace(
                 '.html',
@@ -48,7 +48,7 @@ export class Privia {
             address: addr,
             price: salePrice,
             siteId: null,
-            supplierId: Suppliers.Priviatravel.id,
+            supplierId: SUPPLIERS.Privia.id,
             identifier: htlMasterId + '',
             tag: htlNameEn,
             checkinDate: crawlInfo['checkinDate'],
@@ -57,24 +57,5 @@ export class Privia {
             createdAt: crawlInfo["createdAt"],
             link: link,
         }
-    }
-
-    createHotelDetailTasks(crawlResult) {
-        return crawlResult.map((data) => {
-            return {
-                name: data.name,
-                nameEn: data.nameEn,
-                address: data.address,
-                supplierId: data.supplierId,
-                identifier: data.identifier,
-                tag: data.tag,
-                checkinDate: data.checkinDate,
-                checkoutDate: data.checkoutDate,
-                createdAt: data.createdAt,
-                link: Suppliers.Priviatravel.url + data.link,
-                rank: data.rank,
-                keywordId: data.keywordId
-            }
-        })
     }
 }

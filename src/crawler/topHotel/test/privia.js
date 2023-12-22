@@ -1,13 +1,14 @@
 import {handle} from "../../../utils/handler.js";
 import {Privia} from '../suppliers/privia.js'
+import {SUPPLIERS} from "../../../config/suppliers.js";
 
 const crawlInfo = {
-    url: 'https://hotel.priviatravel.com/search/us/unitedstates/hawaii-ohau-honolulu.html?checkIn=2024-02-30&checkOut=2024-02-31&occupancies=1~1~0&destinationType=CITY&destinationId=12728',
+    link: 'https://hotel.priviatravel.com/search/us/unitedstates/hawaii-ohau-honolulu.html?checkIn=2024-02-30&checkOut=2024-02-31&occupancies=1~1~0&destinationType=CITY&destinationId=12728',
     checkinDate: '2023-12-30',
     checkoutDate: '2023-12-31',
     keywordId: 2,
-    devices: ['mobile'],
-    createdAt: "2023-11-30T04:37:52.580678Z"
+    createdAt: "2023-11-30T04:37:52.580678Z",
+    supplierId: SUPPLIERS.Privia.id
 }
 const res = await handle(crawlInfo, new Privia())
 console.log(res)

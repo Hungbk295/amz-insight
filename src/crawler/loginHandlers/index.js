@@ -1,9 +1,12 @@
-import {login as loginPrivia} from './suppliers/privia.js'
+import {Privia} from './suppliers/privia.js'
+import {Tourvis} from './suppliers/tourvis.js'
+import {SUPPLIERS} from "../../config/suppliers.js";
 
 const suppliers = {
-    7: loginPrivia
+    [SUPPLIERS.Privia.id]: new Privia(),
+    [SUPPLIERS.Tourvis.id]: new Tourvis()
 }
 
-export const login = async (sideId, page) => {
-    await suppliers[sideId](page)
+export const login = async (supplierId, page) => {
+    await suppliers[supplierId].login(page)
 }

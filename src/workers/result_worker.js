@@ -5,7 +5,7 @@ import Sentry from "../utils/sentry.js";
 import {create} from "../api/hotelData.js";
 
 while (true) {
-    const data = await readSqsMessages(process.env.AWS_SQS_HOTELFLY_RESULT, 10)
+    const data = await readSqsMessages(process.env.QUEUE_RESULTS_URL, 10)
     if (data.Messages) {
         const receiptHandles = []
         for (const msg of data.Messages) {
@@ -20,7 +20,7 @@ while (true) {
                 });
             }
         }
-        await deleteSqsMessages(process.env.AWS_SQS_HOTELFLY_RESULT, receiptHandles)
+        await deleteSqsMessages(process.env.QUEUE_RESULTS_URL, receiptHandles)
     }
     await sleep(10)
 }

@@ -1,20 +1,16 @@
-import {Suppliers} from "../../config/suppliers.js";
+import {SUPPLIERS} from "../../config/suppliers.js";
 
 export class Naver {
     generateTaskForTopHotel(checkinDate, checkoutDate, keywordItem, createdAt) {
         return {
-            url: Suppliers.Naver.url + `list?placeFileName=place%3A${keywordItem['naver_city_name']}&includeTax=true&adultCnt=2&checkIn=${checkinDate}&checkOut=${checkoutDate}&sortField=popularityKR&sortDirection=descending`,
-            // Suppliers.Naver.url + `list?placeFileName=place%3ASeoul&includeTax=true&adultCnt=2&checkIn=${checkinDate}&checkOut=${checkoutDate}&sortField=popularityKR&sortDirection=descending`
+            link: SUPPLIERS.Naver.link + `list?placeFileName=place%3A${keywordItem['naver_city_name']}&includeTax=true&adultCnt=2&checkIn=${checkinDate}&checkOut=${checkoutDate}&sortField=popularityKR&sortDirection=descending`,
             checkinDate: checkinDate,
             checkoutDate: checkoutDate,
             keywordId: keywordItem.id,
             keyword: keywordItem.keyword,
-            createdAt: createdAt
+            createdAt: createdAt,
+            supplierId: SUPPLIERS.Naver.id
         }
-    }
-
-    generateTaskForHotelDetail(checkinDate, checkoutDate, keywordItem, createdAt, supplierId, hotelId) {
-        return {}
     }
 }
 

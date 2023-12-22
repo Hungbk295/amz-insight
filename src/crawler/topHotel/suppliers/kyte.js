@@ -1,9 +1,9 @@
 import {sleep} from "../../../utils/util.js"
-import {Suppliers} from "../../../config/suppliers.js";
+import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Kyte {
     async crawl(page, crawlInfo) {
-        await page.goto(crawlInfo["url"], {timeout: 60000});
+        await page.goto(crawlInfo["link"], {timeout: 60000});
         await sleep(10)
         let hotel_infos = []
         let retryTimes = 0;
@@ -45,7 +45,7 @@ export class Kyte {
             hotel.name = hotel_name
             hotel.price = hotel_price.replace(/[^0-9]/g, '');
             hotel.link = hotel_link
-            hotel.supplierId = Suppliers.Kyte.id
+            hotel.supplierId = SUPPLIERS.Kyte.id
             hotel.identifier = hotel_unique
             hotel.tag = hotel_unique
             hotel.checkinDate = crawlInfo.checkinDate
