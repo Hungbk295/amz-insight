@@ -1,6 +1,7 @@
 import '../config/env.js'
 import {SUPPLIERS} from "../config/suppliers.js";
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from "./suppliers/index.js";
+import {Lambda} from "aws-sdk";
 
 const taskGenerators = {
     [SUPPLIERS.Agoda.name]: new Agoda(),
@@ -49,4 +50,19 @@ export function getTargetDate(dayType, subsequentWeek) {
     const checkout = getDateInString(date)
 
     return [checkin, checkout]
+}
+
+export async function execGetInternalPrices(action, createdAt) {
+    const lambda = new Lambda();
+    const params = {
+        FunctionName: 'hotel-internal-data', /* required */
+        Payload: JSON.stringify({
+            'action': action,
+            'createdAt': createdAt.toISOString()
+        })
+    };
+    lambda.invoke(params, function (err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else console.log(data);           // successful response
+    });
 }
