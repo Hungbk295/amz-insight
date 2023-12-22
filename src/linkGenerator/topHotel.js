@@ -14,7 +14,7 @@ const taskGenerators = {
     [Suppliers.Trip.name]: new Trip(),
 }
 
-export async function generateLink(keywords, dayTypes, subsequentWeeks, suppliers, createdAt) {
+export function generateLink(keywords, dayTypes, subsequentWeeks, suppliers, createdAt) {
     let tasks = []
     for (const keywordItem of keywords) {
         for (const dayType of dayTypes) {
