@@ -1,4 +1,3 @@
-import AWS from "aws-sdk";
 import {
     DeleteMessageBatchCommand,
     DeleteMessageCommand,
@@ -8,8 +7,6 @@ import {
     SQSClient
 } from "@aws-sdk/client-sqs";
 import {randomUUID} from "crypto";
-
-AWS.config.update({region: 'ap-northeast-2'})
 
 export const sqsClient = new SQSClient();
 

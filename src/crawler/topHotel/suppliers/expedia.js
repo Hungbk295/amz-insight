@@ -3,7 +3,7 @@ import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Expedia {
 	async crawl(page, crawlInfo) {
-		await page.goto(crawlInfo['link'], {timeout: 60000})
+		await page.goto(SUPPLIERS.Expedia.link + crawlInfo['link'], {timeout: 60000})
 		await sleep(30)
 		try {
 			await page.locator(`//button[contains(@data-stid,'show-more-results')]`).click({timeout: 10000})

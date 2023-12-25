@@ -5,7 +5,7 @@ export class Tourvis {
         const keyword = keywordItem.keyword
         const encodedKeyword = encodeURIComponent(keyword)
         return {
-            link: SUPPLIERS.Tourvis.link + `hotels?type=${keywordItem['privia_dest_type']}&keyword=${encodedKeyword}&id=${keywordItem['privia_dest_id']}&in=${checkinDate.replaceAll('-', '')}&out=${checkoutDate.replaceAll('-', '')}&guests=2`,
+            link: `hotels?type=${keywordItem['privia_dest_type']}&keyword=${encodedKeyword}&id=${keywordItem['privia_dest_id']}&in=${checkinDate.replaceAll('-', '')}&out=${checkoutDate.replaceAll('-', '')}&guests=2`,
             checkinDate: checkinDate,
             checkoutDate: checkoutDate,
             keywordId: keywordItem.id,
@@ -18,7 +18,7 @@ export class Tourvis {
     async generateTaskForHotelDetail(checkinDate, checkoutDate, keywordItem, createdAt, hotelInfo) {
         const keyword = keywordItem.keyword
         const encodedKeyword = encodeURIComponent(keyword)
-        const link = SUPPLIERS.Tourvis.link + hotelInfo['link'].substring(1) + `?type=${keywordItem['privia_dest_type']}&keyword=${encodedKeyword}&id=${keywordItem['privia_dest_id']}&&in=${checkinDate.replaceAll('-', '')}&out=${checkoutDate.replaceAll('-', '')}&guests=2&pageType=main&h=1`
+        const link = hotelInfo['link'].substring(1) + `?type=${keywordItem['privia_dest_type']}&keyword=${encodedKeyword}&id=${keywordItem['privia_dest_id']}&&in=${checkinDate.replaceAll('-', '')}&out=${checkoutDate.replaceAll('-', '')}&guests=2&pageType=main&h=1`
         return {
             name: hotelInfo['name'],
             nameEn: hotelInfo['name_en'],

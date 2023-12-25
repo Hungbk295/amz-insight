@@ -1,9 +1,10 @@
 import {sleep} from "../../../utils/util.js";
 import {Privia} from "./privia.js";
+import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Tourvis extends Privia {
     async crawlHelper(page, crawlInfo) {
-        await page.goto(crawlInfo['link'], {timeout: 60000})
+        await page.goto(SUPPLIERS.Tourvis.link + crawlInfo['link'], {timeout: 60000})
         await sleep(20)
         let discountPrice = '0'
         try {

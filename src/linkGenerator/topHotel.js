@@ -1,7 +1,8 @@
 import '../config/env.js'
 import {SUPPLIERS} from "../config/suppliers.js";
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from "./suppliers/index.js";
-import {Lambda} from "aws-sdk";
+import {Lambda} from '@aws-sdk/client-lambda';
+import axios from "axios";
 
 const taskGenerators = {
     [SUPPLIERS.Agoda.name]: new Agoda(),
@@ -61,8 +62,17 @@ export async function execGetInternalPrices(action, createdAt) {
             'createdAt': createdAt.toISOString()
         })
     };
-    lambda.invoke(params, function (err, data) {
+    await lambda.invoke(params, function (err, data) {
         if (err) console.log(err, err.stack); // an error occurred
         else console.log(data);           // successful response
     });
+}
+
+async function main() {
+    const createdAt = new Date()
+    const dayTypes = ['weekday', 'weekend']
+    const subsequentWeeks = [1, 2]
+    const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
+    const tasks = generateLink(keywords, dayTypes, subsequentWeeks, SUPPLIERS, createdAt)
+    console.log(tasks)
 }

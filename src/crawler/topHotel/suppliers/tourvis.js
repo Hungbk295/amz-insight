@@ -1,8 +1,9 @@
 import {sleep} from '../../../utils/util.js'
 import _ from 'lodash'
 import {SUPPLIERS} from "../../../config/suppliers.js";
+import {Privia} from "./privia.js";
 
-export class Tourvis {
+export class Tourvis extends Privia {
     async crawl(page, crawlInfo) {
         let data = []
         await page.on('response', async response => {
@@ -14,7 +15,7 @@ export class Tourvis {
             }
         })
 
-        await page.goto(crawlInfo['link'], {timeout: 60000})
+        await page.goto(SUPPLIERS.Tourvis.link + crawlInfo['link'], {timeout: 60000})
 
         await sleep(60)
         const handle = item => {
@@ -37,8 +38,5 @@ export class Tourvis {
             item.rank = index + 1;
         })
         return hotels;
-    }
-
-    async generateDetailTasks(data) {
     }
 }

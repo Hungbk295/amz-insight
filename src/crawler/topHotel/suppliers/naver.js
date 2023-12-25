@@ -3,7 +3,7 @@ import {sleep, scroll} from "../../../utils/util.js";
 
 export class Naver {
     async crawl(page, crawlInfo) {
-        await page.goto(crawlInfo["link"], {timeout: 60000});
+        await page.goto(SUPPLIERS.Naver.link + crawlInfo["link"], {timeout: 60000});
         await sleep(8)
         await page.locator("(//button[contains(@class, 'SearchBox_btn_location')])[1]").click()
         await sleep(3)

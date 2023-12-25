@@ -3,7 +3,7 @@ import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Booking {
     async crawl(page, crawlInfo) {
-        await page.goto(crawlInfo["link"], {timeout: 60000});
+        await page.goto(SUPPLIERS.Booking.link + crawlInfo["link"], {timeout: 60000});
         await sleep(8)
         await page.mouse.click(1, 2);
         await page.evaluate(scroll, {direction: "down", speed: "slow"});

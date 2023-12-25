@@ -8,13 +8,6 @@
       ```npm install``` or ```yarn```
     * Setup environment variables:
         - ```nano .env```
-        - ```
-          AWS_UID=
-          HOTELFLY_API_HOST=
-          AWS_SQS_HOTELFLY_LINK_URL=
-          AWS_SQS_HOTELFLY_HOTEL_DETAILS_LINK_URL=
-          AWS_S3_BUCKET_NAME=
-          ```
     * Run command:
         - ```pm2 start --name hn-hotel-fly-0 entrypoint-normal.sh -- hn-hotel-fly-0```
         - ```pm2 start --name hotel-fly-important-n entrypoint-important.sh -- hotel-fly-important-n```

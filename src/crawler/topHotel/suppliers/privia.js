@@ -13,7 +13,7 @@ export class Privia {
                 totalDataFromAPI = totalDataFromAPI.concat(res.hotelFareList)
             }
         })
-        await page.goto(crawlInfo['link'], {timeout: 60000})
+        await page.goto(SUPPLIERS.Privia.link + crawlInfo['link'], {timeout: 60000})
         await sleep(20)
         const dataFromAPI = totalDataFromAPI.slice(0, 100).map((item) => this.convertRawCrawlData(item, crawlInfo))
         dataFromAPI.forEach((item, index) => {

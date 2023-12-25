@@ -11,7 +11,6 @@
     "@aws-sdk/client-sqs": "^3.301.0",
     "@aws-sdk/lib-storage": "^3.301.0",
     "@sentry/node": "^7.89.0",
-    "aws-sdk": "^2.1287.0",
     "axios": "^1.2.2",
     "daotran-client": "^1.0.22",
     "dayjs": "^1.11.7",

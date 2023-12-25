@@ -3,7 +3,7 @@ import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Hotels {
     async crawl(page, crawlInfo) {
-        await page.goto(crawlInfo["link"], {timeout: 60000});
+        await page.goto(SUPPLIERS.Hotels.link + crawlInfo["link"], {timeout: 60000});
         await sleep(30)
         await page.evaluate(scroll, {direction: "down", speed: "slow"});
         try {
@@ -25,7 +25,7 @@ export class Hotels {
                 hotel_price = hotel_price && hotel_price.length > 0 ? hotel_price[0] : '0'
 
                 const hotel_link = await (await info.$(`//a[contains(@data-stid,'open-hotel-information')]`)).getAttribute('href');
-                const hotel_unique = hotel_link.split('/')[2]
+                const hotel_unique = hotel_link.split('/')[2] ? hotel_link.split('/')[2] : hotel_link.match(/h[0-9]+/g)[0]
                 hotel.name = hotel_name;
                 hotel.price = hotel_price.replace('1박', '').replace(/[^0-9]/g, '')
                 hotel.identifier = hotel_unique;

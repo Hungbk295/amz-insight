@@ -64,13 +64,13 @@ export const getConfigBySupplierId = (supplierId) => {
     return Object.values(SUPPLIERS).find(item => item.id === supplierId)
 }
 
-const internalSupplier = [
+const INTERNAL_SUPPLIER_IDS = [
     SUPPLIERS.Tourvis.id,
     SUPPLIERS.Privia.id,
     SUPPLIERS.Kyte.id
 ]
 
-const Sites = {
+const SITES = {
     detailDiscount: {
         'name': 'detailDiscount',
         'id': 8
@@ -91,4 +91,4 @@ const Sites = {
     },
 }
 
-export {SUPPLIERS, Sites, internalSupplier}
+export {SUPPLIERS, SITES, INTERNAL_SUPPLIER_IDS}

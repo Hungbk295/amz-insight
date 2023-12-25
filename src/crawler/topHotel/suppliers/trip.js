@@ -14,7 +14,7 @@ export class Trip {
             }
         })
 
-        await page.goto(crawlInfo['link'], {timeout: 60000})
+        await page.goto(SUPPLIERS.Trip.link + crawlInfo['link'], {timeout: 60000})
         await sleep(15)
 
         try {

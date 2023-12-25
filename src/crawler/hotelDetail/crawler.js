@@ -2,7 +2,7 @@ import {createSqsMessages, deleteSqsMessage, readSqsMessages} from "../../utils/
 import {getBrowser} from "../../utils/browserManager.js";
 import {convertCrawlResult} from "../../utils/crawling.js";
 import {sleep} from "../../utils/util.js";
-import {getConfigBySupplierId, internalSupplier, SUPPLIERS} from "../../config/suppliers.js";
+import {getConfigBySupplierId, INTERNAL_SUPPLIER_IDS, SUPPLIERS} from "../../config/suppliers.js";
 import DaoTranClient from "daotran-client";
 import {login} from "../loginHandlers/index.js";
 import _ from "lodash";
@@ -29,7 +29,7 @@ export const run = async (queueUrl, workerName) => {
                 try {
                     const crawlResult = await crawlers[supplierId].crawl(page, crawlInfo);
                     await finish(crawlResult, crawlInfo)
-                    if (internalSupplier.includes(supplierId)) {
+                    if (INTERNAL_SUPPLIER_IDS.includes(supplierId)) {
                         await login(supplierId, page)
                         const crawlResultAfterLogin = await crawlers[supplierId].crawlLoggedIn(page, crawlInfo);
                         await finish(crawlResultAfterLogin, crawlInfo)
