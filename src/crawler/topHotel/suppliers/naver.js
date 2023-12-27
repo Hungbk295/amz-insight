@@ -32,9 +32,9 @@ export class Naver {
     }
 
     async handleSinglePage(crawlInfo, page) {
-        const hotel_infos = await page.locator(`//*[@id="__next"]/div/div/div/div[1]/div[3]/ul/li`).elementHandles()
+        const hotelInfos = await page.locator(`//*[@id="__next"]/div/div/div/div[1]/div[3]/ul/li`).elementHandles()
         const hotels = []
-        for (const info of hotel_infos) {
+        for (const info of hotelInfos) {
             const hotel = {};
             const hotel_name = await (await info.$(`//div[1]/div[2]/h4`)).innerText()
             const hotel_price = await (await info.$(`//div[2]/em`)).innerText()

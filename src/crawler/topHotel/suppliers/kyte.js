@@ -5,25 +5,22 @@ export class Kyte {
     async crawl(page, crawlInfo) {
         await page.goto(SUPPLIERS.Kyte.link + crawlInfo["link"], {timeout: 60000});
         await sleep(10)
-        let hotel_infos = []
+        let hotelInfos = []
         let retryTimes = 0;
         let lastHotelCnt = 0
-        while (hotel_infos.length < 100 && retryTimes < 10) {
+        while (hotelInfos.length < 100 && retryTimes < 10) {
             await page.mouse.wheel(0, 5000)
             await sleep(1)
-            hotel_infos = await page.locator(`//div[contains(@class,'infinite-scroll-component')]/div/a`).elementHandles()
-            if (lastHotelCnt === hotel_infos.length) retryTimes++
+            hotelInfos = await page.locator(`//div[contains(@class,'infinite-scroll-component')]/div/a`).elementHandles()
+            if (lastHotelCnt === hotelInfos.length) retryTimes++
             else retryTimes = 0
-            lastHotelCnt = hotel_infos.length
+            lastHotelCnt = hotelInfos.length
         }
         const hotels = await this.getHomepagePrice(crawlInfo, hotel_infos)
         hotels.forEach((item, index) => {
             item.rank = index + 1;
         })
         return hotels.slice(0, 100);
-    }
-
-    async generateDetailTasks(data) {
     }
 
     async getHomepagePrice(crawlInfo, hotel_infos) {

@@ -1,3 +1,5 @@
+import {getTargetDate} from "../linkGenerator/topHotel.js";
+
 export const sleep = s => new Promise(r => setTimeout(r, s * 1000))
 export const getRandomInt = (min, max) => Math.random() * (max - min) + min
 export const getRandom = list => list[Math.floor(Math.random() * list.length)]
@@ -17,7 +19,7 @@ export const scroll = async args => {
     }
 }
 
-export const scroll_step = async args => {
+export const scrollStep = async args => {
     const {direction, speed, step} = args
     const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
     const scrollHeight = (step) => step * 400
@@ -31,4 +33,21 @@ export const scroll_step = async args => {
         window.scrollTo(0, i)
         await delay(delayTime)
     }
+}
+
+export const getConditions = (dayOfWeeks, subsequentWeeks, keywords, suppliers) => {
+    const conditions = []
+    for (const keyword of keywords) {
+        for (const dayOfWeek of dayOfWeeks) {
+            for (const subsequentWeek of subsequentWeeks) {
+                for(const supplierName in suppliers) {
+                    const [checkinDate, checkoutDate] = getTargetDate(dayOfWeek, subsequentWeek)
+                    conditions.push({
+                        checkinDate, checkoutDate, supplier: suppliers[supplierName], keyword
+                    })
+                }
+            }
+        }
+    }
+    return conditions;
 }

@@ -3,6 +3,8 @@ import {SUPPLIERS} from "../config/suppliers.js";
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from "./suppliers/index.js";
 import {Lambda} from '@aws-sdk/client-lambda';
 import axios from "axios";
+import {getConditions} from "../utils/util.js";
+import {DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION} from "../config/app.js";
 
 const taskGenerators = {
     [SUPPLIERS.Agoda.name]: new Agoda(),
@@ -16,20 +18,10 @@ const taskGenerators = {
     [SUPPLIERS.Trip.name]: new Trip(),
 }
 
-export function generateLink(keywords, dayTypes, subsequentWeeks, suppliers, createdAt) {
-    let tasks = []
-    for (const keywordItem of keywords) {
-        for (const dayType of dayTypes) {
-            for (const subsequentWeek of subsequentWeeks) {
-                for (const idxSup in suppliers) {
-                    const [checkinDate, checkoutDate] = getTargetDate(dayType, subsequentWeek)
-                    const task = taskGenerators[idxSup].generateTaskForTopHotel(checkinDate, checkoutDate, keywordItem, createdAt)
-                    tasks.push(task)
-                }
-            }
-        }
-    }
-    return tasks
+export function generateLink(keywords, dayOfWeeks, subsequentWeeks, suppliers, createdAt) {
+    const conditions = getConditions(dayOfWeeks, subsequentWeeks, keywords, suppliers);
+    return conditions.map(condition => taskGenerators[condition['supplier'].name].generateTopHotelTask(
+        condition['checkinDate'], condition['checkoutDate'], condition['keyword'], createdAt));
 }
 
 export function getDateInString(date) {
@@ -41,13 +33,12 @@ export function getDateInString(date) {
     return `${year}-${month}-${day}`
 }
 
-export function getTargetDate(dayType, subsequentWeek) {
-    const targetDayInWeek = dayType === 'weekday' ? 1 : 6
+export function getTargetDate(dayOfWeek, subsequentWeek) {
     let date = new Date()
-    date.setDate(date.getDate() + (targetDayInWeek - (date.getDay() % 7)) + 7 * subsequentWeek)
+    date.setDate(date.getDate() + (dayOfWeek - (date.getDay() % 7)) + 7 * subsequentWeek)
     const checkin = getDateInString(date)
     date = new Date()
-    date.setDate(date.getDate() + (targetDayInWeek + 1 - (date.getDay() % 7)) + 7 * subsequentWeek)
+    date.setDate(date.getDate() + (dayOfWeek + 1 - (date.getDay() % 7)) + 7 * subsequentWeek)
     const checkout = getDateInString(date)
 
     return [checkin, checkout]
@@ -58,8 +49,7 @@ export async function execGetInternalPrices(action, createdAt) {
     const params = {
         FunctionName: 'hotel-internal-data', /* required */
         Payload: JSON.stringify({
-            'action': action,
-            'createdAt': createdAt.toISOString()
+            'action': action, 'createdAt': createdAt.toISOString()
         })
     };
     await lambda.invoke(params, function (err, data) {
@@ -70,9 +60,7 @@ export async function execGetInternalPrices(action, createdAt) {
 
 async function main() {
     const createdAt = new Date()
-    const dayTypes = ['weekday', 'weekend']
-    const subsequentWeeks = [1, 2]
-    const keywords = (await axios.get(process.env.HOTELFLY_API_HOST + '/keyword')).data
-    const tasks = generateLink(keywords, dayTypes, subsequentWeeks, SUPPLIERS, createdAt)
+    const keywords = (await axios.get(process.env.API_HOST + '/keyword')).data
+    const tasks = generateLink(keywords, DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION, SUPPLIERS, createdAt)
     console.log(tasks)
 }

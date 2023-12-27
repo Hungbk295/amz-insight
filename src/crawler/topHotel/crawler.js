@@ -5,7 +5,7 @@ import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} fro
 import DaoTranClient from "daotran-client";
 import {getConfigBySupplierId, SUPPLIERS} from "../../config/suppliers.js";
 import {sleep} from "../../utils/util.js";
-import {generateAdditionalHotelDetailLinks} from "../../linkGenerator/additionalHotelDetail.js";
+import {generateAdditionalHotelDetailTasks} from "../../linkGenerator/additionalHotelDetail.js";
 import {SUPPLIERS_WITH_DETAIL_PRICE} from "../../config/app.js";
 import _ from "lodash";
 
@@ -33,7 +33,7 @@ export const run = async (queueUrl, workerName) => {
                 if (crawlInfo['isLastTask']) {
                     await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
                     await sleep(5 * 60);
-                    await generateAdditionalHotelDetailLinks();
+                    await generateAdditionalHotelDetailTasks();
                     break;
                 }
                 await client.waitUntilServerAvailable();
@@ -48,7 +48,10 @@ export const run = async (queueUrl, workerName) => {
                     console.log('length: ', resultData.length);
                     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
                     if (SUPPLIERS_WITH_DETAIL_PRICE.map(item => item.id).includes(supplierId))
-                        await crawlers[supplierId].generateDetailTasks(crawlResult)
+                        await crawlers[supplierId].generateDetailTasks(crawlResult, {
+                            id:  crawlInfo['keywordId'],
+                            keyword: crawlInfo['keyword']
+                        })
                     await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
                 } catch (e) {

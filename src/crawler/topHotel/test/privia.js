@@ -3,7 +3,7 @@ import {Privia} from '../suppliers/privia.js'
 import {SUPPLIERS} from "../../../config/suppliers.js";
 
 const crawlInfo = {
-    link: 'https://hotel.priviatravel.com/search/us/unitedstates/hawaii-ohau-honolulu.html?checkIn=2024-02-30&checkOut=2024-02-31&occupancies=1~1~0&destinationType=CITY&destinationId=12728',
+    link: 'search/us/unitedstates/hawaii-ohau-honolulu.html?checkIn=2024-02-30&checkOut=2024-02-31&occupancies=1~1~0&destinationType=CITY&destinationId=12728',
     checkinDate: '2023-12-30',
     checkoutDate: '2023-12-31',
     keywordId: 2,

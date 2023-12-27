@@ -13,28 +13,28 @@ export class Agoda {
             await sleep(1)
         }
         const hotels = []
-        const hotel_infos = await page
+        const hotelInfos = await page
             .locator(`//ol[contains(@class,'hotel-list-container')]/li`)
             .elementHandles()
-        for (const info of hotel_infos) {
+        for (const info of hotelInfos) {
             const hotel = {}
             try {
-                const hotel_name = await (
+                const hotelName = await (
                     await info.$(`//h3[contains(@data-selenium,'hotel-name')]`)
                 ).innerText()
-                let hotel_price = ''
+                let hotelPrice = ''
                 try {
-                    hotel_price = await (
+                    hotelPrice = await (
                         await info.$(`//*[contains(@data-selenium,'display-price')]`)
                     ).innerText()
                 } catch (e) {
                 }
-                const hotel_link = await (await info.$(`//div/a`)).getAttribute('href')
-                const hotel_identifier = hotel_link.split('/')[2]
-                const hotel_tag = hotel_identifier
-                hotel.name = hotel_name
-                hotel.price = hotel_price.replace(/[^0-9]/g, '')
-                hotel.identifier = hotel_identifier
+                const hotelLink = await (await info.$(`//div/a`)).getAttribute('href')
+                const hotelIdentifier = hotelLink.split('/')[2]
+                const hotelTag = hotelIdentifier
+                hotel.name = hotelName
+                hotel.price = hotelPrice.replace(/[^0-9]/g, '')
+                hotel.identifier = hotelIdentifier
                 hotel.tag = hotel_tag
                 hotel.link = hotel_link
                 hotel.supplierId = SUPPLIERS.Agoda.id

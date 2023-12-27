@@ -3,7 +3,7 @@ import {Naver} from "../suppliers/naver.js";
 import {SUPPLIERS} from "../../../config/suppliers.js";
 
 const crawlInfo = {
-    link: "https://hotels.naver.com/list?placeFileName=place%3ASeoul&adultCnt=2&checkIn=2024-03-25&checkOut=2024-03-26&includeTax=true&sortField=popularityKR&sortDirection=descending",
+    link: "list?placeFileName=place%3ASeoul&adultCnt=2&checkIn=2024-03-25&checkOut=2024-03-26&includeTax=true&sortField=popularityKR&sortDirection=descending",
     checkinDate: "2023-06-13",
     checkoutDate: "2023-06-14",
     keywordId: 1,

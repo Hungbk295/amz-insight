@@ -1,9 +1,10 @@
 import {SUPPLIERS} from "../../config/suppliers.js";
+import Sentry from "../../utils/sentry.js";
 
 export class Privia {
-    generateTaskForTopHotel(checkinDate, checkoutDate, keywordItem, createdAt) {
+    generateTopHotelTask(checkinDate, checkoutDate, keywordItem, createdAt) {
         return {
-            link: `search/${keywordItem['privia_dest_info']}.html?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&destinationType=${keywordItem['privia_dest_type']}&destinationId=${keywordItem['privia_dest_id']}`,
+            link: `search/${keywordItem['priviaDestInfo']}.html?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&destinationType=${keywordItem['priviaDestType']}&destinationId=${keywordItem['priviaDestId']}`,
             checkinDate: checkinDate,
             checkoutDate: checkoutDate,
             keywordId: keywordItem.id,
@@ -13,20 +14,33 @@ export class Privia {
         }
     }
 
-    async generateTaskForHotelDetail(checkinDate, checkoutDate, keywordItem, createdAt, hotelInfo) {
-        const link = hotelInfo['link'].split('?')[0] + `?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&htlMasterId=${hotelInfo['identifier']}`
-        return {
-            name: hotelInfo['name'],
-            nameEn: hotelInfo['name_en'],
-            address: hotelInfo['address'],
-            supplierId: hotelInfo['supplier_id'],
-            identifier: hotelInfo['identifier'],
-            tag: hotelInfo['tag'],
-            checkinDate: checkinDate,
-            checkoutDate: checkoutDate,
-            createdAt: createdAt,
-            link: link,
-            keywordId: keywordItem['id']
+    generateHotelDetailTask(checkinDate, checkoutDate, keyword, createdAt, hotelInfo) {
+        if (hotelInfo['link']) {
+            const link = hotelInfo['link'] + `?checkIn=${checkinDate}&checkOut=${checkoutDate}&occupancies=1~1~0&htlMasterId=${hotelInfo['identifier']}`
+            return {
+                name: hotelInfo['name'],
+                nameEn: hotelInfo['nameEn'],
+                address: hotelInfo['address'],
+                supplierId: hotelInfo['supplierId'],
+                identifier: hotelInfo['identifier'],
+                tag: hotelInfo['tag'],
+                checkinDate: checkinDate,
+                checkoutDate: checkoutDate,
+                createdAt: createdAt,
+                link: link,
+                keywordId: keyword.id
+            }
         }
+        Sentry.captureMessage('Cannot generate hotel detail task!', {
+            level: 'error', extra: {
+                json: JSON.stringify({
+                    checkinDate,
+                    checkoutDate,
+                    keyword,
+                    createdAt,
+                    hotelInfo
+                })
+            },
+        })
     }
 }

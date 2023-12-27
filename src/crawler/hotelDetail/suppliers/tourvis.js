@@ -20,4 +20,8 @@ export class Tourvis extends Privia {
 
         return {discountPrice, detailPrice}
     }
+
+    getHotelDetailLink(crawlInfo) {
+        return `hotels/${crawlInfo['identifier']}`;
+    }
 }

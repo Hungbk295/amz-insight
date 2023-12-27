@@ -8,15 +8,15 @@ export class Booking {
         await page.mouse.click(1, 2);
         await page.evaluate(scroll, {direction: "down", speed: "slow"});
 
-        const hotel_infos = await page.locator(`//div[contains(@data-testid,'property-card-content')]`).elementHandles()
+        const hotelInfos = await page.locator(`//div[contains(@data-testid,'property-card-content')]`).elementHandles()
         const hotels = []
-        for (const info of hotel_infos) {
+        for (const info of hotelInfos) {
             try {
                 const hotel = {};
-                const hotel_name = await (await info.$(`//h2`)).innerText()
-                const hotel_price = await (await info.$(`//span[contains(@data-testid,'price-and-discounted-price')]`)).innerText()
-                const hotel_link = (await (await info.$(`//a[contains(@data-testid,'title')]`)).getAttribute('href')).replace(SUPPLIERS.Booking.link, "/")
-                const hotel_identifier = hotel_link.split('/')[3].split('.')[0]
+                const hotelName = await (await info.$(`//h2`)).innerText()
+                const hotelPrice = await (await info.$(`//span[contains(@data-testid,'price-and-discounted-price')]`)).innerText()
+                const hotelLink = (await (await info.$(`//a[contains(@data-testid,'title')]`)).getAttribute('href')).replace(SUPPLIERS.Booking.link, "/")
+                const hotelIdentifier = hotel_link.split('/')[3].split('.')[0]
                 const hotel_tag = hotel_identifier
 
                 hotel.name = hotel_name

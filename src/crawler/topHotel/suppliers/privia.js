@@ -2,15 +2,20 @@ import {SUPPLIERS} from '../../../config/suppliers.js'
 import {sleep} from "../../../utils/util.js";
 import {createSqsMessages} from "../../../utils/awsSdk.js";
 import {MAX_RANK_WITH_DETAIL_PRICE} from "../../../config/app.js";
+import {Privia as PriviaGenerator} from '../../../linkGenerator/suppliers/index.js'
 
 export class Privia {
-    async crawl (page, crawlInfo) {
+    constructor() {
+        this.detailTasksGenerator = new PriviaGenerator()
+    }
+
+    async crawl(page, crawlInfo) {
         let totalDataFromAPI = []
         page.on('response', async response => {
             const urls = await response.url()
             if (urls.includes('price?') && response.status() === 200) {
                 let res = await response.json()
-                totalDataFromAPI = totalDataFromAPI.concat(res.hotelFareList)
+                totalDataFromAPI = totalDataFromAPI.concat(res['hotelFareList'])
             }
         })
         await page.goto(SUPPLIERS.Privia.link + crawlInfo['link'], {timeout: 60000})
@@ -22,12 +27,24 @@ export class Privia {
         return dataFromAPI
     }
 
-    async generateDetailTasks(data) {
-        const hotelDetailTasks = data.slice(0, MAX_RANK_WITH_DETAIL_PRICE)
+    async generateDetailTasks(data, keyword) {
+        const hotelDetailTasks = data.slice(0, MAX_RANK_WITH_DETAIL_PRICE).map(hotelData => {
+            return this.detailTasksGenerator.generateHotelDetailTask(hotelData['checkinDate'], hotelData['checkoutDate'],
+                keyword, hotelData['createdAt'], {
+                    name: hotelData['name'],
+                    nameEn: hotelData['nameEn'],
+                    address: hotelData['address'],
+                    supplierId: hotelData['supplierId'],
+                    identifier: hotelData['identifier'],
+                    tag: hotelData['tag'],
+                    link: hotelData['link']
+                })
+        })
+
         await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, hotelDetailTasks)
     }
 
-    convertRawCrawlData (rawData, crawlInfo) {
+    convertRawCrawlData(rawData, crawlInfo) {
         const {htlNameKr, salePrice, htlMasterId, addr, htlNameEn} = rawData
         let [urlPartInLink, queryPartInLink] = crawlInfo['link'].split('?')
         urlPartInLink = urlPartInLink
@@ -36,7 +53,6 @@ export class Privia {
                 `/${htlNameEn.replaceAll(' ', '').toLowerCase()}.html`
             )
             .replace('search/', 'view/')
-            .split('.com/')[1]
         queryPartInLink = queryPartInLink.replace(
             /destinationType(.*)/g,
             `htlMasterId=${htlMasterId}`

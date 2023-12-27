@@ -1,7 +1,7 @@
 import {SUPPLIERS} from "../../config/suppliers.js";
 
 export class Booking {
-    generateTaskForTopHotel(checkinDate, checkoutDate, keywordItem, createdAt) {
+    generateTopHotelTask(checkinDate, checkoutDate, keywordItem, createdAt) {
         const keyword = keywordItem.keyword
         const encodedKeyword = encodeURIComponent(keyword)
         return {

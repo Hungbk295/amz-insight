@@ -2,8 +2,14 @@ import {sleep} from '../../../utils/util.js'
 import _ from 'lodash'
 import {SUPPLIERS} from "../../../config/suppliers.js";
 import {Privia} from "./privia.js";
+import {Tourvis as TourvisGenerator} from "../../../linkGenerator/suppliers/tourvis.js";
 
 export class Tourvis extends Privia {
+    constructor() {
+        super();
+        this.detailTasksGenerator = new TourvisGenerator();
+    }
+
     async crawl(page, crawlInfo) {
         let data = []
         await page.on('response', async response => {
@@ -17,7 +23,7 @@ export class Tourvis extends Privia {
 
         await page.goto(SUPPLIERS.Tourvis.link + crawlInfo['link'], {timeout: 60000})
 
-        await sleep(60)
+        await sleep(40)
         const handle = item => {
             const {htlMasterId, htlNameKr, htlNameEn, salePrice, addr} = item
             return {
@@ -29,7 +35,7 @@ export class Tourvis extends Privia {
                 checkinDate: crawlInfo['checkinDate'],
                 checkoutDate: crawlInfo['checkoutDate'],
                 address: addr,
-                link: `/hotels/${htlMasterId}`,
+                link: `hotels/${htlMasterId}`,
             }
         }
 
