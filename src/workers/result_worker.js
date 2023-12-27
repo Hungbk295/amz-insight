@@ -23,6 +23,6 @@ while (true) {
         }
         await deleteSqsMessages(process.env.QUEUE_RESULTS_URL, receiptHandles)
     } else
-        await sleep(300)
+        await sleep(60)
     await sleep(5)
 }
