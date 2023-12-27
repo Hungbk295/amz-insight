@@ -1,4 +1,4 @@
-const convertCrawlResult = (crawlResult, crawlInfo) => {
+const convertCrawlResult = (crawlResult, task) => {
     const resultData = [];
     for (let idx = 0; idx < crawlResult.length; idx++) {
         const resultItem = crawlResult[idx];
@@ -8,10 +8,10 @@ const convertCrawlResult = (crawlResult, crawlInfo) => {
         item["price"] = parseInt(resultItem["price"]);
         item["identifier"] = resultItem["identifier"];
         item["link"] = resultItem["link"];
-        item["checkinDate"] = crawlInfo["checkinDate"];
-        item["checkoutDate"] = crawlInfo["checkoutDate"];
-        item["keywordId"] = crawlInfo["keywordId"];
-        item["createdAt"] = crawlInfo["createdAt"];
+        item["checkinDate"] = task["checkinDate"];
+        item["checkoutDate"] = task["checkoutDate"];
+        item["keywordId"] = task["keywordId"];
+        item["createdAt"] = task["createdAt"];
         item["supplierId"] = resultItem["supplierId"];
         item["siteId"] = resultItem['siteId'];
         item["tag"] = resultItem["tag"];

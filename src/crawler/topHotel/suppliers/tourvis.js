@@ -10,7 +10,7 @@ export class Tourvis extends Privia {
         this.detailTasksGenerator = new TourvisGenerator();
     }
 
-    async crawl(page, crawlInfo) {
+    async crawl(page, task) {
         let data = []
         await page.on('response', async response => {
             const urls = await response.url()
@@ -21,7 +21,7 @@ export class Tourvis extends Privia {
             }
         })
 
-        await page.goto(SUPPLIERS.Tourvis.link + crawlInfo['link'], {timeout: 60000})
+        await page.goto(SUPPLIERS.Tourvis.link + task['link'], {timeout: 60000})
 
         await sleep(40)
         const handle = item => {
@@ -32,8 +32,8 @@ export class Tourvis extends Privia {
                 price: salePrice,
                 supplierId: SUPPLIERS.Tourvis.id,
                 identifier: htlMasterId + '',
-                checkinDate: crawlInfo['checkinDate'],
-                checkoutDate: crawlInfo['checkoutDate'],
+                checkinDate: task['checkinDate'],
+                checkoutDate: task['checkoutDate'],
                 address: addr,
                 link: `hotels/${htlMasterId}`,
             }

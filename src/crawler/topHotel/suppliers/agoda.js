@@ -2,8 +2,8 @@ import {scroll, sleep} from '../../../utils/util.js'
 import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Agoda {
-    async crawl(page, crawlInfo) {
-        await page.goto(SUPPLIERS.Agoda.link + crawlInfo['link'], {timeout: 60000})
+    async crawl(page, task) {
+        await page.goto(SUPPLIERS.Agoda.link + task['link'], {timeout: 60000})
         await sleep(15)
 
         await page.evaluate(scroll, {direction: 'down', speed: 'slow'})
@@ -35,11 +35,11 @@ export class Agoda {
                 hotel.name = hotelName
                 hotel.price = hotelPrice.replace(/[^0-9]/g, '')
                 hotel.identifier = hotelIdentifier
-                hotel.tag = hotel_tag
-                hotel.link = hotel_link
+                hotel.tag = hotelTag
+                hotel.link = hotelLink.substring(1)
                 hotel.supplierId = SUPPLIERS.Agoda.id
-                hotel.checkinDate = crawlInfo.checkinDate
-                hotel.checkoutDate = crawlInfo.checkoutDate
+                hotel.checkinDate = task.checkinDate
+                hotel.checkoutDate = task.checkoutDate
                 hotels.push(hotel)
             } catch (e) {
             }

@@ -22,17 +22,17 @@ export const run = async (queueUrl, workerName) => {
         if (data.Messages) {
             for (const msg of data.Messages) {
                 await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
-                const crawlInfo = JSON.parse(msg.Body);
-                const supplierId = crawlInfo.supplierId
+                const task = JSON.parse(msg.Body);
+                const supplierId = task.supplierId
                 const browser = await getBrowser(getConfigBySupplierId(supplierId));
                 const page = await browser.contexts()[0].newPage();
                 try {
-                    const crawlResult = await crawlers[supplierId].crawl(page, crawlInfo);
-                    await finish(crawlResult, crawlInfo)
+                    const crawlResult = await crawlers[supplierId].crawl(page, task);
+                    await finish(crawlResult, task)
                     if (INTERNAL_SUPPLIER_IDS.includes(supplierId)) {
                         await login(supplierId, page)
-                        const crawlResultAfterLogin = await crawlers[supplierId].crawlLoggedIn(page, crawlInfo);
-                        await finish(crawlResultAfterLogin, crawlInfo)
+                        const crawlResultAfterLogin = await crawlers[supplierId].crawlLoggedIn(page, task);
+                        await finish(crawlResultAfterLogin, task)
                     }
                     await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
@@ -48,8 +48,8 @@ export const run = async (queueUrl, workerName) => {
     }
 }
 
-async function finish(crawlResult, crawlInfo) {
-    const resultData = convertCrawlResult(crawlResult, crawlInfo);
+async function finish(crawlResult, task) {
+    const resultData = convertCrawlResult(crawlResult, task);
     console.log(resultData);
     console.log('length: ', resultData.length);
     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));

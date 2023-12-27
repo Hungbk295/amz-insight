@@ -3,7 +3,7 @@ import _ from 'lodash'
 import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Trip {
-    async crawl(page, crawlInfo) {
+    async crawl(page, task) {
         let data = []
         await page.on('response', async response => {
             const urls = await response.url()
@@ -14,7 +14,7 @@ export class Trip {
             }
         })
 
-        await page.goto(SUPPLIERS.Trip.link + crawlInfo['link'], {timeout: 60000})
+        await page.goto(SUPPLIERS.Trip.link + task['link'], {timeout: 60000})
         await sleep(15)
 
         try {
@@ -35,10 +35,10 @@ export class Trip {
                 price: hotelBasicInfo.price,
                 supplierId: SUPPLIERS.Trip.id,
                 identifier: hotelBasicInfo.hotelId + '',
-                checkinDate: crawlInfo['checkinDate'],
-                checkoutDate: crawlInfo['checkoutDate'],
+                checkinDate: task['checkinDate'],
+                checkoutDate: task['checkoutDate'],
                 address: hotelBasicInfo.hotelAddress,
-                link: `/detail/?hotelId=${hotelBasicInfo.hotelId}`,
+                link: `detail/?hotelId=${hotelBasicInfo.hotelId}`,
                 tag: hotelBasicInfo.hotelEnName
             }
         }

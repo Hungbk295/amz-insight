@@ -2,8 +2,8 @@ import {scroll, sleep} from '../../../utils/util.js'
 import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Expedia {
-	async crawl(page, crawlInfo) {
-		await page.goto(SUPPLIERS.Expedia.link + crawlInfo['link'], {timeout: 60000})
+	async crawl(page, task) {
+		await page.goto(SUPPLIERS.Expedia.link + task['link'], {timeout: 60000})
 		await sleep(30)
 		try {
 			await page.locator(`//button[contains(@data-stid,'show-more-results')]`).click({timeout: 10000})
@@ -13,33 +13,33 @@ export class Expedia {
 		await page.evaluate(scroll, {direction: 'down', speed: 'slow'})
 		await sleep(2)
 
-		const hotel_infos = await page
+		const hotelInfos = await page
 			.locator(`//div[contains(@data-stid,'lodging-card-responsive')]`)
 			.elementHandles()
 		const hotels = []
-		for (const info of hotel_infos) {
+		for (const info of hotelInfos) {
 			const hotel = {}
 			try {
-				const hotel_name = await (await info.$(`//div/h3[contains(@class, 'uitk-heading')]`)).innerText();
-				let hotel_price = (await info.innerText()).match(
+				const hotelName = await (await info.$(`//div/h3[contains(@class, 'uitk-heading')]`)).innerText();
+				let hotelPrice = (await info.innerText()).match(
 					/(₩((\d|,)+)\/1박)|(총 요금: ₩((\d|,)+))/gi
 				)
-				hotel_price = hotel_price && hotel_price.length > 0 ? hotel_price[0] : '0'
-				const hotel_link = await (
+				hotelPrice = hotelPrice && hotelPrice.length > 0 ? hotelPrice[0] : '0'
+				const hotelLink = await (
 					await info.$(`//a[contains(@data-stid,'open-hotel-information')]`)
 				).getAttribute('href')
-				const hotel_unique = hotel_link
+				const hotelUnique = hotelLink
 					.match(/\.(h\d+)\./gi)[0]
 					.replaceAll('.', '')
-				const hotel_tag = hotel_link.split(".")[0].replace("/", "")
+				const hotelTag = hotelLink.split(".")[0].replace("/", "")
 
-				hotel.name = hotel_name
-				hotel.price = hotel_price.replace('1박', '').replace(/[^0-9]/g, '')
-				hotel.identifier = hotel_unique
-				hotel.link = hotel_link
-				hotel.tag = hotel_tag
-				hotel.checkinDate = crawlInfo['checkinDate']
-				hotel.checkinDate = crawlInfo['checkoutDate']
+				hotel.name = hotelName
+				hotel.price = hotelPrice.replace('1박', '').replace(/[^0-9]/g, '')
+				hotel.identifier = hotelUnique
+				hotel.link = hotelLink.substring(1)
+				hotel.tag = hotelTag
+				hotel.checkinDate = task['checkinDate']
+				hotel.checkinDate = task['checkoutDate']
 				hotel.supplierId = SUPPLIERS.Expedia.id
 				hotels.push(hotel)
 			} catch (e) {

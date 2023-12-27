@@ -10,7 +10,6 @@ export class Tourvis {
             checkinDate: checkinDate,
             checkoutDate: checkoutDate,
             keywordId: keywordItem.id,
-            keyword: keywordItem.keyword,
             createdAt: createdAt,
             supplierId: SUPPLIERS.Tourvis.id
         }

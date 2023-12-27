@@ -2,29 +2,29 @@ import {SITES, SUPPLIERS} from "../../../config/suppliers.js";
 import {sleep} from "../../../utils/util.js";
 
 export class Privia {
-    async crawl(page, crawlInfo) {
-        const {discountPrice, detailPrice} = await this.crawlHelper(page, crawlInfo)
-        const link = this.getHotelDetailLink(crawlInfo)
+    async crawl(page, task) {
+        const {discountPrice, detailPrice} = await this.crawlHelper(page, task)
+        const link = this.getHotelDetailLink(task)
 
-        return [{...crawlInfo, link, price: parseInt(discountPrice.replaceAll(',', '')), siteId: SITES.detailDiscount.id},
-            {...crawlInfo, link, price: parseInt(detailPrice.replaceAll(',', '')), siteId: SITES.detail.id}]
+        return [{...task, link, price: parseInt(discountPrice.replaceAll(',', '')), siteId: SITES.detailDiscount.id},
+            {...task, link, price: parseInt(detailPrice.replaceAll(',', '')), siteId: SITES.detail.id}]
     }
 
-    async crawlLoggedIn(page, crawlInfo) {
-        const {discountPrice, detailPrice} = await this.crawlHelper(page, crawlInfo)
-        const link = this.getHotelDetailLink(crawlInfo)
+    async crawlLoggedIn(page, task) {
+        const {discountPrice, detailPrice} = await this.crawlHelper(page, task)
+        const link = this.getHotelDetailLink(task)
 
         return [{
-            ...crawlInfo, link, price: parseInt(discountPrice.replaceAll(',', '')), siteId: SITES.discountDetailLoggedIn.id
-        }, {...crawlInfo, link, price: parseInt(detailPrice.replaceAll(',', '')), siteId: SITES.detailLoggedIn.id}]
+            ...task, link, price: parseInt(discountPrice.replaceAll(',', '')), siteId: SITES.discountDetailLoggedIn.id
+        }, {...task, link, price: parseInt(detailPrice.replaceAll(',', '')), siteId: SITES.detailLoggedIn.id}]
     }
 
-    getHotelDetailLink(crawlInfo) {
-        return crawlInfo['link'].split('?')[0]
+    getHotelDetailLink(task) {
+        return task['link'].split('?')[0]
     }
 
-    async crawlHelper(page, crawlInfo) {
-        await page.goto(SUPPLIERS.Privia.link + crawlInfo['link'], {timeout: 60000})
+    async crawlHelper(page, task) {
+        await page.goto(SUPPLIERS.Privia.link + task['link'], {timeout: 60000})
         await sleep(30)
         let discountPrice = '0'
         try {

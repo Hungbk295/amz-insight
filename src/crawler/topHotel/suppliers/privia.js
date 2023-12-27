@@ -9,7 +9,7 @@ export class Privia {
         this.detailTasksGenerator = new PriviaGenerator()
     }
 
-    async crawl(page, crawlInfo) {
+    async crawl(page, task) {
         let totalDataFromAPI = []
         page.on('response', async response => {
             const urls = await response.url()
@@ -18,16 +18,16 @@ export class Privia {
                 totalDataFromAPI = totalDataFromAPI.concat(res['hotelFareList'])
             }
         })
-        await page.goto(SUPPLIERS.Privia.link + crawlInfo['link'], {timeout: 60000})
+        await page.goto(SUPPLIERS.Privia.link + task['link'], {timeout: 60000})
         await sleep(20)
-        const dataFromAPI = totalDataFromAPI.slice(0, 100).map((item) => this.convertRawCrawlData(item, crawlInfo))
+        const dataFromAPI = totalDataFromAPI.slice(0, 100).map((item) => this.convertRawCrawlData(item, task))
         dataFromAPI.forEach((item, index) => {
             item.rank = index + 1;
         })
         return dataFromAPI
     }
 
-    async generateDetailTasks(data, keyword) {
+    async generateHotelDetailTasks(data, keyword) {
         const hotelDetailTasks = data.slice(0, MAX_RANK_WITH_DETAIL_PRICE).map(hotelData => {
             return this.detailTasksGenerator.generateHotelDetailTask(hotelData['checkinDate'], hotelData['checkoutDate'],
                 keyword, hotelData['createdAt'], {
@@ -44,9 +44,9 @@ export class Privia {
         await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, hotelDetailTasks)
     }
 
-    convertRawCrawlData(rawData, crawlInfo) {
+    convertRawCrawlData(rawData, task) {
         const {htlNameKr, salePrice, htlMasterId, addr, htlNameEn} = rawData
-        let [urlPartInLink, queryPartInLink] = crawlInfo['link'].split('?')
+        let [urlPartInLink, queryPartInLink] = task['link'].split('?')
         urlPartInLink = urlPartInLink
             .replace(
                 '.html',
@@ -67,11 +67,11 @@ export class Privia {
             supplierId: SUPPLIERS.Privia.id,
             identifier: htlMasterId + '',
             tag: htlNameEn,
-            checkinDate: crawlInfo['checkinDate'],
-            checkoutDate: crawlInfo['checkoutDate'],
-            keywordId: crawlInfo["keywordId"],
-            createdAt: crawlInfo["createdAt"],
-            link: link,
+            checkinDate: task['checkinDate'],
+            checkoutDate: task['checkoutDate'],
+            keywordId: task["keywordId"],
+            createdAt: task["createdAt"],
+            link: link.split('?')[0],
         }
     }
 }

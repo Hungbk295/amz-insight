@@ -9,7 +9,6 @@ export class Trip {
             checkinDate: checkinDate,
             checkoutDate: checkoutDate,
             keywordId: keywordItem.id,
-            keyword: keywordItem.keyword,
             createdAt: createdAt,
             supplierId: SUPPLIERS.Trip.id
         }

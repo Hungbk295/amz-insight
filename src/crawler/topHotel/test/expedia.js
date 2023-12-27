@@ -2,7 +2,7 @@ import {handle} from "../../../utils/handler.js";
 import { Expedia } from '../suppliers/expedia.js'
 import {SUPPLIERS} from "../../../config/suppliers.js";
 
-const crawlInfo = {
+const task = {
 	link: 'Hotel-Search?adults=2&startDate=2024-05-21&endDate=2024-05-22&destination=%EA%B4%8C',
 	checkinDate: '2024-05-14',
 	checkoutDate: '2024-05-15',
@@ -10,4 +10,4 @@ const crawlInfo = {
 	supplierId: SUPPLIERS.Expedia.id
 }
 
-console.log(await handle(crawlInfo, new Expedia()))
+console.log(await handle(task, new Expedia()))

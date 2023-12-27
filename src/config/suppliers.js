@@ -73,19 +73,19 @@ const INTERNAL_SUPPLIER_IDS = [
 const SITES = {
     detailDiscount: {
         'name': 'detailDiscount',
-        'id': 8
+        'id': 10001
     },
     detail: {
         'name': 'detail',
-        'id': 9
+        'id': 10002
     },
     discountDetailLoggedIn: {
-        id: 10008,
-        name: 'detaildiscountLoggedIn',
+        id: 10101,
+        name: 'detailDiscountLoggedIn',
         domain: '',
     },
     detailLoggedIn: {
-        id: 10009,
+        id: 10102,
         name: 'detailLoggedIn',
         domain: '',
     },

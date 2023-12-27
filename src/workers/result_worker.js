@@ -10,9 +10,10 @@ while (true) {
         const receiptHandles = []
         for (const msg of data.Messages) {
             try {
-                await create(JSON.parse(msg.Body))
+                console.log(await create(JSON.parse(msg.Body)))
                 receiptHandles.push(msg.ReceiptHandle)
             } catch (error) {
+                console.log(error)
                 Sentry.captureMessage(error, {
                     level: 'error', extra: {
                         json: JSON.stringify(msg)
@@ -21,6 +22,7 @@ while (true) {
             }
         }
         await deleteSqsMessages(process.env.QUEUE_RESULTS_URL, receiptHandles)
-    }
-    await sleep(10)
+    } else
+        await sleep(300)
+    await sleep(5)
 }

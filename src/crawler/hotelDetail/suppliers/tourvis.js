@@ -3,8 +3,8 @@ import {Privia} from "./privia.js";
 import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Tourvis extends Privia {
-    async crawlHelper(page, crawlInfo) {
-        await page.goto(SUPPLIERS.Tourvis.link + crawlInfo['link'], {timeout: 60000})
+    async crawlHelper(page, task) {
+        await page.goto(SUPPLIERS.Tourvis.link + task['link'], {timeout: 60000})
         await sleep(20)
         let discountPrice = '0'
         try {
@@ -21,7 +21,7 @@ export class Tourvis extends Privia {
         return {discountPrice, detailPrice}
     }
 
-    getHotelDetailLink(crawlInfo) {
-        return `hotels/${crawlInfo['identifier']}`;
+    getHotelDetailLink(task) {
+        return `hotels/${task['identifier']}`;
     }
 }

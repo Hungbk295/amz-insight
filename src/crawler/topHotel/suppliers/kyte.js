@@ -2,8 +2,8 @@ import {sleep} from "../../../utils/util.js"
 import {SUPPLIERS} from "../../../config/suppliers.js";
 
 export class Kyte {
-    async crawl(page, crawlInfo) {
-        await page.goto(SUPPLIERS.Kyte.link + crawlInfo["link"], {timeout: 60000});
+    async crawl(page, task) {
+        await page.goto(SUPPLIERS.Kyte.link + task["link"], {timeout: 60000});
         await sleep(10)
         let hotelInfos = []
         let retryTimes = 0;
@@ -16,37 +16,37 @@ export class Kyte {
             else retryTimes = 0
             lastHotelCnt = hotelInfos.length
         }
-        const hotels = await this.getHomepagePrice(crawlInfo, hotel_infos)
+        const hotels = await this.getHomepagePrice(task, hotelInfos)
         hotels.forEach((item, index) => {
             item.rank = index + 1;
         })
         return hotels.slice(0, 100);
     }
 
-    async getHomepagePrice(crawlInfo, hotel_infos) {
+    async getHomepagePrice(task, hotelInfos) {
         const hotels = []
-        for (const info of hotel_infos) {
-            const indexInfo = hotel_infos.indexOf(info)
+        for (const info of hotelInfos) {
+            const indexInfo = hotelInfos.indexOf(info)
             const hotel = {};
-            const hotel_name = await (await info.$(`//div[3]/div[1]/div`)).innerText()
-            let hotel_price = '';
+            const hotelName = await (await info.$(`//div[3]/div[1]/div`)).innerText()
+            let hotelPrice = '';
             try {
-                hotel_price = await (await info.$(`//div[3]`)).innerText()
-                hotel_price = hotel_price.match('1박 평균 (.*?)원')[1]
+                hotelPrice = await (await info.$(`//div[3]`)).innerText()
+                hotelPrice = hotelPrice.match('1박 평균 (.*?)원')[1]
             } catch (e) {
-                console.log(indexInfo, hotel_name)
+                console.log(indexInfo, hotelName)
             }
-            const hotel_link = await (await info.getAttribute('href'))
-            const hotel_unique = hotel_link.split('?')[0].split('/')[2];
+            const hotelLink = await (await info.getAttribute('href'))
+            const hotelUnique = hotelLink.split('?')[0].split('/')[2];
 
-            hotel.name = hotel_name
-            hotel.price = hotel_price.replace(/[^0-9]/g, '');
-            hotel.link = hotel_link
+            hotel.name = hotelName
+            hotel.price = hotelPrice.replace(/[^0-9]/g, '');
+            hotel.link = `hotels/${hotelUnique}`
             hotel.supplierId = SUPPLIERS.Kyte.id
-            hotel.identifier = hotel_unique
-            hotel.tag = hotel_unique
-            hotel.checkinDate = crawlInfo.checkinDate
-            hotel.checkoutDate = crawlInfo.checkoutDate
+            hotel.identifier = hotelUnique
+            hotel.tag = hotelUnique
+            hotel.checkinDate = task.checkinDate
+            hotel.checkoutDate = task.checkoutDate
             hotels.push(hotel)
         }
         return hotels

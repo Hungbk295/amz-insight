@@ -2,7 +2,7 @@ import {handle} from "../../../utils/handler.js";
 import {Kyte} from '../suppliers/kyte.js'
 import {SUPPLIERS} from "../../../config/suppliers.js";
 
-const crawlInfo = {
+const task = {
     link: 'hotels/list?id=70&keyword=%EA%B4%8C&type=SEARCH_SOURCE_REGION_EPS&no_cal=true&guests=2&in=20240421&out=20240422',
     checkinDate: '2023-09-04',
     checkoutDate: '2023-09-05',
@@ -12,5 +12,5 @@ const crawlInfo = {
     supplierId: SUPPLIERS.Kyte.id
 }
 
-console.log(await handle(crawlInfo, new Kyte()))
+console.log(await handle(task, new Kyte()))
 
