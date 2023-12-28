@@ -46,11 +46,6 @@ export const run = async (queueUrl, workerName) => {
                 const browser = await getBrowser(getConfigBySupplierId(supplierId));
                 const page = await browser.contexts()[0].newPage();
                 try {
-                    if(!SUPPLIERS_WITH_DETAIL_PRICE.map(item => item.id).includes(supplierId)) {
-                        await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
-                        await browser.close();
-                        continue
-                    }
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
                     const resultData = convertCrawlResult(crawlResult, task);
                     console.log(resultData);
