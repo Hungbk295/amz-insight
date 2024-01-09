@@ -86,12 +86,12 @@ const generateAdditionalHotelDetailTasks = async () => {
     const keywords = (await axios.get(process.env.API_HOST + '/keyword')).data
     const conditions = getConditions(DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION, keywords, IMPORTANT_SUPPLIERS)
 
-    for(const condition of conditions) {
+    for (const condition of conditions) {
         const params = {
             keywordId: condition['keyword'].id,
-            checkin: condition['checkinDate'],
+            checkIn: condition['checkinDate'],
         };
-        const hotelData = (await axios.get(process.env.API_HOST + '/hotel/hotel-result-data', {params})).data
+        const hotelData = (await axios.get(process.env.API_HOST + '/hotel-data/latest-data', {params})).data
         const tasks = await generateAdditionalHotelDetailTasksBySupplier(hotelData, condition['supplier'], condition['keyword'], condition['checkinDate'], condition['checkoutDate'])
         await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, tasks)
     }

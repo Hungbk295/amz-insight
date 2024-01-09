@@ -23,6 +23,7 @@ export class Privia {
                 supplierId: hotelInfo['supplierId'],
                 identifier: hotelInfo['identifier'],
                 tag: hotelInfo['tag'],
+                rank: hotelInfo['rank'],
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 createdAt: createdAt,
