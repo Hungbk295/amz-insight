@@ -10,7 +10,7 @@ while (true) {
         const receiptHandles = []
         for (const msg of data.Messages) {
             try {
-                console.log(await create(JSON.parse(msg.Body)))
+                await create(JSON.parse(msg.Body))
                 receiptHandles.push(msg.ReceiptHandle)
             } catch (error) {
                 console.log(error)
