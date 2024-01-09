@@ -89,7 +89,7 @@ const generateAdditionalHotelDetailTasks = async () => {
     for(const condition of conditions) {
         const params = {
             keywordId: condition['keyword'].id,
-            checkin: checkinDate,
+            checkin: condition['checkinDate'],
         };
         const hotelData = (await axios.get(process.env.API_HOST + '/hotel/hotel-result-data', {params})).data
         const tasks = await generateAdditionalHotelDetailTasksBySupplier(hotelData, condition['supplier'], condition['keyword'], condition['checkinDate'], condition['checkoutDate'])
