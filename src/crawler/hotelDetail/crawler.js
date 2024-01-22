@@ -18,7 +18,7 @@ export const run = async (queueUrl, workerName) => {
     const client = new DaoTranClient(workerName, server);
     await client.register();
     while (true) {
-        const data = await readSqsMessages(queueUrl, 10)
+        const data = await readSqsMessages(queueUrl, 5)
         if (data.Messages) {
             for (const msg of data.Messages) {
                 await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
