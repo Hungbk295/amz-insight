@@ -12,6 +12,7 @@ while (true) {
             try {
                 await create(JSON.parse(msg.Body))
                 receiptHandles.push(msg.ReceiptHandle)
+                console.log('Inserted: ' + new Date().toISOString())
             } catch (error) {
                 console.log(error)
                 Sentry.captureMessage(error, {
@@ -24,5 +25,5 @@ while (true) {
         await deleteSqsMessages(process.env.QUEUE_RESULTS_URL, receiptHandles)
     } else
         await sleep(60)
-    await sleep(5)
+    await sleep(1)
 }
