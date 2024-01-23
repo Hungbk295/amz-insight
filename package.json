@@ -27,5 +27,6 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
-  }
+  },
+  "packageManager": "yarn@4.0.2"
 }
