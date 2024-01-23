@@ -1,2 +1,2 @@
 #!/bin/bash
-xvfb-run --auto-servernum node src/crawler/hotelDetail/crawlerNormal.js $1
+xvfb-run --auto-servernum yarn node src/crawler/hotelDetail/crawlerNormal.js $1
