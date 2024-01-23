@@ -6,4 +6,4 @@ if (!process.argv[2]) {
     process.exit()
 }
 
-await run(process.env.QUEUE_DETAIL_TASKS_URL, process.argv[2])
+run(process.env.QUEUE_DETAIL_TASKS_URL, process.argv[2])
