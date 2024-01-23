@@ -64,5 +64,3 @@ async function main() {
     const tasks = generateLink(keywords, DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION, SUPPLIERS, createdAt)
     console.log(tasks)
 }
-
-main()
