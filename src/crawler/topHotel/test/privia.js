@@ -4,8 +4,8 @@ import {SUPPLIERS} from "../../../config/suppliers.js";
 
 const task = {
     link: 'search/us/unitedstates/hawaii-ohau-honolulu.html?checkIn=2024-02-30&checkOut=2024-02-31&occupancies=1~1~0&destinationType=CITY&destinationId=12728',
-    checkinDate: '2023-12-30',
-    checkoutDate: '2023-12-31',
+    checkIn: '2023-12-30',
+    checkOut: '2023-12-31',
     keywordId: 2,
     createdAt: "2023-11-30T04:37:52.580678Z",
     supplierId: SUPPLIERS.Privia.id

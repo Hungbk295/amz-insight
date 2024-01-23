@@ -41,9 +41,9 @@ export const getConditions = (dayOfWeeks, subsequentWeeks, keywords, suppliers) 
         for (const dayOfWeek of dayOfWeeks) {
             for (const subsequentWeek of subsequentWeeks) {
                 for(const supplierName in suppliers) {
-                    const [checkinDate, checkoutDate] = getTargetDate(dayOfWeek, subsequentWeek)
+                    const [checkIn, checkOut] = getTargetDate(dayOfWeek, subsequentWeek)
                     conditions.push({
-                        checkinDate, checkoutDate, supplier: suppliers[supplierName], keyword
+                        checkIn, checkOut, supplier: suppliers[supplierName], keyword
                     })
                 }
             }

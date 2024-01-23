@@ -29,7 +29,7 @@ export class Privia {
 
     async generateHotelDetailTasks(data, keyword) {
         const hotelDetailTasks = data.slice(0, MAX_RANK_WITH_DETAIL_PRICE).map(hotelData => {
-            return this.detailTasksGenerator.generateHotelDetailTask(hotelData['checkinDate'], hotelData['checkoutDate'],
+            return this.detailTasksGenerator.generateHotelDetailTask(hotelData['checkIn'], hotelData['checkOut'],
                 keyword, hotelData['createdAt'], {
                     name: hotelData['name'],
                     nameEn: hotelData['nameEn'],
@@ -67,8 +67,8 @@ export class Privia {
             supplierId: SUPPLIERS.Privia.id,
             identifier: htlMasterId + '',
             tag: htlNameEn,
-            checkinDate: task['checkinDate'],
-            checkoutDate: task['checkoutDate'],
+            checkIn: task['checkIn'],
+            checkOut: task['checkOut'],
             keywordId: task["keywordId"],
             createdAt: task["createdAt"],
             link: link.split('?')[0],

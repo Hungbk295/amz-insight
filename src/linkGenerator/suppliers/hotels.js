@@ -1,11 +1,11 @@
 import {SUPPLIERS} from "../../config/suppliers.js";
 
 export class Hotels {
-    generateTopHotelTask(checkinDate, checkoutDate, keywordItem, createdAt) {
+    generateTopHotelTask(checkIn, checkOut, keywordItem, createdAt) {
         return {
-            link: `Hotel-Search?adults=2&startDate=${checkinDate}&endDate=${checkoutDate}&destination=${keywordItem['hotelsCityName']}&locale=ko_KR`,
-            checkinDate: checkinDate,
-            checkoutDate: checkoutDate,
+            link: `Hotel-Search?adults=2&startDate=${checkIn}&endDate=${checkOut}&destination=${keywordItem['hotelsCityName']}&locale=ko_KR`,
+            checkIn: checkIn,
+            checkOut: checkOut,
             keywordId: keywordItem.id,
             createdAt: createdAt,
             supplierId: SUPPLIERS.Hotels.id

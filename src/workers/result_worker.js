@@ -14,10 +14,10 @@ while (true) {
                 receiptHandles.push(msg.ReceiptHandle)
                 console.log('Inserted: ' + new Date().toISOString())
             } catch (error) {
-                console.log(error)
+                console.log('Error' + msg.Body)
                 Sentry.captureMessage(error, {
                     level: 'error', extra: {
-                        json: JSON.stringify(msg)
+                        json: msg.Body
                     },
                 });
             }

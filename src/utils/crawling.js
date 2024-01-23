@@ -8,8 +8,8 @@ const convertCrawlResult = (crawlResult, task) => {
         item["price"] = parseInt(resultItem["price"]);
         item["identifier"] = resultItem["identifier"];
         item["link"] = resultItem["link"];
-        item["checkIn"] = task["checkinDate"];
-        item["checkOut"] = task["checkoutDate"];
+        item["checkIn"] = task["checkIn"];
+        item["checkOut"] = task["checkOut"];
         item["keywordId"] = task["keywordId"];
         item["createdAt"] = task["createdAt"];
         item["supplierId"] = resultItem["supplierId"];

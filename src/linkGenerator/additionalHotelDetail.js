@@ -63,7 +63,7 @@ const getHotelInfoIfMissingData = (hotelDataItems, supplier) => {
     return null
 }
 
-const generateAdditionalHotelDetailTasksBySupplier = async (hotelData, supplier, keyword, checkinDate, checkoutDate) => {
+const generateAdditionalHotelDetailTasksBySupplier = async (hotelData, supplier, keyword, checkIn, checkOut) => {
     const hotelDataGroupedByHotelId = groupHotelDataByHotelId(hotelData, supplier)
     const checkingSuppliers = SUPPLIERS_WITH_DETAIL_PRICE.filter(item => item.id !== supplier.id)
     const tasks = []
@@ -74,7 +74,7 @@ const generateAdditionalHotelDetailTasksBySupplier = async (hotelData, supplier,
             const hotelInfo = getHotelInfoIfMissingData(items, checkingSupplier)
             if (hotelInfo) {
                 const taskGenerator = taskGenerators[checkingSupplier.id]
-                const task = await taskGenerator.generateHotelDetailTask(checkinDate, checkoutDate, keyword, createdAt, hotelInfo)
+                const task = await taskGenerator.generateHotelDetailTask(checkIn, checkOut, keyword, createdAt, hotelInfo)
                 tasks.push(task)
             }
         }
@@ -89,10 +89,10 @@ const generateAdditionalHotelDetailTasks = async () => {
     for (const condition of conditions) {
         const params = {
             keywordId: condition['keyword'].id,
-            checkIn: condition['checkinDate'],
+            checkIn: condition['checkIn'],
         };
         const hotelData = (await axios.get(process.env.API_HOST + '/hotel-data/latest-data', {params})).data
-        const tasks = await generateAdditionalHotelDetailTasksBySupplier(hotelData, condition['supplier'], condition['keyword'], condition['checkinDate'], condition['checkoutDate'])
+        const tasks = await generateAdditionalHotelDetailTasksBySupplier(hotelData, condition['supplier'], condition['keyword'], condition['checkIn'], condition['checkOut'])
         await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, tasks)
     }
 }

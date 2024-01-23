@@ -35,8 +35,8 @@ export class Trip {
                 price: hotelBasicInfo.price,
                 supplierId: SUPPLIERS.Trip.id,
                 identifier: hotelBasicInfo.hotelId + '',
-                checkinDate: task['checkinDate'],
-                checkoutDate: task['checkoutDate'],
+                checkIn: task['checkIn'],
+                checkOut: task['checkOut'],
                 address: hotelBasicInfo.hotelAddress,
                 link: `detail/?hotelId=${hotelBasicInfo.hotelId}`,
                 tag: hotelBasicInfo.hotelEnName

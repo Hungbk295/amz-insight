@@ -32,8 +32,8 @@ export class Tourvis extends Privia {
                 price: salePrice,
                 supplierId: SUPPLIERS.Tourvis.id,
                 identifier: htlMasterId + '',
-                checkinDate: task['checkinDate'],
-                checkoutDate: task['checkoutDate'],
+                checkIn: task['checkIn'],
+                checkOut: task['checkOut'],
                 address: addr,
                 link: `hotels/${htlMasterId}`,
             }

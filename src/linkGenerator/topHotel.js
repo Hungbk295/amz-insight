@@ -21,7 +21,7 @@ const taskGenerators = {
 export function generateLink(keywords, dayOfWeeks, subsequentWeeks, suppliers, createdAt) {
     const conditions = getConditions(dayOfWeeks, subsequentWeeks, keywords, suppliers);
     return conditions.map(condition => taskGenerators[condition['supplier'].name].generateTopHotelTask(
-        condition['checkinDate'], condition['checkoutDate'], condition['keyword'], createdAt));
+        condition['checkIn'], condition['checkOut'], condition['keyword'], createdAt));
 }
 
 export function getDateInString(date) {
@@ -64,3 +64,5 @@ async function main() {
     const tasks = generateLink(keywords, DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION, SUPPLIERS, createdAt)
     console.log(tasks)
 }
+
+main()

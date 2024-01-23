@@ -3,8 +3,8 @@ const SUPPLIERS = {
         'name': 'Privia',
         'link': 'https://hotel.priviatravel.com/',
         'id': 7,
-        'userName': 'furmi78',
-        'password': 'sjymirr0909!'
+        'userName': 'hoangcongst94',
+        'password': '5eD*6ZQeMS!v5jW'
     },
     Agoda: {
         'name': 'Agoda',

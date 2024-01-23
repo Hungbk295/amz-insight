@@ -38,8 +38,8 @@ export class Expedia {
 				hotel.identifier = hotelUnique
 				hotel.link = hotelLink.substring(1)
 				hotel.tag = hotelTag
-				hotel.checkinDate = task['checkinDate']
-				hotel.checkinDate = task['checkoutDate']
+				hotel.checkIn = task['checkIn']
+				hotel.checkIn = task['checkOut']
 				hotel.supplierId = SUPPLIERS.Expedia.id
 				hotels.push(hotel)
 			} catch (e) {

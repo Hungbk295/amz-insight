@@ -38,8 +38,8 @@ export class Agoda {
                 hotel.tag = hotelTag
                 hotel.link = hotelLink.substring(1)
                 hotel.supplierId = SUPPLIERS.Agoda.id
-                hotel.checkinDate = task.checkinDate
-                hotel.checkoutDate = task.checkoutDate
+                hotel.checkIn = task.checkIn
+                hotel.checkOut = task.checkOut
                 hotels.push(hotel)
             } catch (e) {
             }

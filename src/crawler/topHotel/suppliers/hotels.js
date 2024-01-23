@@ -32,8 +32,8 @@ export class Hotels {
                 hotel.tag = hotelUnique
                 hotel.link = hotelLink.substring(1);
                 hotel.supplierId = SUPPLIERS.Hotels.id
-                hotel.checkinDate = task["checkinDate"]
-                hotel.checkoutDate = task["checkoutDate"]
+                hotel.checkIn = task["checkIn"]
+                hotel.checkOut = task["checkOut"]
                 hotels.push(hotel);
             } catch (e) {
                 console.log(e)

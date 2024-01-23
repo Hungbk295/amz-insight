@@ -47,8 +47,8 @@ export class Naver {
             hotel.supplierId = SUPPLIERS.Naver.id
             hotel.identifier = hotelUnique
             hotel.tag = hotelUnique
-            hotel.checkinDate = task.checkinDate
-            hotel.checkoutDate = task.checkoutDate
+            hotel.checkIn = task.checkIn
+            hotel.checkOut = task.checkOut
             hotels.push(hotel)
         }
         return hotels

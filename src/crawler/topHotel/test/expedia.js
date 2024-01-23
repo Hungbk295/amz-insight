@@ -4,8 +4,8 @@ import {SUPPLIERS} from "../../../config/suppliers.js";
 
 const task = {
 	link: 'Hotel-Search?adults=2&startDate=2024-05-21&endDate=2024-05-22&destination=%EA%B4%8C',
-	checkinDate: '2024-05-14',
-	checkoutDate: '2024-05-15',
+	checkIn: '2024-05-14',
+	checkOut: '2024-05-15',
 	keywordId: 2,
 	supplierId: SUPPLIERS.Expedia.id
 }

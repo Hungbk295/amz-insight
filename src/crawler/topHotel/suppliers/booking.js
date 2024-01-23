@@ -25,8 +25,8 @@ export class Booking {
                 hotel.identifier = hotelIdentifier
                 hotel.tag = hotelTag
                 hotel.supplierId = SUPPLIERS.Booking.id
-                hotel.checkinDate = task['checkinDate']
-                hotel.checkoutDate = task['checkoutDate']
+                hotel.checkIn = task['checkIn']
+                hotel.checkOut = task['checkOut']
                 hotels.push(hotel)
             } catch (e) {
             }
