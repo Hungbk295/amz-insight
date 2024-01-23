@@ -14,7 +14,7 @@
     "axios": "^1.2.2",
     "daotran-client": "^1.0.22",
     "dayjs": "^1.11.7",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.3.2",
     "fingerprint-generator": "^2.1.21",
     "fingerprint-injector": "^2.1.21",
     "js-yaml": "^4.1.0",
