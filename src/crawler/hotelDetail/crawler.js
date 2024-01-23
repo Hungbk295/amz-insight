@@ -7,6 +7,7 @@ import DaoTranClient from "daotran-client";
 import {login} from "../loginHandlers/index.js";
 import _ from "lodash";
 import {Privia, Tourvis} from "./suppliers/index.js";
+import Sentry from "../../utils/sentry.js";
 
 const crawlers = {
     [SUPPLIERS.Privia.id]: new Privia(),
@@ -38,7 +39,11 @@ export const run = async (queueUrl, workerName) => {
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
                 } catch (e) {
                     console.log("Error", msg.Body);
-                    console.log(e);
+                    Sentry.captureMessage(e, {
+                        level: 'error', extra: {
+                            json: msg.Body
+                        }
+                    });
                 }
                 await browser.close();
             }
