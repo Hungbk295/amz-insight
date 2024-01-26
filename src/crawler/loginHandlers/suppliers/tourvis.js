@@ -22,7 +22,7 @@ export class Tourvis extends Privia {
             await page.locator('//*[@id="userPwd"]').fill(SUPPLIERS.Tourvis.password)
             await sleep(1)
             await page.locator('//*[@id="btn_submit"]').click()
-            await page.waitForNavigation()
+            await page.waitForNavigation({timeout: 60000})
             const cookies = await page.context().cookies(this.siteUrl)
             await sleep(5)
             if (await this.isLoggedIn(cookies)) return true;

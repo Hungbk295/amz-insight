@@ -3,11 +3,12 @@ import {Tourvis} from "../suppliers/index.js";
 import {SUPPLIERS} from "../../../config/suppliers.js";
 
 const task = {
-    link: 'https://hotel.tourvis.com/hotels/69018?type=CITY&keyword=%25EC%2598%25A4%25EC%2582%25AC%25EC%25B9%25B4%2C%2520%25EC%259D%25BC%25EB%25B3%25B8&id=12495&in=20231229&out=20231230&guests=2&division=city&pageType=main&h=1',
+    link: 'hotels/4714?type=CITY&keyword=%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C&id=38045&&in=20240203&out=20240204&guests=2&pageType=main&h=1',
     checkIn: '2023-07-30',
     checkOut: '2023-07-31',
     keywordId: 2,
-    supplierId: SUPPLIERS.Tourvis.id
+    supplierId: SUPPLIERS.Tourvis.id,
+    needLoggedInPrice: true,
 }
 
 console.log(await handle(task, new Tourvis()))
