@@ -13,7 +13,7 @@
         - ```pm2 start --name hotel-fly-important-n entrypoint-important.sh -- hotel-fly-important-n```
 
 2. Notes
-    * Install [Node 18 for Ubuntu](https://github.com/nodesource/distributions)
+    * [Install Node 18 for Ubuntu](https://github.com/nodesource/distributions)
     * AWS configuration:
         * Using aws cli: ```aws configure```
         * Using credential files:
@@ -40,8 +40,17 @@
           Hostname altssh.bitbucket.org
           Port 443
         ```
-
-
+3. Setup CloudwatchAgent
+    * [Installing the CloudWatch agent on on-premises servers](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-on-premise.html)
+    ```
+   wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+   sudo dpkg -i -E ./amazon-cloudwatch-agent.deb
+   sudo aws configure --profile AmazonCloudWatchAgent
+   sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
+   sudo nano /opt/aws/amazon-cloudwatch-agent/bin/config.json 
+   sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m onPremise -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
+   sudo systemctl status amazon-cloudwatch-agent
+   ```
 
 
 
