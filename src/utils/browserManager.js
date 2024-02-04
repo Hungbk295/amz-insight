@@ -29,3 +29,10 @@ export const getBrowser = async (config) => {
     return browser
 }
 
+export const disableLoadImage = async (page) => {
+    await page.route('**/*', (route) => {
+        return route.request().resourceType() === 'image'
+            ? route.abort()
+            : route.continue()
+    });
+}
