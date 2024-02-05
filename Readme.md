@@ -44,13 +44,23 @@
     * [Installing the CloudWatch agent on on-premises servers](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-on-premise.html)
     ```
    wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+   ```
+   or for arm64 linux:
+   ```
+   wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+   ```
+   ```
    sudo dpkg -i -E ./amazon-cloudwatch-agent.deb
    sudo aws configure --profile AmazonCloudWatchAgent
    sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
-   sudo nano /opt/aws/amazon-cloudwatch-agent/bin/config.json 
+   sudo nano /opt/aws/amazon-cloudwatch-agent/bin/config.json
    sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m onPremise -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
    sudo systemctl status amazon-cloudwatch-agent
    ```
+
+    * [Install aws cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+   
+
 
 
 
