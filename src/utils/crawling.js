@@ -1,4 +1,6 @@
 const convertCrawlResult = (crawlResult, task) => {
+    if(crawlResult.length === 0)
+        throw new Error('Cannot crawl ' + JSON.stringify(task))
     const resultData = [];
     for (let idx = 0; idx < crawlResult.length; idx++) {
         const resultItem = crawlResult[idx];
