@@ -14,7 +14,7 @@ export class Tourvis extends Privia {
         let data = []
         await page.on('response', async response => {
             const urls = await response.url()
-            if (urls.includes('supplier/hotels/price?searchType') && response.status() === 200) {
+            if (urls.includes('/hotel/api/search/price') && response.status() === 200) {
                 let res = await response.json()
 
                 data = data.concat(res.hotelFareList)
