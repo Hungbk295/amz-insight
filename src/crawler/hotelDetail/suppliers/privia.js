@@ -26,7 +26,7 @@ export class Privia {
 
     async crawlHelper(page, task) {
         await disableLoadImage(page)
-        await page.goto(SUPPLIERS.Privia.link + task['link'], {timeout: 60000})
+        await page.goto(SUPPLIERS.Privia.link + task['link'], {timeout: 120000})
         await sleep(30)
         let discountPrice = '0'
         try {
