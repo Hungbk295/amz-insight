@@ -9,6 +9,9 @@
     * Setup environment variables:
         - ```nano .env```
     * Run command:
+        - ## Important:
+            - working directory have to be like: /path/to/hn-hotel-fly. Otherwise, an ENOENT error will occur.
+            - If you run on local, you can set working directory on your IDE before you run
         - ```pm2 start --name hn-hotel-fly-0 entrypoint-normal.sh -- hn-hotel-fly-0```
         - ```pm2 start --name hotel-fly-important-n entrypoint-important.sh -- hotel-fly-important-n```
 
