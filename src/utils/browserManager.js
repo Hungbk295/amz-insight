@@ -34,7 +34,7 @@ export const disableLoadImage = async (page) => {
         return route.request().resourceType() === 'image'
             ? route.fulfill({
                 status: 200,
-                path: '../../../resource/mockImage/mockImage.png',
+                path: 'resource/mockImage.png',
             })
             : route.continue()
     });
