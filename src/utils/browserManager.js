@@ -32,7 +32,10 @@ export const getBrowser = async (config) => {
 export const disableLoadImage = async (page) => {
     await page.route('**/*', (route) => {
         return route.request().resourceType() === 'image'
-            ? route.abort()
+            ? route.fulfill({
+                status: 200,
+                path: '../../../resource/mockImage/mockImage.png',
+            })
             : route.continue()
     });
 }

@@ -3,6 +3,7 @@ import _ from 'lodash'
 import {SUPPLIERS} from "../../../config/suppliers.js";
 import {Privia} from "./privia.js";
 import {Tourvis as TourvisGenerator} from "../../../linkGenerator/suppliers/tourvis.js";
+import {disableLoadImage} from "../../../utils/browserManager.js";
 
 export class Tourvis extends Privia {
     constructor() {
@@ -11,6 +12,7 @@ export class Tourvis extends Privia {
     }
 
     async crawl(page, task) {
+        await disableLoadImage(page)
         let data = []
         await page.on('response', async response => {
             const urls = await response.url()
