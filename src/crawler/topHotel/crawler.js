@@ -66,7 +66,8 @@ export const run = async (queueUrl, workerName) => {
                 }
                 await browser.close();
             }
-        }
+        } else
+            await sleep(60)
         await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
         await sleep(5)
     }
