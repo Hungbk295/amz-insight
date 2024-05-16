@@ -39,7 +39,7 @@ export class Naver {
             const hotelName = await (await info.$(`//div[1]/div[2]/h4`)).innerText()
             const hotelPrice = await (await info.$(`//div[2]/em`)).innerText()
             const hotelLink = await (await info.$(`//a`)).getAttribute('href')
-            const hotelUnique = hotelLink.split('&')[0].split('%3A')[1];
+            const hotelUnique = hotelLink.split('%3A')[1] ? hotelLink.split('%3A')[1].split('&')[0] : hotelLink.split('/')[2];
 
             hotel.name = hotelName
             hotel.price = hotelPrice.replace(/[^0-9]/g, '');
