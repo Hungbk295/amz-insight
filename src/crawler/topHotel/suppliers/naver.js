@@ -4,12 +4,6 @@ import {sleep, scroll} from "../../../utils/util.js";
 export class Naver {
     async crawl(page, task) {
         await page.goto(SUPPLIERS.Naver.link + task["link"], {timeout: 60000});
-        await sleep(8)
-        await page.locator("(//button[contains(@class, 'SearchBox_btn_location')])[1]").click()
-        await sleep(3)
-        await page.locator("(//input[contains(@class, 'Autocomplete_txt')])[1]").fill(task.keyword['keyword'])
-        await sleep(3)
-        await page.locator("(//*[contains(@class, 'SearchResults_item')])[1]").click()
         await sleep(15)
         await page.evaluate(scroll, {direction: "down", speed: "slow"});
         await sleep(2)
@@ -43,7 +37,7 @@ export class Naver {
 
             hotel.name = hotelName
             hotel.price = hotelPrice.replace(/[^0-9]/g, '');
-            hotel.link = hotelLink.substring(1)
+            hotel.link = hotelLink.substring(1).split('&')[0]
             hotel.supplierId = SUPPLIERS.Naver.id
             hotel.identifier = hotelUnique
             hotel.tag = hotelUnique
