@@ -91,4 +91,18 @@ const SITES = {
     },
 }
 
-export {SUPPLIERS, SITES, INTERNAL_SUPPLIER_IDS}
+const SCRIPT_PRIVIA_TOURVIS = `
+    var new_id = 'hn_worker';
+    var mo = null;
+    function cb(a) {
+        mo = a;
+        console.log(document.cookie.split(';').forEach(function(c) {
+            if (c.trim().startsWith('_pk_id.' + mo.getSiteId())) {
+                document.cookie = c.split('=')[0] + '=' + new_id + c.match(/=\\S+([.]\\d+[.])/)[1] + '; path=/; domain=' + mo.getCookieDomain();
+            }
+        }));
+    }
+    _paq.push([function() { cb(this); }]);
+`
+
+export {SUPPLIERS, SITES, INTERNAL_SUPPLIER_IDS, SCRIPT_PRIVIA_TOURVIS}
