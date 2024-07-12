@@ -1,4 +1,4 @@
-import {SITES, SUPPLIERS} from "../../../config/suppliers.js";
+import { SCRIPT_PRIVIA_TOURVIS, SITES, SUPPLIERS } from '../../../config/suppliers.js'
 import {sleep} from "../../../utils/util.js";
 import {disableLoadImage} from "../../../utils/browserManager.js";
 
@@ -27,6 +27,9 @@ export class Privia {
     async crawlHelper(page, task) {
         await disableLoadImage(page)
         await page.goto(SUPPLIERS.Privia.link + task['link'], {timeout: 120000})
+        await page.evaluate((script) => {
+            eval(script);
+        }, SCRIPT_PRIVIA_TOURVIS);
         await sleep(30)
         let discountPrice = '0'
         try {
