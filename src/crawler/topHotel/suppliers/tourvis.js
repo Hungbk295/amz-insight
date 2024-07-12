@@ -1,6 +1,6 @@
 import { sleep } from '../../../utils/util.js'
 import _ from 'lodash'
-import { SUPPLIERS } from '../../../config/suppliers.js'
+import { SCRIPT_PRIVIA_TOURVIS, SUPPLIERS } from '../../../config/suppliers.js'
 import { Privia } from './privia.js'
 import { Tourvis as TourvisGenerator } from '../../../linkGenerator/suppliers/tourvis.js'
 import { disableLoadImage } from '../../../utils/browserManager.js'
@@ -22,7 +22,9 @@ export class Tourvis extends Privia {
 		})
 
 		await page.goto(SUPPLIERS.Tourvis.link + task['link'], { timeout: 60000 })
-
+		await page.evaluate((script) => {
+			eval(script);
+		}, SCRIPT_PRIVIA_TOURVIS);
 		await sleep(40)
 		const handle = item => {
 			const { htlMasterId, htlNameKr, htlNameEn, salePrice, addr } = item
