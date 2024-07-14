@@ -5,6 +5,7 @@ import {Lambda} from '@aws-sdk/client-lambda';
 import axios from "axios";
 import {getConditions} from "../utils/util.js";
 import {DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION} from "../config/app.js";
+import { createSqsMessages } from '../utils/awsSdk.js'
 
 const taskGenerators = {
     [SUPPLIERS.Agoda.name]: new Agoda(),
@@ -62,5 +63,6 @@ async function main() {
     const createdAt = new Date()
     const keywords = (await axios.get(process.env.API_HOST + '/keyword')).data
     const tasks = generateLink(keywords, DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION, SUPPLIERS, createdAt)
+    // await createSqsMessages(process.env.QUEUE_TASKS_URL, tasks))
     console.log(tasks)
 }
