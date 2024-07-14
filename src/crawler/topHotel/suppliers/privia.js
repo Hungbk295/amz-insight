@@ -4,8 +4,6 @@ import {createSqsMessages} from "../../../utils/awsSdk.js";
 import {MAX_RANK_WITH_DETAIL_PRICE} from "../../../config/app.js";
 import {Privia as PriviaGenerator} from '../../../linkGenerator/suppliers/index.js'
 
-const path = './cookies.json'
-
 export class Privia {
     constructor() {
         this.detailTasksGenerator = new PriviaGenerator()
