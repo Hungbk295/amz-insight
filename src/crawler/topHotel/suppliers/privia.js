@@ -1,8 +1,10 @@
-import { SCRIPT_PRIVIA_TOURVIS, SUPPLIERS } from '../../../config/suppliers.js'
-import {sleep} from "../../../utils/util.js";
+import { SUPPLIERS } from '../../../config/suppliers.js'
+import { addCookiePrivia, sleep } from '../../../utils/util.js'
 import {createSqsMessages} from "../../../utils/awsSdk.js";
 import {MAX_RANK_WITH_DETAIL_PRICE} from "../../../config/app.js";
 import {Privia as PriviaGenerator} from '../../../linkGenerator/suppliers/index.js'
+
+const path = './cookies.json'
 
 export class Privia {
     constructor() {
@@ -18,10 +20,8 @@ export class Privia {
                 totalDataFromAPI = totalDataFromAPI.concat(res['hotelFareList'])
             }
         })
+        await addCookiePrivia(page)
         await page.goto(SUPPLIERS.Privia.link + task['link'], {timeout: 60000})
-        await page.evaluate((script) => {
-            eval(script);
-        }, SCRIPT_PRIVIA_TOURVIS);
         await sleep(20)
         const dataFromAPI = totalDataFromAPI.slice(0, 100).map((item) => this.convertRawCrawlData(item, task))
         dataFromAPI.forEach((item, index) => {

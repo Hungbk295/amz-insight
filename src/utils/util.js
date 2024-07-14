@@ -51,3 +51,33 @@ export const getConditions = (dayOfWeeks, subsequentWeeks, keywords, suppliers) 
     }
     return conditions;
 }
+export const addCookiePrivia = async (page) => {
+    const timeStamp = Math.floor(Date.now() / 1000)
+    await page.context().addCookies([
+        {
+            "name": "_pk_id.1.5393",
+            "value": `hn_worker.${timeStamp}`,
+            "domain": ".priviatravel.com",
+            "path": "/",
+            "expires": -1,
+            "httpOnly": false,
+            "secure": false,
+            "sameSite": "Lax"
+        },
+    ])
+}
+export const addCookieTourvis = async (page) => {
+    const timeStamp = Math.floor(Date.now() / 1000)
+    await page.context().addCookies([
+        {
+            "name": "_pk_id.3.fa97",
+            "value": `hn_worker.${timeStamp}`,
+            "domain": ".tourvis.com",
+            "path": "/",
+            "expires": -1,
+            "httpOnly": false,
+            "secure": false,
+            "sameSite": "Lax"
+        },
+    ])
+}

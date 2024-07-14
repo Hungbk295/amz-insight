@@ -1,6 +1,6 @@
-import { sleep } from '../../../utils/util.js'
+import { addCookieTourvis, sleep } from '../../../utils/util.js'
 import _ from 'lodash'
-import { SCRIPT_PRIVIA_TOURVIS, SUPPLIERS } from '../../../config/suppliers.js'
+import { SUPPLIERS } from '../../../config/suppliers.js'
 import { Privia } from './privia.js'
 import { Tourvis as TourvisGenerator } from '../../../linkGenerator/suppliers/tourvis.js'
 import { disableLoadImage } from '../../../utils/browserManager.js'
@@ -12,7 +12,7 @@ export class Tourvis extends Privia {
 	}
 
 	async crawl(page, task) {
-		await disableLoadImage(page)
+		// await disableLoadImage(page)
 		let data = []
 		await page.route('**/hotel/api/search/price', async route => {
 			const response = await route.fetch()
@@ -20,12 +20,9 @@ export class Tourvis extends Privia {
 			data = data.concat(json.hotelFareList)
 			await route.fulfill({ response, json })
 		})
-
+		await addCookieTourvis(page)
 		await page.goto(SUPPLIERS.Tourvis.link + task['link'], { timeout: 60000 })
-		await page.evaluate((script) => {
-			eval(script);
-		}, SCRIPT_PRIVIA_TOURVIS);
-		await sleep(40)
+		await sleep(50)
 		const handle = item => {
 			const { htlMasterId, htlNameKr, htlNameEn, salePrice, addr } = item
 			return {
