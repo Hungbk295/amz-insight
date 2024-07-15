@@ -1,6 +1,7 @@
 import {FingerprintGenerator} from 'fingerprint-generator'
 import {FingerprintInjector} from 'fingerprint-injector'
 import {chromium} from 'playwright'
+import { SUPPLIERS } from '../config/suppliers.js'
 
 export const getBrowser = async (config) => {
     const fingerprintGenerator = new FingerprintGenerator()
@@ -8,7 +9,6 @@ export const getBrowser = async (config) => {
         devices: config?.devices || ['desktop'],
         browsers: ['chrome', 'firefox'],
     })
-
     const fingerprintInjector = new FingerprintInjector()
     const {fingerprint} = browserFingerprintWithHeaders
     const options = config?.proxy && process.env.ENV === 'prod' ? {
@@ -17,15 +17,22 @@ export const getBrowser = async (config) => {
     } : {headless: false}
 
     const browser = await chromium.launch(options)
+    const userAgent = [SUPPLIERS.Privia.id,SUPPLIERS.Tourvis.id].includes(config.id) ? 'hn_worker' : fingerprint.navigator.userAgent
     const context = await browser.newContext({
-        userAgent: fingerprint.navigator.userAgent,
+        userAgent: userAgent,
         locale: 'ko_KR',
         viewport: fingerprint.screen,
     })
     await fingerprintInjector.attachFingerprintToPlaywright(
-        context,
-        browserFingerprintWithHeaders
-    )
+       context,
+       {
+           ...browserFingerprintWithHeaders,
+           headers: {
+               ...browserFingerprintWithHeaders.headers,
+               'user-agent': userAgent
+           }
+       }
+    );
     return browser
 }
 
