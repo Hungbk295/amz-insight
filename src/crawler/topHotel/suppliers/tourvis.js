@@ -12,7 +12,7 @@ export class Tourvis extends Privia {
 	}
 
 	async crawl(page, task) {
-		// await disableLoadImage(page)
+		await disableLoadImage(page)
 		let data = []
 		await page.route('**/hotel/api/search/price', async route => {
 			const response = await route.fetch()
