@@ -1,5 +1,5 @@
 import {createSqsMessages, deleteSqsMessage, readSqsMessages} from "../../utils/awsSdk.js";
-import {getBrowser} from "../../utils/browserManager.js";
+import {getContext} from "../../utils/browserManager.js";
 import {convertCrawlResult} from "../../utils/crawling.js";
 import {sleep} from "../../utils/util.js";
 import {getConfigBySupplierId, INTERNAL_SUPPLIER_IDS, SUPPLIERS} from "../../config/suppliers.js";
@@ -25,8 +25,8 @@ export const run = async (queueUrl, workerName) => {
                 await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                 const task = JSON.parse(msg.Body);
                 const supplierId = task.supplierId
-                const browser = await getBrowser(getConfigBySupplierId(supplierId));
-                const page = await browser.contexts()[0].newPage();
+                const context = await getContext(getConfigBySupplierId(supplierId));
+                const page = await context.pages()[0]
                 try {
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
                     await finish(crawlResult, task)
@@ -45,7 +45,7 @@ export const run = async (queueUrl, workerName) => {
                         }
                     });
                 }
-                await browser.close();
+                await context.close();
             }
         } else
             await sleep(60)
