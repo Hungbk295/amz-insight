@@ -1,5 +1,5 @@
 import {createSqsMessages, deleteSqsMessage, readSqsMessages} from "../../utils/awsSdk.js";
-import {getBrowser} from "../../utils/browserManager.js";
+import {getContext} from "../../utils/browserManager.js";
 import {convertCrawlResult} from "../../utils/crawling.js";
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from './suppliers/index.js'
 import DaoTranClient from "daotran-client";
@@ -43,8 +43,8 @@ export const run = async (queueUrl, workerName) => {
                 await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                 const supplierId = task["supplierId"]
                 task['keyword'] = keywords.find(keyword => keyword.id === task['keywordId'])
-                const browser = await getBrowser(getConfigBySupplierId(supplierId));
-                const page = await browser.contexts()[0].newPage();
+                const context = await getContext(getConfigBySupplierId(supplierId));
+                const page = await context.pages()[0]
                 try {
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
                     const resultData = convertCrawlResult(crawlResult, task);
@@ -64,7 +64,7 @@ export const run = async (queueUrl, workerName) => {
                     } catch (e) {
                     }
                 }
-                await browser.close();
+                await context.close();
             }
         } else
             await sleep(60)
