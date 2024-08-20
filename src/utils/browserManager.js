@@ -4,8 +4,8 @@ import {chromium} from 'playwright'
 import { INTERNAL_SUPPLIER_IDS } from '../config/suppliers.js'
 import { FINGERPRINT_INTERNAL_SYS } from '../config/fingerprint_internal_sys.js'
 
-export const getBrowser = async (config) => {
-    if (INTERNAL_SUPPLIER_IDS.includes(config.id)) return getBrowserForInternalSystem();
+export const getContext = async (config) => {
+    if (INTERNAL_SUPPLIER_IDS.includes(config.id)) return getContextForInternalSystem();
     const fingerprintGenerator = new FingerprintGenerator()
     const browserFingerprintWithHeaders = fingerprintGenerator.getFingerprint({
         devices: config?.devices || ['desktop'],
@@ -26,22 +26,18 @@ export const getBrowser = async (config) => {
     await fingerprintInjector.attachFingerprintToPlaywright(
        context, browserFingerprintWithHeaders
     );
-    return browser
+    await context.newPage()
+    return browser.contexts()[0]
 }
 
-const getBrowserForInternalSystem = async () => {
+const getContextForInternalSystem = async () => {
     const fingerprintInjector = new FingerprintInjector()
-    const {fingerprint} = FINGERPRINT_INTERNAL_SYS
     const options = {headless: false}
-    const browser = await chromium.launch(options)
-    const context = await browser.newContext({
-        locale: 'ko_KR',
-        viewport: fingerprint.screen,
-    })
+    const context = await chromium.launchPersistentContext(`~/hn_worker/profile/demo`,options)
     await fingerprintInjector.attachFingerprintToPlaywright(
        context, FINGERPRINT_INTERNAL_SYS
     );
-    return browser
+    return context
 }
 
 export const disableLoadImage = async (page) => {
