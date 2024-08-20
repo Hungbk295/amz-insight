@@ -1,9 +1,11 @@
 import {FingerprintGenerator} from 'fingerprint-generator'
 import {FingerprintInjector} from 'fingerprint-injector'
 import {chromium} from 'playwright'
-import { SUPPLIERS } from '../config/suppliers.js'
+import { INTERNAL_SUPPLIER_IDS } from '../config/suppliers.js'
+import { FINGERPRINT_INTERNAL_SYS } from '../config/fingerprint_internal_sys.js'
 
 export const getBrowser = async (config) => {
+    if (INTERNAL_SUPPLIER_IDS.includes(config.id)) return getBrowserForInternalSystem();
     const fingerprintGenerator = new FingerprintGenerator()
     const browserFingerprintWithHeaders = fingerprintGenerator.getFingerprint({
         devices: config?.devices || ['desktop'],
@@ -17,21 +19,27 @@ export const getBrowser = async (config) => {
     } : {headless: false}
 
     const browser = await chromium.launch(options)
-    const userAgent = [SUPPLIERS.Privia.id,SUPPLIERS.Tourvis.id].includes(config.id) ? 'hn_worker' : fingerprint.navigator.userAgent
     const context = await browser.newContext({
-        userAgent: userAgent,
         locale: 'ko_KR',
         viewport: fingerprint.screen,
     })
     await fingerprintInjector.attachFingerprintToPlaywright(
-       context,
-       {
-           ...browserFingerprintWithHeaders,
-           headers: {
-               ...browserFingerprintWithHeaders.headers,
-               'user-agent': userAgent
-           }
-       }
+       context, browserFingerprintWithHeaders
+    );
+    return browser
+}
+
+const getBrowserForInternalSystem = async () => {
+    const fingerprintInjector = new FingerprintInjector()
+    const {fingerprint} = FINGERPRINT_INTERNAL_SYS
+    const options = {headless: false}
+    const browser = await chromium.launch(options)
+    const context = await browser.newContext({
+        locale: 'ko_KR',
+        viewport: fingerprint.screen,
+    })
+    await fingerprintInjector.attachFingerprintToPlaywright(
+       context, FINGERPRINT_INTERNAL_SYS
     );
     return browser
 }

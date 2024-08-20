@@ -7,6 +7,6 @@ export const handle = async (task, crawlInstance) => {
 	const page =
 		context.pages().length > 0 ? context.pages()[0] : await context.newPage()
 	const res = await crawlInstance.crawl(page, task)
-	await browser.close()
+	// await browser.close()
 	return res
 }
