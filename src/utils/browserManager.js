@@ -3,6 +3,8 @@ import {FingerprintInjector} from 'fingerprint-injector'
 import {chromium} from 'playwright'
 import { INTERNAL_SUPPLIER_IDS } from '../config/suppliers.js'
 import { FINGERPRINT_INTERNAL_SYS } from '../config/fingerprint_internal_sys.js'
+import os from 'os';
+import path from 'path';
 
 export const getContext = async (config) => {
     if (INTERNAL_SUPPLIER_IDS.includes(config.id)) return getContextForInternalSystem();
@@ -31,9 +33,11 @@ export const getContext = async (config) => {
 }
 
 const getContextForInternalSystem = async () => {
+    const nameProfile = process.argv[2]
+    const pathProfile = path.join(os.homedir(), `hn_worker/profile/${nameProfile}`);
     const fingerprintInjector = new FingerprintInjector()
     const options = {headless: false}
-    const context = await chromium.launchPersistentContext(`~/hn_worker/profile/demo`,options)
+    const context = await chromium.launchPersistentContext(pathProfile,options)
     await fingerprintInjector.attachFingerprintToPlaywright(
        context, FINGERPRINT_INTERNAL_SYS
     );
