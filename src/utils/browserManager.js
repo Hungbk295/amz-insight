@@ -3,6 +3,7 @@ import {FingerprintInjector} from 'fingerprint-injector'
 import {chromium} from 'playwright'
 import { INTERNAL_SUPPLIER_IDS } from '../config/suppliers.js'
 import { FINGERPRINT_INTERNAL_SYS } from '../config/fingerprint_internal_sys.js'
+import { PROXY } from './util.js'
 import os from 'os';
 import path from 'path';
 
@@ -15,10 +16,10 @@ export const getContext = async (config) => {
     })
     const fingerprintInjector = new FingerprintInjector()
     const {fingerprint} = browserFingerprintWithHeaders
-    const options = config?.proxy && process.env.ENV === 'prod' ? {
+    const options =  {
         headless: false,
-        proxy: {server: process.env.PROXY_SERVER}
-    } : {headless: false}
+        proxy: PROXY
+    } 
 
     const browser = await chromium.launch(options)
     const context = await browser.newContext({

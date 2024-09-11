@@ -81,3 +81,9 @@ export const addCookieTourvis = async (page) => {
         },
     ])
 }
+
+export const PROXY = {
+    server: "http://uluakkqy-JP-ID-SG-TR-AU-rotate:zfgio58htloj@p.webshare.io:80",
+    username: "uluakkqy-JP-ID-SG-TR-AU-rotate",
+    password: "zfgio58htloj",
+}
