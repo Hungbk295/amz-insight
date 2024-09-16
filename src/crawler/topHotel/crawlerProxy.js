@@ -2,13 +2,13 @@ import {createSqsMessages, deleteSqsMessage, readSqsMessages} from "../../utils/
 import {getContext} from "../../utils/browserManager.js";
 import {convertCrawlResult} from "../../utils/crawling.js";
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from './suppliers/index.js'
-import DaoTranClient from "daotran-client";
-import {getConfigBySupplierId, SUPPLIERS} from "../../config/suppliers.js";
+import { getConfigBySupplierId, INTERNAL_SUPPLIER_IDS, SUPPLIERS } from '../../config/suppliers.js'
 import {sleep} from "../../utils/util.js";
 import {generateAdditionalHotelDetailTasks} from "../../linkGenerator/additionalHotelDetail.js";
 import {SUPPLIERS_WITH_DETAIL_PRICE} from "../../config/app.js";
 import _ from "lodash";
 import {read as getKeywords} from "../../api/keyword.js";
+import Sentry from '../../utils/sentry.js'
 
 const keywords = await getKeywords()
 
@@ -24,7 +24,7 @@ const crawlers = {
     [SUPPLIERS.Kyte.id]: new Kyte()
 }
 
-export const run = async (queueUrl, workerName) => {
+export const run = async (queueUrl) => {
     while (true) {
         const data = await readSqsMessages(queueUrl, 5)
         if (data.Messages) {
@@ -39,12 +39,15 @@ export const run = async (queueUrl, workerName) => {
                 }
                 const supplierId = task["supplierId"]
                 task['keyword'] = keywords.find(keyword => keyword.id === task['keywordId'])
-                const context = await getContext(getConfigBySupplierId(supplierId));
-                const page = await context.pages()[0]
+                const configSupplier = getConfigBySupplierId(supplierId)
+                const browser = await getContext(configSupplier);
+                const page = await (INTERNAL_SUPPLIER_IDS.includes(configSupplier.id) ? browser.pages()[0] : (await browser.contexts()[0]).pages()[0])
+    
                 try {
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
                     const resultData = convertCrawlResult(crawlResult, task);
-                    console.log('length: ', resultData.length);
+                    console.log('Example Result: ', resultData[0]);
+                    console.log('Result Length: ', resultData.length);
                     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
                     if (SUPPLIERS_WITH_DETAIL_PRICE.map(item => item.id).includes(supplierId))
                         await crawlers[supplierId].generateHotelDetailTasks(resultData, task['keyword'])
@@ -52,28 +55,22 @@ export const run = async (queueUrl, workerName) => {
                 } catch (e) {
                     console.log("Error", msg.Body);
                     console.log(e);
-                    // Sentry.captureMessage(e, {
-                    //     level: 'error',
-                    //     extra: {
-                    //         json: msg.Body
-                    //     }
-                    // });
+                    Sentry.captureMessage(e, {
+                        level: 'error',
+                        extra: {
+                            json: msg.Body
+                        }
+                    });
                     try {
                         await sleep(5)
                     } catch (e) {
                     }
                 }
-                await context.close();
+                await browser.close();
             }
         }
         await sleep(5)
     }
 }
 
-
-if (!process.argv[2]) {
-    console.log("Missing worker name param")
-    process.exit()
-}
-
-await run(process.env.QUEUE_TASKS_URL, process.argv[2])
+await run(process.env.QUEUE_TASKS_URL)

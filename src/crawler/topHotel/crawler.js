@@ -3,7 +3,7 @@ import {getContext} from "../../utils/browserManager.js";
 import {convertCrawlResult} from "../../utils/crawling.js";
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from './suppliers/index.js'
 import DaoTranClient from "daotran-client";
-import {getConfigBySupplierId, SUPPLIERS} from "../../config/suppliers.js";
+import { getConfigBySupplierId, INTERNAL_SUPPLIER_IDS, SUPPLIERS } from '../../config/suppliers.js'
 import {sleep} from "../../utils/util.js";
 import {generateAdditionalHotelDetailTasks} from "../../linkGenerator/additionalHotelDetail.js";
 import {SUPPLIERS_WITH_DETAIL_PRICE} from "../../config/app.js";
@@ -43,8 +43,10 @@ export const run = async (queueUrl, workerName) => {
                 await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                 const supplierId = task["supplierId"]
                 task['keyword'] = keywords.find(keyword => keyword.id === task['keywordId'])
-                const context = await getContext(getConfigBySupplierId(supplierId));
-                const page = await context.pages()[0]
+                const browser = await getContext(getConfigBySupplierId(supplierId));
+                // const page = await context.pages()[0]
+                const page = await (INTERNAL_SUPPLIER_IDS.includes(getConfigBySupplierId(supplierId).id) ? browser.pages()[0] : (await browser.newContext()).pages()[0])
+                
                 try {
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
                     const resultData = convertCrawlResult(crawlResult, task);
@@ -64,7 +66,7 @@ export const run = async (queueUrl, workerName) => {
                     } catch (e) {
                     }
                 }
-                await context.close();
+                await browser.close();
             }
         } else
             await sleep(60)
