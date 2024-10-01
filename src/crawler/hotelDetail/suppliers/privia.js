@@ -1,5 +1,5 @@
 import { SITES, SUPPLIERS } from '../../../config/suppliers.js'
-import { addCookiePrivia, sleep } from '../../../utils/util.js'
+import { sleep } from '../../../utils/util.js'
 import {disableLoadImage} from "../../../utils/browserManager.js";
 
 export class Privia {
@@ -26,7 +26,6 @@ export class Privia {
 
     async crawlHelper(page, task) {
         await disableLoadImage(page)
-        await addCookiePrivia(page)
         await page.goto(SUPPLIERS.Privia.link + task['link'], {timeout: 120000})
         await sleep(30)
         let discountPrice = '0'
