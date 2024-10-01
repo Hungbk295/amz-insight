@@ -44,7 +44,6 @@ export const run = async (queueUrl, workerName) => {
                 const supplierId = task["supplierId"]
                 task['keyword'] = keywords.find(keyword => keyword.id === task['keywordId'])
                 const browser = await getContext(getConfigBySupplierId(supplierId));
-                // const page = await context.pages()[0]
                 const page = await (INTERNAL_SUPPLIER_IDS.includes(getConfigBySupplierId(supplierId).id) ? browser.pages()[0] : (await browser.newContext()).pages()[0])
                 
                 try {

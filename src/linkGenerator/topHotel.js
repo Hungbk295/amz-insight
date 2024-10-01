@@ -63,7 +63,7 @@ async function main() {
     const createdAt = new Date()
     const keywords = (await axios.get(process.env.API_HOST + '/keyword')).data
     const tasks = generateLink(keywords, DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION, SUPPLIERS, createdAt)
-    // await createSqsMessages(process.env.QUEUE_TASKS_URL, tasks.filter(item => item.supplierId === 2))
+    // await createSqsMessages(process.env.QUEUE_TASKS_URL, tasks.filter(item => item.supplierId === 7))
     console.log(tasks)
 }
 // await main()
