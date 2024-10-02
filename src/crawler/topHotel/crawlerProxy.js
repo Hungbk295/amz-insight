@@ -42,7 +42,6 @@ export const run = async (queueUrl) => {
                 const configSupplier = getConfigBySupplierId(supplierId)
                 const browser = await getContext(configSupplier);
                 const page = await (INTERNAL_SUPPLIER_IDS.includes(configSupplier.id) ? browser.pages()[0] : (await browser.contexts()[0]).pages()[0])
-    
                 try {
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
                     const resultData = convertCrawlResult(crawlResult, task);
