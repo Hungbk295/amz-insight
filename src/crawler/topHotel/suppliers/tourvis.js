@@ -1,4 +1,4 @@
-import { addCookieTourvis, sleep } from '../../../utils/util.js'
+import { sleep } from '../../../utils/util.js'
 import _ from 'lodash'
 import { SUPPLIERS } from '../../../config/suppliers.js'
 import { Privia } from './privia.js'
@@ -20,7 +20,6 @@ export class Tourvis extends Privia {
 			data = data.concat(json.hotelFareList)
 			await route.fulfill({ response, json })
 		})
-		await addCookieTourvis(page)
 		await page.goto(SUPPLIERS.Tourvis.link + task['link'], { timeout: 60000 })
 		await sleep(50)
 		const handle = item => {

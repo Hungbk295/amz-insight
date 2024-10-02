@@ -1,5 +1,5 @@
 import { SUPPLIERS } from '../../../config/suppliers.js'
-import { addCookiePrivia, sleep } from '../../../utils/util.js'
+import { sleep } from '../../../utils/util.js'
 import {createSqsMessages} from "../../../utils/awsSdk.js";
 import {MAX_RANK_WITH_DETAIL_PRICE} from "../../../config/app.js";
 import {Privia as PriviaGenerator} from '../../../linkGenerator/suppliers/index.js'
@@ -18,7 +18,6 @@ export class Privia {
                 totalDataFromAPI = totalDataFromAPI.concat(res['hotelFareList'])
             }
         })
-        await addCookiePrivia(page)
         await page.goto(SUPPLIERS.Privia.link + task['link'], {timeout: 60000})
         await sleep(20)
         const dataFromAPI = totalDataFromAPI.slice(0, 100).map((item) => this.convertRawCrawlData(item, task))
