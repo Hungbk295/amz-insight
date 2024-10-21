@@ -43,8 +43,8 @@ export const run = async (queueUrl, workerName) => {
                 await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                 const supplierId = task["supplierId"]
                 task['keyword'] = keywords.find(keyword => keyword.id === task['keywordId'])
-                const browser = await getContext(getConfigBySupplierId(supplierId));
-                const page = await (INTERNAL_SUPPLIER_IDS.includes(getConfigBySupplierId(supplierId).id) ? browser.pages()[0] : (await browser.newContext()).pages()[0])
+                const browser = await getContext(getConfigBySupplierId(supplierId))
+                const page = await (INTERNAL_SUPPLIER_IDS.includes(getConfigBySupplierId(supplierId).id) ? browser.pages()[0] : (await browser.contexts()[0]).pages()[0])
                 
                 try {
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
