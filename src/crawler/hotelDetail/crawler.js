@@ -25,8 +25,9 @@ export const run = async (queueUrl, workerName) => {
                 await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                 const task = JSON.parse(msg.Body);
                 const supplierId = task.supplierId
-                const context = await getContext(getConfigBySupplierId(supplierId));
-                const page = await context.pages()[0]
+                const supplyIdConfig = getConfigBySupplierId(supplierId)
+                const browser = await getContext(supplyIdConfig);
+                const page = await (INTERNAL_SUPPLIER_IDS.includes(supplyIdConfig.id) ? browser.pages()[0] : (await browser.contexts()[0]).pages()[0])
                 try {
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
                     await finish(crawlResult, task)
