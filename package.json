@@ -19,6 +19,7 @@
     "fingerprint-injector": "^2.1.21",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
+    "moment": "^2.30.1",
     "parse-url": "^8.1.0",
     "playwright": "^1.29.1",
     "split-array": "^1.0.1",

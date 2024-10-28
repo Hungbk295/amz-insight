@@ -8,6 +8,7 @@ import {login} from "../loginHandlers/index.js";
 import _ from "lodash";
 import {Privia, Tourvis} from "./suppliers/index.js";
 import Sentry from "../../utils/sentry.js";
+import moment from 'moment'
 
 const crawlers = {
     [SUPPLIERS.Privia.id]: new Privia(),
@@ -59,7 +60,13 @@ export const run = async (queueUrl, workerName) => {
 
 async function finish(crawlResult, task) {
     const resultData = convertCrawlResult(crawlResult, task);
-    console.log(resultData);
-    console.log('length: ', resultData.length);
+    if(resultData.length){
+        const currentTime = new Date()
+        const durationHour = Math.abs(currentTime - moment(resultData[0].createdAt))/ (1000 * 60 * 60);
+        if(durationHour > 6) {
+            console.log('Alert Deadlock Here')
+        }
+    }
+    // console.log('length: ', resultData.length);
     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
 }
