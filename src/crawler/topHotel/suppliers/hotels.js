@@ -12,13 +12,13 @@ export class Hotels {
         } catch (e) {
         }
 
-        let hotelInfos = await page.locator(`//div[contains(@class, 'uitk-spacing-margin-blockstart-three')]`).elementHandles();
-
+        let hotelInfos = await page.locator(`//div[contains(@data-stid, 'lodging-card-responsive') and contains(@class, 'uitk-card')]`).elementHandles();
+        
         const hotels = [];
         for (const info of hotelInfos) {
             const hotel = {};
             try {
-                const hotelName = await (await info.$(`//div/h3[contains(@class, 'uitk-heading')]`)).innerText();
+                const hotelName = await (await info.$(`//div/h3[contains(@class, 'uitk-heading') ]`)).innerText();
                 let hotelPrice = (await info.innerText()).match(
                     /(₩((\d|,)+)\/1박)|(총 요금: ₩((\d|,)+))/gi
                 )

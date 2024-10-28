@@ -5,3 +5,5 @@ temp
 plan.md
 .env.dom
 .env.inter
+.yarnrc.yml
+.yarn
