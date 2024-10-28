@@ -26,8 +26,8 @@ const crawlers = {
 }
 
 export const run = async (queueUrl, workerName) => {
-    // const client = new DaoTranClient(workerName, server);
-    // await client.register();
+    const client = new DaoTranClient(workerName, server);
+    await client.register();
     while (true) {
         const data = await readSqsMessages(queueUrl, 5)
         if (data.Messages) {
@@ -39,8 +39,8 @@ export const run = async (queueUrl, workerName) => {
                     await generateAdditionalHotelDetailTasks();
                     break;
                 }
-                // await client.waitUntilServerAvailable();
-                // await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
+                await client.waitUntilServerAvailable();
+                await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                 const supplierId = task["supplierId"]
                 task['keyword'] = keywords.find(keyword => keyword.id === task['keywordId'])
                 const browser = await getContext(getConfigBySupplierId(supplierId))
@@ -55,12 +55,12 @@ export const run = async (queueUrl, workerName) => {
                     if (SUPPLIERS_WITH_DETAIL_PRICE.map(item => item.id).includes(supplierId))
                         await crawlers[supplierId].generateHotelDetailTasks(resultData, task['keyword'])
                     await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
-                    // await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
+                    await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
                 } catch (e) {
                     console.log("Error", msg.Body);
                     console.log(e);
                     try {
-                        // await client.requestChangeLocation();
+                        await client.requestChangeLocation();
                         await sleep(5)
                     } catch (e) {
                     }
@@ -69,7 +69,7 @@ export const run = async (queueUrl, workerName) => {
             }
         } else
             await sleep(40)
-        // await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
+        await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
         await sleep(5)
     }
 }
