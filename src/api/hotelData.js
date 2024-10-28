@@ -6,7 +6,7 @@ const PATH = '/hotel-data'
 export const create = async (data) => {
     try{
         const currentTime = new Date()
-        const durationHour = Math.abs(currentTime - moment(data.createdAt))/ (1000 * 60 * 60);
+        const durationHour = Math.abs(currentTime - moment(data[0].createdAt))/ (1000 * 60 * 60);
         if(durationHour > 6) {
             console.log('[INSERT]:Alert Deadlock Here')
         }

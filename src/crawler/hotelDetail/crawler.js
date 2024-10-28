@@ -66,6 +66,6 @@ async function finish(crawlResult, task) {
             console.log('Alert Deadlock Here')
         }
     }
-    console.log('length: ', resultData.length);
+    // console.log('length: ', resultData.length);
     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
 }
