@@ -64,7 +64,7 @@ async function finish(crawlResult, task) {
         const currentTime = new Date()
         const durationHour = Math.abs(currentTime - moment(resultData[0].createdAt))/ (1000 * 60 * 60);
         if(durationHour > 6) {
-            console.log('Alert Deadlock Here')
+            console.log('Alert Deadlock Here', task)
         }
     }
     // console.log('length: ', resultData.length);
