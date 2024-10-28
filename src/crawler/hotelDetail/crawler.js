@@ -31,12 +31,12 @@ export const run = async (queueUrl, workerName) => {
                 try {
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
                     await finish(crawlResult, task)
-                    await context.clearCookies()
+                    await browser.clearCookies()
                     if (INTERNAL_SUPPLIER_IDS.includes(supplierId)) {
                         await login(supplierId, page)
                         const crawlResultAfterLogin = await crawlers[supplierId].crawlLoggedIn(page, task);
                         await finish(crawlResultAfterLogin, task)
-                        await context.clearCookies()
+                        await browser.clearCookies()
                     }
                     await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
@@ -48,7 +48,7 @@ export const run = async (queueUrl, workerName) => {
                         }
                     });
                 }
-                await context.close();
+                await browser.close();
             }
         } else
             await sleep(60)
