@@ -9,6 +9,7 @@ import {generateAdditionalHotelDetailTasks} from "../../linkGenerator/additional
 import {SUPPLIERS_WITH_DETAIL_PRICE} from "../../config/app.js";
 import _ from "lodash";
 import {read as getKeywords} from "../../api/keyword.js";
+import moment from "moment";
 
 const server = process.env.PROXY_MANAGEMENT_API_URL
 const keywords = await getKeywords()
