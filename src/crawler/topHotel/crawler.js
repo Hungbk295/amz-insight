@@ -45,12 +45,17 @@ export const run = async (queueUrl, workerName) => {
                 task['keyword'] = keywords.find(keyword => keyword.id === task['keywordId'])
                 const browser = await getContext(getConfigBySupplierId(supplierId))
                 const page = await (INTERNAL_SUPPLIER_IDS.includes(getConfigBySupplierId(supplierId).id) ? browser.pages()[0] : (await browser.contexts()[0]).pages()[0])
-                
                 try {
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
                     const resultData = convertCrawlResult(crawlResult, task);
-                    console.log(resultData);
-                    console.log('length: ', resultData.length);
+                    try {
+                        const currentTime = new Date()
+                        const durationHour = Math.abs(currentTime - moment(task.createdAt))/ (1000 * 60 * 60);
+                        if(durationHour > 7) {
+                            console.log('Oops! We lost a queue!', task)
+                        }
+                    } catch (e){};
+                    // console.log('length: ', resultData.length);
                     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
                     if (SUPPLIERS_WITH_DETAIL_PRICE.map(item => item.id).includes(supplierId))
                         await crawlers[supplierId].generateHotelDetailTasks(resultData, task['keyword'])

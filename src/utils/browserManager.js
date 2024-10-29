@@ -5,7 +5,7 @@ import { INTERNAL_SUPPLIER_IDS } from '../config/suppliers.js'
 import { FINGERPRINT_INTERNAL_SYS } from '../config/fingerprint_internal_sys.js'
 import os from 'os';
 import path from 'path';
-import { PROXY } from './util.js'
+import { PROXY } from './util.js';
 
 export const getContext = async (config) => {
     if (INTERNAL_SUPPLIER_IDS.includes(config.id)) return getContextForInternalSystem();
