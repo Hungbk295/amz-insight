@@ -3,12 +3,16 @@ import {Tourvis} from "../suppliers/index.js";
 import {SUPPLIERS} from "../../../config/suppliers.js";
 
 const task = {
-    link: 'hotels/4714?type=CITY&keyword=%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C&id=38045&&in=20240628&out=20240629&guests=2&pageType=main&h=1',
-    checkIn: '2023-07-30',
-    checkOut: '2023-07-31',
-    keywordId: 2,
-    supplierId: SUPPLIERS.Tourvis.id,
-    needLoggedInPrice: true,
-}
+    name: '쉐라톤 오키나와 선마리나 리조트',
+    supplierId: 8,
+    identifier: '98929',
+    tag: '',
+    rank: 16,
+    checkIn: '2024-11-23',
+    checkOut: '2024-11-24',
+    createdAt: '2024-10-29T02:00:06.000Z',
+    link: 'hotels/98929?type=CITY&keyword=%EC%98%A4%ED%82%A4%EB%82%98%EC%99%80&id=14026&&in=20241123&out=20241124&guests=2&pageType=main&h=1',
+    keywordId: 18
+  }
 
 console.log(await handle(task, new Tourvis()))

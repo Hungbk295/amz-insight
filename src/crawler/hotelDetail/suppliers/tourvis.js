@@ -9,15 +9,17 @@ export class Tourvis extends Privia {
         await page.goto(SUPPLIERS.Tourvis.link + task['link'], {timeout: 60000})
         await sleep(30)
         let discountPrice = '0'
+        let detailPrice = '0'
+
         try {
-            discountPrice = await page.locator(`.content.detail.room .cost`).innerText();
+            discountPrice = await page.locator(`.detail-top-sec .product-info-item .top .sale span`).innerText();
+
         } catch (e) {
         }
-        let detailPrice = '0'
         try {
-            detailPrice = await page.locator(`.content.detail.room .ori-price`).innerText();
-            detailPrice = detailPrice.replace('원', '')
+            detailPrice = await page.locator(`.detail-top-sec .product-info-item .top .price span:nth-child(2)`).innerText();
         } catch (e) {
+            console.log(e)
         }
 
         return {discountPrice, detailPrice}
