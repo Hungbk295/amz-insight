@@ -86,15 +86,21 @@ const generateAdditionalHotelDetailTasks = async () => {
     const keywords = (await axios.get(process.env.API_HOST + '/keyword')).data
     const conditions = getConditions(DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION, keywords, IMPORTANT_SUPPLIERS)
 
+    console.time("Execution Time");
     for (const condition of conditions) {
         const params = {
             keywordId: condition['keyword'].id,
-            checkIn: condition['checkIn'],
+            checkin: condition['checkIn'],
         };
-        const hotelData = (await axios.get(process.env.API_HOST + '/hotel-data/latest-data', {params})).data
-        const tasks = await generateAdditionalHotelDetailTasksBySupplier(hotelData, condition['supplier'], condition['keyword'], condition['checkIn'], condition['checkOut'])
-        await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, tasks)
+        try {
+            const hotelData = (await axios.get('https://api.hoteldomestic.tidesquare.vn' + '/hotel-data/latest-data', {params})).data
+            const tasks = await generateAdditionalHotelDetailTasksBySupplier(hotelData, condition['supplier'], condition['keyword'], condition['checkIn'], condition['checkOut'])
+            await createSqsMessages(process.env.QUEUE_TASKS_DETAIL_URL, tasks)
+        } catch (e) {
+            console.log(e);
+        }
     }
+    console.timeEnd("Execution Time");
 }
 
 export {generateAdditionalHotelDetailTasks}
