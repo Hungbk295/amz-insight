@@ -8,7 +8,7 @@ import path from 'path';
 import { PROXY } from './util.js';
 
 export const getContext = async (config) => {
-    // if (INTERNAL_SUPPLIER_IDS.includes(config.id)) return getContextForInternalSystem();
+    if (INTERNAL_SUPPLIER_IDS.includes(config.id)) return getContextForInternalSystem();
     const fingerprintGenerator = new FingerprintGenerator()
     const browserFingerprintWithHeaders = fingerprintGenerator.getFingerprint({
         devices: config?.devices || ['desktop'],
