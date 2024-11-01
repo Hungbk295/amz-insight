@@ -11,24 +11,28 @@ export class Tourvis extends Privia {
         await sleep(15)
         let discountPrice = '0'
         let detailPrice = '0'
+
         try{
             discountPrice = await page.locator(`.content.detail.room .cost`).innerText();
         }
-        catch{}
-        try {
-            discountPrice = await (await page.locator(`.detail-top-sec .product-info-item .top .sale span`)).innerText();
-        } catch (e) {
+        catch{
+            try {
+                discountPrice = await (await page.locator(`.detail-top-sec .product-info-item .top .sale span`)).innerText();
+            } catch (e) {
+        }
+       
+        
         }
         try {
             detailPrice = await(await page.locator(`.detail-top-sec .product-info-item .top .price span:nth-child(2)`)).innerText();
         } catch (e) {
-            
+            try {
+                detailPrice = (await page.locator(`.content.detail.room .ori-price`).innerText()).replace('원', '');
+            } catch (e) {
+                
+            }
         }
-        try {
-            detailPrice = (await page.locator(`.content.detail.room .ori-price`).innerText()).replace('원', '');
-        } catch (e) {
-            
-        }
+       
 
         return {discountPrice, detailPrice}
     }
