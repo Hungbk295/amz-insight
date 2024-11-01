@@ -62,7 +62,6 @@ export const run = async (queueUrl, workerName) => {
 
 async function finish(crawlResult, task) {
     const resultData = convertCrawlResult(crawlResult, task);
-    console.log('length: ', resultData.length);
     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
 }
 
