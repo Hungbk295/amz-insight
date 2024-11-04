@@ -18,21 +18,24 @@ export class Tourvis extends Privia {
         catch{
             try {
                 discountPrice = await (await page.locator(`.detail-top-sec .product-info-item .top .sale span`)).innerText();
-            } catch (e) {
-        }
-       
-        
+            } catch (e) {}
         }
         try {
-            detailPrice = await(await page.locator(`.detail-top-sec .product-info-item .top .price span:nth-child(2)`)).innerText();
+            detailPrice = await page.evaluate(() => {
+                const priceElement = document.querySelector('.price');
+                const discountElement = priceElement.querySelector('.discount');
+                if (discountElement) 
+                    discountElement.remove();
+                return priceElement.innerText.replace('원', '').trim();
+            });
         } catch (e) {
             try {
                 detailPrice = (await page.locator(`.content.detail.room .ori-price`).innerText()).replace('원', '');
             } catch (e) {
-                
             }
         }
-       
+
+        if(discountPrice==='0'&&detailPrice!=='0') discountPrice=detailPrice
 
         return {discountPrice, detailPrice}
     }
