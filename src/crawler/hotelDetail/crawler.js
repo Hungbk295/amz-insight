@@ -14,7 +14,6 @@ const crawlers = {
     [SUPPLIERS.Privia.id]: new Privia(),
     [SUPPLIERS.Tourvis.id]: new Tourvis(),
 }
-
 const server = process.env.PROXY_MANAGEMENT_API_URL
 export const run = async (queueUrl, workerName) => {
     const client = new DaoTranClient(workerName, server);
@@ -25,6 +24,7 @@ export const run = async (queueUrl, workerName) => {
             for (const msg of data.Messages) {
                 await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                 const task = JSON.parse(msg.Body);
+                checkTaskTime(task,'start crawl')
                 const supplierId = task.supplierId
                 const supplyIdConfig = getConfigBySupplierId(supplierId)
                 const browser = await getContext(supplyIdConfig);
@@ -40,6 +40,7 @@ export const run = async (queueUrl, workerName) => {
                         await browser.clearCookies()
                     }
                     await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
+                    checkTaskTime(task,'end crawl')
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
                 } catch (e) {
                     console.log("Error", msg.Body);
@@ -60,13 +61,13 @@ export const run = async (queueUrl, workerName) => {
 
 async function finish(crawlResult, task) {
     const resultData = convertCrawlResult(crawlResult, task);
-    if(resultData.length){
-        const currentTime = new Date()
-        const durationHour = Math.abs(currentTime - moment(resultData[0].createdAt))/ (1000 * 60 * 60);
-        if(durationHour > 6) {
-            console.log('Alert Deadlock Here', task)
-        }
-    }
-    // console.log('length: ', resultData.length);
     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
+}
+
+async function checkTaskTime(task,title) {
+    const currentTime = new Date()
+    const durationHour = Math.abs(currentTime - moment(task.createdAt))/ (1000 * 60 * 60);
+    if(durationHour > 6) {
+        console.log('Alert Deadlock Here', `${title} createdAt:${task.createdAt} -> ${currentTime}`)
+    }
 }

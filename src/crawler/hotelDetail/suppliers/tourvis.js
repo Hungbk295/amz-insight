@@ -7,18 +7,32 @@ export class Tourvis extends Privia {
     async crawlHelper(page, task) {
         await disableLoadImage(page)
         await page.goto(SUPPLIERS.Tourvis.link + task['link'], {timeout: 60000})
-        await sleep(30)
+
+        await sleep(15)
         let discountPrice = '0'
-        try {
-            discountPrice = await page.locator(`.content.detail.room .cost`).innerText();
-        } catch (e) {
-        }
         let detailPrice = '0'
-        try {
-            detailPrice = await page.locator(`.content.detail.room .ori-price`).innerText();
-            detailPrice = detailPrice.replace('원', '')
-        } catch (e) {
+
+        try{
+            discountPrice = await page.locator(`.content.detail.room .cost`).innerText();
         }
+        catch{
+            try {
+                discountPrice = await (await page.locator(`.detail-top-sec .product-info-item .top .sale span`)).innerText();
+            } catch (e) {
+        }
+       
+        
+        }
+        try {
+            detailPrice = await(await page.locator(`.detail-top-sec .product-info-item .top .price span:nth-child(2)`)).innerText();
+        } catch (e) {
+            try {
+                detailPrice = (await page.locator(`.content.detail.room .ori-price`).innerText()).replace('원', '');
+            } catch (e) {
+                
+            }
+        }
+       
 
         return {discountPrice, detailPrice}
     }

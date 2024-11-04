@@ -93,7 +93,7 @@ const generateAdditionalHotelDetailTasks = async () => {
             checkin: condition['checkIn'],
         };
         try {
-            const hotelData = (await axios.get('https://api.hoteldomestic.tidesquare.vn' + '/hotel-data/latest-data', {params})).data
+            const hotelData = (await axios.get(process.env.API_HOST + '/hotel-data/latest-data', {params})).data
             const tasks = await generateAdditionalHotelDetailTasksBySupplier(hotelData, condition['supplier'], condition['keyword'], condition['checkIn'], condition['checkOut'])
             await createSqsMessages(process.env.QUEUE_TASKS_DETAIL_URL, tasks)
         } catch (e) {
