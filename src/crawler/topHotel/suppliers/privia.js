@@ -3,7 +3,7 @@ import { sleep } from '../../../utils/util.js'
 import {createSqsMessages} from "../../../utils/awsSdk.js";
 import {MAX_RANK_WITH_DETAIL_PRICE} from "../../../config/app.js";
 import {Privia as PriviaGenerator} from '../../../linkGenerator/suppliers/index.js'
-
+import moment from 'moment';
 export class Privia {
     constructor() {
         this.detailTasksGenerator = new PriviaGenerator()
@@ -40,7 +40,13 @@ export class Privia {
                     link: hotelData['link']
                 })
         })
-
+        try {
+            const currentTime = new Date()
+            const durationHour = Math.abs(currentTime - moment(data[0].createdAt))/ (1000 * 60 * 60);
+            if(durationHour > 6) {
+                console.log(`Oops! We lost a queue! createdAt:${data[0].createdAt} -> ${currentTime}`)
+            }
+        } catch (e){};
         await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, hotelDetailTasks)
     }
 
