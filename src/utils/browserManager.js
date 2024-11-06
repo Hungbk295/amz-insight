@@ -17,7 +17,7 @@ export const getContext = async (config) => {
     const fingerprintInjector = new FingerprintInjector()
     const {fingerprint} = browserFingerprintWithHeaders
     const options = config?.proxy && process.env.ENV === 'prod' ? {
-        headless: false,
+        headless: true,
         proxy: PROXY
     } : {headless: false}
 
