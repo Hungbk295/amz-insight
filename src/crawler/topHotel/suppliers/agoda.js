@@ -28,7 +28,12 @@ export class Agoda {
                         await info.$(`//*[contains(@data-selenium,'display-price')]`)
                     ).innerText()
                 } catch (e) {
-
+                    try{
+                        hotelPrice=await (
+                            await info.$(`//*[contains(@data-element-name,'final-price')]`)
+                        ).innerText()
+                    }
+                    catch{}
                 }
                 const hotelLink = await (await info.$(`//div/a`)).getAttribute('href')
                 const hotelIdentifier = hotelLink.split('/')[2]
@@ -43,7 +48,6 @@ export class Agoda {
                 hotel.checkOut = task.checkOut
                 hotels.push(hotel)
             } catch (e) {
-                console.log(e)
             }
         }
         hotels.forEach((item, index) => {
