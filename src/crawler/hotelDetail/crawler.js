@@ -64,7 +64,7 @@ async function finish(crawlResult, task) {
     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
 }
 
-async function checkTaskTime(task,title) {
+function checkTaskTime(task,title) {
     const currentTime = new Date()
     const durationHour = Math.abs(currentTime - moment(task.createdAt))/ (1000 * 60 * 60);
     if(durationHour > 6) {
