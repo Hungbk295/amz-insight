@@ -22,9 +22,9 @@ export const run = async (queueUrl, workerName) => {
         const data = await readSqsMessages(queueUrl, 5)
         if (data.Messages) {
             for (const msg of data.Messages) {
-                await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                 const task = JSON.parse(msg.Body);
-                checkTaskTime(task,'start crawl')
+                checkTaskTime(task,'1. Start crawl')
+                await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                 const supplierId = task.supplierId
                 const supplyIdConfig = getConfigBySupplierId(supplierId)
                 const browser = await getContext(supplyIdConfig);
@@ -40,7 +40,7 @@ export const run = async (queueUrl, workerName) => {
                         await browser.clearCookies()
                     }
                     await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
-                    checkTaskTime(task,'end crawl')
+                    checkTaskTime(task,'2. End crawl')
                     await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
                 } catch (e) {
                     console.log("Error", msg.Body);
@@ -68,6 +68,6 @@ function checkTaskTime(task,title) {
     const currentTime = new Date()
     const durationHour = Math.abs(currentTime - moment(task.createdAt))/ (1000 * 60 * 60);
     if(durationHour > 6) {
-        console.log('Alert Deadlock Here', `${title} createdAt:${task.createdAt} -> ${currentTime}`)
+        console.log(`${title} createdAt:${task.createdAt} -> ${currentTime}`)
     }
 }
