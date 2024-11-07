@@ -55,5 +55,5 @@ export const getConditions = (dayOfWeeks, subsequentWeeks, keywords, suppliers) 
 export const PROXY = {
     server: "http://uluakkqy-rotate:zfgio58htloj@p.webshare.io:80",
     username: "uluakkqy-rotate",
-    password: "zfgio58htlo",
+    password: "zfgio58htloj",
 }
