@@ -5,7 +5,7 @@ import { INTERNAL_SUPPLIER_IDS } from '../config/suppliers.js'
 import { FINGERPRINT_INTERNAL_SYS } from '../config/fingerprint_internal_sys.js'
 import os from 'os';
 import path from 'path';
-import { PROXY } from './util.js';
+
 
 export const getContext = async (config) => {
     if (INTERNAL_SUPPLIER_IDS.includes(config.id)) return getContextForInternalSystem();
@@ -18,7 +18,7 @@ export const getContext = async (config) => {
     const {fingerprint} = browserFingerprintWithHeaders
     const options = config?.proxy && process.env.ENV === 'prod' ? {
         headless: true,
-        proxy: PROXY
+        proxy: {server: process.env.PROXY_SERVER}
     } : {headless: false}
 
     const browser = await chromium.launch(options)

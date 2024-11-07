@@ -8,3 +8,4 @@ plan.md
 .yarn
 package-lock.json
 yarn.lock
+.aws
