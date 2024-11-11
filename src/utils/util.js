@@ -51,3 +51,10 @@ export const getConditions = (dayOfWeeks, subsequentWeeks, keywords, suppliers) 
     }
     return conditions;
 }
+export function checkTaskTime(task,title) {
+    const currentTime = new Date()
+    const durationHour = Math.abs(currentTime - moment(task.createdAt))/ (1000 * 60 * 60);
+    if(durationHour > 6) {
+        console.log(`${title} createdAt:${task.createdAt} -> ${currentTime}`)
+    }
+}

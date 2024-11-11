@@ -8,7 +8,7 @@ import {
     SUPPLIERS_WITH_DETAIL_PRICE
 } from "../config/app.js";
 import {createSqsMessages} from "../utils/awsSdk.js";
-import {getConditions} from "../utils/util.js";
+import {getConditions, checkTaskTime} from "../utils/util.js";
 
 const taskGenerators = {
     [SUPPLIERS.Agoda.id]: new Agoda(),
@@ -95,6 +95,9 @@ const generateAdditionalHotelDetailTasks = async () => {
         try {
             const hotelData = (await axios.get(process.env.API_HOST + '/hotel-data/latest-data', {params})).data
             const tasks = await generateAdditionalHotelDetailTasksBySupplier(hotelData, condition['supplier'], condition['keyword'], condition['checkIn'], condition['checkOut'])
+            try {
+                checkTaskTime(tasks[0], 'generate additional tasks')
+            } catch (e){}
             await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, tasks)
         } catch (e) {
             console.log(e);
