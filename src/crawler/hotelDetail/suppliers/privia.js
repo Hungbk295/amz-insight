@@ -26,19 +26,17 @@ export class Privia {
 
     async crawlHelper(page, task) {
         await disableLoadImage(page)
-        await page.goto(SUPPLIERS.Privia.link + task['link'], {timeout: 120000})
-        await sleep(30)
+        await page.goto(SUPPLIERS.Privia.link + task['link'], {timeout: 60000})
+        await sleep(15)
         let discountPrice = '0'
-        try {
-            discountPrice = await page.locator(`//span[contains(@class,'card-sale')]`).locator('xpath=..').locator(`em`).innerText();
-        } catch (e) {
-        }
         let detailPrice = '0'
         try {
-            const lowestPriceRoom = await (await page
-                .locator(`//div[contains(@class,'room-tbl-cont')]/table/tbody/tr`)
-                .elementHandles())[0]
-            detailPrice = await (await lowestPriceRoom.$(`//div[contains(@class,'total-price-cnt')]/ul/li[2]/p[2]/em`)).innerText()
+            discountPrice=await (await page.$('.rcs-price-box .room-salePrice-cont .price .cost')).innerText()
+        } catch (e) {
+        }
+        
+        try {
+            detailPrice=await (await page.$('.rcs-price-box .room-price-cont .price .cost')).innerText()
         } catch (e) {
         }
 

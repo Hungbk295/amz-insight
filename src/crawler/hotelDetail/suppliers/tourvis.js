@@ -17,17 +17,17 @@ export class Tourvis extends Privia {
         }
         catch{
             try {
-                discountPrice = await (await page.locator(`.detail-top-sec .product-info-item .top .sale span`)).innerText();
+                discountPrice = await page.evaluate(() => {
+                    const priceElement = document.querySelector('.price');
+                    const discountElement = priceElement.querySelector('.discount');
+                    if (discountElement) 
+                        discountElement.remove();
+                    return priceElement.innerText.replace('원', '').trim();
+                });
             } catch (e) {}
         }
         try {
-            detailPrice = await page.evaluate(() => {
-                const priceElement = document.querySelector('.price');
-                const discountElement = priceElement.querySelector('.discount');
-                if (discountElement) 
-                    discountElement.remove();
-                return priceElement.innerText.replace('원', '').trim();
-            });
+            detailPrice = await page.locator(`.detail-top-sec .product-info-item .top .sale span`).innerText();
         } catch (e) {
             try {
                 detailPrice = (await page.locator(`.content.detail.room .ori-price`).innerText()).replace('원', '');
@@ -35,7 +35,7 @@ export class Tourvis extends Privia {
             }
         }
 
-        if(discountPrice==='0'&&detailPrice!=='0') discountPrice=detailPrice
+        if(detailPrice==='0') detailPrice=discountPrice
 
         return {discountPrice, detailPrice}
     }
