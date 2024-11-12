@@ -33,11 +33,22 @@ export class Privia {
         try {
             discountPrice=await (await page.$('.rcs-price-box .room-salePrice-cont .price .cost')).innerText()
         } catch (e) {
+            try{
+                discountPrice = await page.locator(`//span[contains(@class,'card-sale')]`).locator('xpath=..').locator(`em`).innerText();
+            }
+            catch{}
         }
         
         try {
             detailPrice=await (await page.$('.rcs-price-box .room-price-cont .price .cost')).innerText()
         } catch (e) {
+            try{
+                const lowestPriceRoom = await (await page
+                    .locator(`//div[contains(@class,'room-tbl-cont')]/table/tbody/tr`)
+                    .elementHandles())[0]
+                detailPrice = await (await lowestPriceRoom.$(`//div[contains(@class,'total-price-cnt')]/ul/li[2]/p[2]/em`)).innerText();
+            }
+            catch{}
         }
 
         return {discountPrice, detailPrice}
