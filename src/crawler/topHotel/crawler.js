@@ -4,12 +4,12 @@ import {convertCrawlResult} from "../../utils/crawling.js";
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from './suppliers/index.js'
 import DaoTranClient from "daotran-client";
 import { getConfigBySupplierId, INTERNAL_SUPPLIER_IDS, SUPPLIERS } from '../../config/suppliers.js'
-import {sleep} from "../../utils/util.js";
+import {sleep,checkTaskTime,checkSqsPeriodOfTime} from "../../utils/util.js";
 import {generateAdditionalHotelDetailTasks} from "../../linkGenerator/additionalHotelDetail.js";
 import {SUPPLIERS_WITH_DETAIL_PRICE} from "../../config/app.js";
 import _ from "lodash";
 import {read as getKeywords} from "../../api/keyword.js";
-import moment from "moment";
+
 
 const server = process.env.PROXY_MANAGEMENT_API_URL
 const keywords = await getKeywords()
@@ -31,7 +31,9 @@ export const run = async (queueUrl, workerName) => {
     await client.register();
     while (true) {
         const data = await readSqsMessages(queueUrl, 5)
+        
         if (data.Messages) {
+            const start = Date.now(); 
             for (const msg of data.Messages) {
                 const task = JSON.parse(msg.Body);
                 if (task['isLastTask']) {
@@ -50,13 +52,8 @@ export const run = async (queueUrl, workerName) => {
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
                     const resultData = convertCrawlResult(crawlResult, task);
                     try {
-                        const currentTime = new Date()
-                        const durationHour = Math.abs(currentTime - moment(task.createdAt))/ (1000 * 60 * 60);
-                        if(durationHour > 7) {
-                            console.log('Oops! We lost a queue!', task)
-                        }
+                        checkTaskTime(task,'Oops! We lost a queue!')
                     } catch (e){};
-                    // console.log('length: ', resultData.length);
                     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
                     if (SUPPLIERS_WITH_DETAIL_PRICE.map(item => item.id).includes(supplierId))
                         await crawlers[supplierId].generateHotelDetailTasks(resultData, task['keyword'])
@@ -73,8 +70,9 @@ export const run = async (queueUrl, workerName) => {
                 }
                 await browser.close();
             }
-        } else
-            await sleep(40)
+            const end = Date.now();
+            checkSqsPeriodOfTime(start,end,data.Messages,"crawl top")
+        } 
         await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
         await sleep(5)
     }

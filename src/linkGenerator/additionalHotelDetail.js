@@ -99,7 +99,6 @@ const generateAdditionalHotelDetailTasks = async () => {
                 checkTaskTime(tasks[0], 'generate additional tasks')
             } catch (e){}
             await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, tasks)
-            // console.log(tasks)
         } catch (e) {
             console.log(e);
         }
