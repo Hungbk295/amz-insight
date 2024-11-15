@@ -1,5 +1,6 @@
 import {getTargetDate} from "../linkGenerator/topHotel.js";
 import Sentry from "./sentry.js";
+import moment from 'moment'
 
 export const sleep = s => new Promise(r => setTimeout(r, s * 1000))
 export const getRandomInt = (min, max) => Math.random() * (max - min) + min
