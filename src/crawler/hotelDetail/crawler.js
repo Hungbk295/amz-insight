@@ -1,14 +1,13 @@
 import {createSqsMessages, deleteSqsMessage, readSqsMessages} from "../../utils/awsSdk.js";
 import {getContext} from "../../utils/browserManager.js";
 import {convertCrawlResult} from "../../utils/crawling.js";
-import {sleep} from "../../utils/util.js";
+import {sleep,checkTaskTime,checkSqsPeriodOfTime} from "../../utils/util.js";
 import {getConfigBySupplierId, INTERNAL_SUPPLIER_IDS, SUPPLIERS} from "../../config/suppliers.js";
 import DaoTranClient from "daotran-client";
 import {login} from "../loginHandlers/index.js";
 import _ from "lodash";
 import {Privia, Tourvis} from "./suppliers/index.js";
 import Sentry from "../../utils/sentry.js";
-import moment from 'moment'
 
 const crawlers = {
     [SUPPLIERS.Privia.id]: new Privia(),
@@ -20,7 +19,10 @@ export const run = async (queueUrl, workerName) => {
     await client.register();
     while (true) {
         const data = await readSqsMessages(queueUrl, 5)
+        
         if (data.Messages) {
+
+            const start = Date.now(); 
             for (const msg of data.Messages) {
                 const task = JSON.parse(msg.Body);
                 checkTaskTime(task,'1. Start crawl')
@@ -52,8 +54,9 @@ export const run = async (queueUrl, workerName) => {
                 }
                 await browser.close();
             }
-        } else
-            await sleep(60)
+            const end = Date.now();
+            checkSqsPeriodOfTime(start,end,data.Messages,"crawl detail")
+        } 
         await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
         await sleep(3)
     }
@@ -64,10 +67,3 @@ async function finish(crawlResult, task) {
     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
 }
 
-function checkTaskTime(task,title) {
-    const currentTime = new Date()
-    const durationHour = Math.abs(currentTime - moment(task.createdAt))/ (1000 * 60 * 60);
-    if(durationHour > 6) {
-        console.log(`${title} createdAt:${task.createdAt} -> ${currentTime}`)
-    }
-}

@@ -1,4 +1,5 @@
 import {getTargetDate} from "../linkGenerator/topHotel.js";
+import Sentry from "./sentry.js";
 
 export const sleep = s => new Promise(r => setTimeout(r, s * 1000))
 export const getRandomInt = (min, max) => Math.random() * (max - min) + min
@@ -51,10 +52,36 @@ export const getConditions = (dayOfWeeks, subsequentWeeks, keywords, suppliers) 
     }
     return conditions;
 }
-export function checkTaskTime(task,title) {
+export function checkTaskTime(task,title,limitDurationHour=6) {
     const currentTime = new Date()
     const durationHour = Math.abs(currentTime - moment(task.createdAt))/ (1000 * 60 * 60);
-    if(durationHour > 6) {
-        console.log(`${title} createdAt:${task.createdAt} -> ${currentTime}`)
+    if(durationHour > limitDurationHour) {
+        Sentry.captureMessage(`Task Exception ${title}` ,{
+            level:'warning',
+            extra:{
+                json:{
+                    task
+                }
+            }
+        })
+        console.log(`${title} createdAt:${task?.createdAt} -> ${currentTime}`)
     }
+}
+
+
+export function checkSqsPeriodOfTime(start,end,messages,tile=''){
+    const elapsedTime= end - start 
+    if (elapsedTime >= 600000) { 
+        const warning=`Execution Time exceeded 10 minutes: ${elapsedTime / 1000 / 60} minutes`
+        console.log(warning);
+        Sentry.captureMessage(warning,{
+            level:'warning',
+            extra:{
+                json:{
+                    tile,
+                    Messages:messages
+                }
+            }
+        })
+    } 
 }

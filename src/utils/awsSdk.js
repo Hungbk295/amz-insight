@@ -33,11 +33,17 @@ export const createSqsMessages = async (QueueUrl, messages) => {
 }
 
 export async function deleteSqsMessage(QueueUrl, receiptHandle) {
-    const command = new DeleteMessageCommand({
-        ReceiptHandle: receiptHandle,
-        QueueUrl: QueueUrl
-    });
-    return sqsClient.send(command);
+    try{
+        const command = new DeleteMessageCommand({
+            ReceiptHandle: receiptHandle,
+            QueueUrl: QueueUrl
+        });
+        return sqsClient.send(command);
+    }
+    catch(error){
+       console.error(error)
+    }
+
 }
 
 export async function deleteSqsMessages(QueueUrl, receiptHandles) {
