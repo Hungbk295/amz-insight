@@ -18,7 +18,7 @@ export const run = async (queueUrl, workerName) => {
     const client = new DaoTranClient(workerName, server);
     await client.register();
     while (true) {
-        const data = await readSqsMessages(queueUrl, 5)
+        const data = await readSqsMessages(queueUrl, 3)
         
         if (data.Messages) {
 
@@ -43,7 +43,7 @@ export const run = async (queueUrl, workerName) => {
                     }
                     await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
                     checkTaskTime(task,'2. End crawl')
-                    await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
+                
                 } catch (e) {
                     console.log("Error", msg.Body);
                     Sentry.captureMessage(e, {
@@ -52,10 +52,13 @@ export const run = async (queueUrl, workerName) => {
                         }
                     });
                 }
+                await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
                 await browser.close();
+                const end = Date.now();
+                if(checkSqsPeriodOfTime(start,end,data.Messages,"crawl detail")) break
             }
-            const end = Date.now();
-            checkSqsPeriodOfTime(start,end,data.Messages,"crawl detail")
+            
+            
         } 
         await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
         await sleep(3)
