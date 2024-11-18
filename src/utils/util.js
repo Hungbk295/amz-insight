@@ -80,9 +80,11 @@ export function checkSqsPeriodOfTime(start,end,messages,tile=''){
             extra:{
                 json:{
                     tile,
-                    Messages:messages
+                    Messages:JSON.stringify(messages)
                 }
             }
         })
+        return true
     } 
+    return false
 }
