@@ -88,6 +88,7 @@ const generateAdditionalHotelDetailTasks = async () => {
 
     console.time("Execution Time");
     for (const condition of conditions) {
+        const start = new Date(); 
         const params = {
             keywordId: condition['keyword'].id,
             checkIn: condition['checkIn'],
@@ -95,10 +96,17 @@ const generateAdditionalHotelDetailTasks = async () => {
         try {
             const hotelData = (await axios.get(process.env.API_HOST + '/hotel-data/latest-data', {params})).data
             const tasks = await generateAdditionalHotelDetailTasksBySupplier(hotelData, condition['supplier'], condition['keyword'], condition['checkIn'], condition['checkOut'])
-            try {
-                checkTaskTime(tasks[0], 'generate additional tasks')
-            } catch (e){}
+ 
             await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, tasks)
+            const end = new Date();
+            if(tasks?.length>0) {
+                checkTaskTime({
+                    tasks,
+                    start,
+                    end,
+                    createdAt:tasks[0].createdAt
+                }, 'generate additional tasks')
+            }
         } catch (e) {
             console.log(e);
         }

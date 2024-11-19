@@ -61,7 +61,7 @@ export function checkTaskTime(task,title,limitDurationHour=6) {
             level:'warning',
             extra:{
                 json:{
-                    task
+                    Messages:JSON.stringify(task)
                 }
             }
         })
