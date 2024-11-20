@@ -30,10 +30,10 @@ export const run = async (queueUrl, workerName) => {
     const client = new DaoTranClient(workerName, server);
     await client.register();
     while (true) {
-        const data = await readSqsMessages(queueUrl, 3)
+        const data = await readSqsMessages(queueUrl, 5)
         
         if (data.Messages) {
-            const start = Date.now(); 
+            // const start = Date.now(); 
             for (const msg of data.Messages) {
                 const task = JSON.parse(msg.Body);
                 if (task['isLastTask']) {
@@ -69,8 +69,8 @@ export const run = async (queueUrl, workerName) => {
                     }
                 }
                 await browser.close();
-                const end = Date.now();
-                if(checkSqsPeriodOfTime(start,end,data.Messages,"crawl top")) break
+                // const end = Date.now();
+                // if(checkSqsPeriodOfTime(start,end,data.Messages,"crawl top")) break
             }
         } 
         await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
