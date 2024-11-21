@@ -91,7 +91,7 @@ export function checkSqsPeriodOfTime(start,end,messages,tile=''){
 
 
 export function checkUniqueCreatedAt(hotelData){
-
+   try{
     const supplierDataCreatedAtList=new Set(hotelData['supplierData'].map(item=>item.createdAt))
     const subSupplierDataCreatedAtList=new Set(hotelData['subSupplierData'].map(item=>item.createdAt))
     if(supplierDataCreatedAtList.length||subSupplierDataCreatedAtList.length){
@@ -107,4 +107,9 @@ export function checkUniqueCreatedAt(hotelData){
             }
         })
     }
+   }
+   catch(err){
+    console.error(err)
+   }
+  
 }
