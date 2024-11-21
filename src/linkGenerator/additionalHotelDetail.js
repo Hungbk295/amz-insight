@@ -8,7 +8,8 @@ import {
     SUPPLIERS_WITH_DETAIL_PRICE
 } from "../config/app.js";
 import {createSqsMessages} from "../utils/awsSdk.js";
-import {getConditions, checkTaskTime} from "../utils/util.js";
+import {getConditions, checkTaskTime ,checkUniqueCreatedAt} from "../utils/util.js";
+import Sentry from "../utils/sentry.js";
 
 const taskGenerators = {
     [SUPPLIERS.Agoda.id]: new Agoda(),
@@ -86,7 +87,10 @@ const generateAdditionalHotelDetailTasks = async () => {
     const keywords = (await axios.get(process.env.API_HOST + '/keyword')).data
     const conditions = getConditions(DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION, keywords, IMPORTANT_SUPPLIERS)
 
-    console.time("Execution Time");
+    const startGen=new Date()
+    Sentry.captureMessage(`generateAdditionalHotelDetailTasks status:begin start:${startGen} on worker: ${process?.argv?.[2]}`,{
+        level:'info'
+    })
     for (const condition of conditions) {
         const start = new Date(); 
         const params = {
@@ -100,18 +104,23 @@ const generateAdditionalHotelDetailTasks = async () => {
             await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, tasks)
             const end = new Date();
             if(tasks?.length>0) {
+                checkUniqueCreatedAt(hotelData)
                 checkTaskTime({
                     tasks,
                     start,
                     end,
                     createdAt:tasks[0].createdAt
                 }, 'generate additional tasks')
+     
             }
         } catch (e) {
             console.log(e);
         }
     }
-    console.timeEnd("Execution Time");
+    const endGen=new Date()
+    Sentry.captureMessage(`generateAdditionalHotelDetailTasks status:done start:${startGen} -> end: ${endGen} on worker: ${process?.argv?.[2]}`,{
+        level:'info'
+    })
 }
 
 export {generateAdditionalHotelDetailTasks}
