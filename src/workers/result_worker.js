@@ -12,7 +12,6 @@ while (true) {
             try {
                 await create(JSON.parse(msg.Body))
                 receiptHandles.push(msg.ReceiptHandle)
-                // console.log('Inserted: ' + new Date().toISOString())
             } catch (error) {
                 console.log('Error' + msg.Body)
                 Sentry.captureMessage(error, {

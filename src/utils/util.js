@@ -88,3 +88,28 @@ export function checkSqsPeriodOfTime(start,end,messages,tile=''){
     } 
     return false
 }
+
+
+export function checkUniqueCreatedAt(hotelData){
+   try{
+    const supplierDataCreatedAtList=new Set(hotelData['supplierData'].map(item=>item.createdAt))
+    const subSupplierDataCreatedAtList=new Set(hotelData['subSupplierData'].map(item=>item.createdAt))
+    if(supplierDataCreatedAtList.length||subSupplierDataCreatedAtList.length){
+        const warning="last get createAt not unique"
+        Sentry.captureMessage(warning,{
+            level:'warning',
+            extra:{
+                json:{
+                    tile:'createAt',
+                    supplierDataCreatedAtList:JSON.stringify(supplierDataCreatedAtList),
+                    subSupplierDataCreatedAtList:JSON.stringify(subSupplierDataCreatedAtList)
+                }
+            }
+        })
+    }
+   }
+   catch(err){
+    console.error(err)
+   }
+  
+}
