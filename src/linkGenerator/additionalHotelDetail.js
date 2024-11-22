@@ -120,7 +120,7 @@ const generateAdditionalHotelDetailTasks = async () => {
                 }
                 else{
                    if(currentCreatedAt!==tasks[0].createdAt){
-                        Sentry.captureMessage(`generateAdditionalHotelDetailTasks start:${startGen} -> logDiff: ${endGen} on worker: ${process?.argv?.[2]}`,{
+                        Sentry.captureMessage(`generateAdditionalHotelDetailTasks start:${startGen} -> logDiff: ${end} on worker: ${process?.argv?.[2]}`,{
                             level:'warning',
                             extra:{
                                 currentCreatedAt,
