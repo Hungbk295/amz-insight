@@ -87,6 +87,8 @@ const generateAdditionalHotelDetailTasks = async () => {
     const keywords = (await axios.get(process.env.API_HOST + '/keyword')).data
     const conditions = getConditions(DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION, keywords, IMPORTANT_SUPPLIERS)
 
+    let currentCreatedAt
+    let currentTasks=[]
     const startGen=new Date()
     Sentry.captureMessage(`generateAdditionalHotelDetailTasks status:begin start:${startGen} on worker: ${process?.argv?.[2]}`,{
         level:'info'
@@ -111,6 +113,26 @@ const generateAdditionalHotelDetailTasks = async () => {
                     end,
                     createdAt:tasks[0].createdAt
                 }, 'generate additional tasks')
+
+                if(!currentCreatedAt) {
+                    currentCreatedAt=tasks[0].createdAt
+                    currentTasks=tasks.slice(0, 10)
+                }
+                else{
+                   if(currentCreatedAt!==tasks[0].createdAt){
+                        Sentry.captureMessage(`generateAdditionalHotelDetailTasks start:${startGen} -> logDiff: ${endGen} on worker: ${process?.argv?.[2]}`,{
+                            level:'warning',
+                            extra:{
+                                currentCreatedAt,
+                                currentTasks:JSON.stringify(currentTasks.slice(0,10)),
+                                nextCreatedAt:tasks[0].createdAt,
+                                nextTasks:JSON.stringify(tasks.slice(0,10))
+                            }
+                        })
+                        currentCreatedAt=tasks[0].createdAt
+                        currentTasks=tasks.slice(0, 10)
+                   }
+                }
      
             }
         } catch (e) {
