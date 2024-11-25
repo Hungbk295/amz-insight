@@ -4,7 +4,8 @@ import {
     ReceiveMessageCommand,
     SendMessageBatchCommand,
     SendMessageCommand,
-    SQSClient
+    SQSClient,
+    GetQueueAttributesCommand
 } from "@aws-sdk/client-sqs";
 import {randomUUID} from "crypto";
 
@@ -60,5 +61,29 @@ export async function deleteSqsMessages(QueueUrl, receiptHandles) {
 
         const command = new DeleteMessageBatchCommand(input);
         return sqsClient.send(command);
+    }
+}
+
+export async function getRemainingMessage(queUrl) {
+    try {
+        const params = {
+            QueueUrl: queUrl,
+            AttributeNames: [
+                'ApproximateNumberOfMessages',
+                'ApproximateNumberOfMessagesNotVisible',
+            ],
+        }
+        const command = new GetQueueAttributesCommand(params)
+        const response = await sqsClient.send(command)
+        if (response.Attributes) {
+            const approximateNumberOfMessages =
+                response.Attributes?.ApproximateNumberOfMessages??0
+            const approximateNumberOfMessagesNotVisible =
+                response.Attributes?.ApproximateNumberOfMessagesNotVisible??0
+            return approximateNumberOfMessages+ approximateNumberOfMessagesNotVisible
+        }
+    } catch (error) {
+        console.error(error)
+        return Infinity
     }
 }

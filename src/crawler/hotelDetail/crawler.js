@@ -1,13 +1,14 @@
 import {createSqsMessages, deleteSqsMessage, readSqsMessages} from "../../utils/awsSdk.js";
 import {getContext} from "../../utils/browserManager.js";
 import {convertCrawlResult} from "../../utils/crawling.js";
-import {sleep,checkTaskTime,checkSqsPeriodOfTime} from "../../utils/util.js";
+import {sleep,checkSqsPeriodOfTime} from "../../utils/util.js";
 import {getConfigBySupplierId, INTERNAL_SUPPLIER_IDS, SUPPLIERS} from "../../config/suppliers.js";
 import DaoTranClient from "daotran-client";
 import {login} from "../loginHandlers/index.js";
 import _ from "lodash";
 import {Privia, Tourvis} from "./suppliers/index.js";
 import Sentry from "../../utils/sentry.js";
+import {COUNT_RECEIVE_MESSAGE} from "../../config/app.js";
 
 const crawlers = {
     [SUPPLIERS.Privia.id]: new Privia(),
@@ -18,14 +19,13 @@ export const run = async (queueUrl, workerName) => {
     const client = new DaoTranClient(workerName, server);
     await client.register();
     while (true) {
-        const data = await readSqsMessages(queueUrl, 3)
+        const data = await readSqsMessages(queueUrl, COUNT_RECEIVE_MESSAGE)
         
         if (data.Messages) {
 
             const start = Date.now(); 
             for (const msg of data.Messages) {
                 const task = JSON.parse(msg.Body);
-                checkTaskTime(task,'1. Start crawl')
                 await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
                 const supplierId = task.supplierId
                 const supplyIdConfig = getConfigBySupplierId(supplierId)
@@ -42,7 +42,6 @@ export const run = async (queueUrl, workerName) => {
                         await browser.clearCookies()
                     }
                     await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
-                    checkTaskTime(task,'2. End crawl')
                 
                 } catch (e) {
                     console.log("Error", msg.Body);
