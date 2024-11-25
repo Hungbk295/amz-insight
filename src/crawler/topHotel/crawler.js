@@ -43,7 +43,7 @@ export const run = async (queueUrl, workerName) => {
                         await sleep(5 * 60);
                         await generateAdditionalHotelDetailTasks();
                     }
-                    break;
+                    continue;
                 }
                 await client.waitUntilServerAvailable();
                 await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
