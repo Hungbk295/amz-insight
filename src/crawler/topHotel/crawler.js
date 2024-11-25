@@ -1,12 +1,12 @@
-import {createSqsMessages, deleteSqsMessage, readSqsMessages} from "../../utils/awsSdk.js";
+import {createSqsMessages, deleteSqsMessage, readSqsMessages,getRemainingMessage} from "../../utils/awsSdk.js";
 import {getContext} from "../../utils/browserManager.js";
 import {convertCrawlResult} from "../../utils/crawling.js";
 import {Agoda, Booking, Expedia, Hotels, Kyte, Naver, Privia, Tourvis, Trip} from './suppliers/index.js'
 import DaoTranClient from "daotran-client";
 import { getConfigBySupplierId, INTERNAL_SUPPLIER_IDS, SUPPLIERS } from '../../config/suppliers.js'
-import {sleep,checkTaskTime,checkSqsPeriodOfTime} from "../../utils/util.js";
+import {sleep,checkSqsPeriodOfTime} from "../../utils/util.js";
 import {generateAdditionalHotelDetailTasks} from "../../linkGenerator/additionalHotelDetail.js";
-import {SUPPLIERS_WITH_DETAIL_PRICE} from "../../config/app.js";
+import {SUPPLIERS_WITH_DETAIL_PRICE,COUNT_RECEIVE_MESSAGE,LIMIT_REMAINING_MESSAGE} from "../../config/app.js";
 import _ from "lodash";
 import {read as getKeywords} from "../../api/keyword.js";
 
@@ -30,16 +30,19 @@ export const run = async (queueUrl, workerName) => {
     const client = new DaoTranClient(workerName, server);
     await client.register();
     while (true) {
-        const data = await readSqsMessages(queueUrl, 5)
+        const data = await readSqsMessages(queueUrl, COUNT_RECEIVE_MESSAGE)
         
         if (data.Messages) {
-            // const start = Date.now(); 
+            const start = Date.now(); 
             for (const msg of data.Messages) {
                 const task = JSON.parse(msg.Body);
                 if (task['isLastTask']) {
-                    await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
-                    await sleep(5 * 60);
-                    await generateAdditionalHotelDetailTasks();
+                    const remainingMessage=await getRemainingMessage(queueUrl)
+                    if(remainingMessage<LIMIT_REMAINING_MESSAGE){
+                        await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
+                        await sleep(5 * 60);
+                        await generateAdditionalHotelDetailTasks();
+                    }
                     break;
                 }
                 await client.waitUntilServerAvailable();
@@ -51,9 +54,6 @@ export const run = async (queueUrl, workerName) => {
                 try {
                     const crawlResult = await crawlers[supplierId].crawl(page, task);
                     const resultData = convertCrawlResult(crawlResult, task);
-                    try {
-                        checkTaskTime(task,'Oops! We lost a queue!')
-                    } catch (e){};
                     await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
                     if (SUPPLIERS_WITH_DETAIL_PRICE.map(item => item.id).includes(supplierId))
                         await crawlers[supplierId].generateHotelDetailTasks(resultData, task['keyword'])
@@ -69,8 +69,8 @@ export const run = async (queueUrl, workerName) => {
                     }
                 }
                 await browser.close();
-                // const end = Date.now();
-                // if(checkSqsPeriodOfTime(start,end,data.Messages,"crawl top")) break
+                const end = Date.now();
+                if(checkSqsPeriodOfTime(start,end,data.Messages,"crawl top")) break
             }
         } 
         await client.updateClientStatus(workerName, client.CLIENT_STATUS.IDLE);
