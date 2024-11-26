@@ -23,4 +23,4 @@ export {
 }
 
 export const COUNT_RECEIVE_MESSAGE=3
-export const LIMIT_REMAINING_MESSAGE=5
+export const LIMIT_REMAINING_MESSAGE=30

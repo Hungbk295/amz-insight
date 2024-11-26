@@ -75,15 +75,15 @@ export function checkSqsPeriodOfTime(start,end,messages,tile=''){
     if (elapsedTime >= 600000) { 
         const warning=`Execution Time exceeded 10 minutes: ${elapsedTime / 1000 / 60} minutes`
         console.log(warning);
-        Sentry.captureMessage(warning,{
-            level:'warning',
-            extra:{
-                json:{
-                    tile,
-                    Messages:JSON.stringify(messages)
-                }
-            }
-        })
+        // Sentry.captureMessage(warning,{
+        //     level:'warning',
+        //     extra:{
+        //         json:{
+        //             tile,
+        //             Messages:JSON.stringify(messages)
+        //         }
+        //     }
+        // })
         return true
     } 
     return false

@@ -40,10 +40,10 @@ export const run = async (queueUrl, workerName) => {
                     const remainingMessage=await getRemainingMessage(queueUrl)
                     if(remainingMessage<LIMIT_REMAINING_MESSAGE){
                         await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
-                        await sleep(5 * 60);
+                        await sleep(10 * 60);
                         await generateAdditionalHotelDetailTasks();
                     }
-                    continue;
+                    break;
                 }
                 await client.waitUntilServerAvailable();
                 await client.updateClientStatus(workerName, client.CLIENT_STATUS.WORKING);
