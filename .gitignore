@@ -9,3 +9,5 @@ plan.md
 package-lock.json
 yarn.lock
 .aws
+
+ecosystem.json
