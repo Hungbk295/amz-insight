@@ -13,9 +13,10 @@
             - working directory have to be like: /path/to/hn-hotel-fly. Otherwise, an ENOENT error will occur.
             - If you run on local, you can set working directory on your IDE before you run
         - ## Generate ecosystem with number of workers:
-            - ```src/bash/ecosystem_generator.sh --name dom --count 2```
+            - mode:top  ```src/bash/ecosystem_generator.sh --name dom --count 2 --mode top```
+            - mode:detail  ```src/bash/ecosystem_generator.sh --name dom --count 2 --mode top```
         - ## Run worker
-            - ```pm2 start ecosystem.json --env 0```
+            - ```pm2 start ecosystem.json```
 
 2. Notes
     * [Install Node 18 for Ubuntu](https://github.com/nodesource/distributions)

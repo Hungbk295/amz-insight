@@ -1,11 +1,12 @@
 {
 	"apps": [
 		{
-			"name": "dom",
-			"script": "src/bash/exec_tophotel_normal.sh",
+			"name": "dom-0",
+			"script": "src/bash/exec_hotel_detail.sh",
 			"append_env_to_name": true,
 			"watch": true,
-			"env_0": {
+			"namespace": "work_space_dom",
+			"env": {
 				"WORKER_NAME": "dom-0",
 				"AWS_UID": "836881754257",
 				"ENV": "prod",
@@ -15,8 +16,15 @@
 				"QUEUE_RESULTS_URL": "",
 				"PROXY_SERVER": "socks5://localhost:32782",
 				"PROXY_MANAGEMENT_API_URL": "http://localhost:32783"
-			},
-			"env_1": {
+			}
+		},
+		{
+			"name": "dom-1",
+			"script": "src/bash/exec_hotel_detail.sh",
+			"append_env_to_name": true,
+			"watch": true,
+			"namespace": "work_space_dom",
+			"env": {
 				"WORKER_NAME": "dom-1",
 				"AWS_UID": "836881754257",
 				"ENV": "prod",
