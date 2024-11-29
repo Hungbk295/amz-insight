@@ -34,7 +34,7 @@ export const getContext = async (config) => {
 }
 
 const getContextForInternalSystem = async () => {
-    const nameProfile = process.argv[2]
+    const nameProfile = process.env.WORKER_NAME
     const pathProfile = path.join(os.homedir(), `hn_worker/profile/${nameProfile}`);
     const fingerprintInjector = new FingerprintInjector()
     const options = {headless: false}
