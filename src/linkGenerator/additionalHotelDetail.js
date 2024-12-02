@@ -8,7 +8,7 @@ import {
     SUPPLIERS_WITH_DETAIL_PRICE
 } from "../config/app.js";
 import {createSqsMessages} from "../utils/awsSdk.js";
-import {getConditions, checkTaskTime ,checkUniqueCreatedAt} from "../utils/util.js";
+import {getConditions} from "../utils/util.js";
 import Sentry from "../utils/sentry.js";
 
 const taskGenerators = {
@@ -86,13 +86,9 @@ const generateAdditionalHotelDetailTasksBySupplier = async (hotelData, supplier,
 const generateAdditionalHotelDetailTasks = async () => {
     const keywords = (await axios.get(process.env.API_HOST + '/keyword')).data
     const conditions = getConditions(DAY_OF_WEEKS_CONDITION, SUBSEQUENT_WEEKS_CONDITION, keywords, IMPORTANT_SUPPLIERS)
-
-    let currentCreatedAt
-    let currentTasks=[]
+    
     const startGen=new Date()
-    Sentry.captureMessage(`generateAdditionalHotelDetailTasks status:begin start:${startGen} on worker: ${process?.argv?.[2]}`,{
-        level:'info'
-    })
+    
     for (const condition of conditions) {
         const start = new Date(); 
         const params = {
@@ -103,44 +99,14 @@ const generateAdditionalHotelDetailTasks = async () => {
             const hotelData = (await axios.get(process.env.API_HOST + '/hotel-data/latest-data', {params})).data
             const tasks = await generateAdditionalHotelDetailTasksBySupplier(hotelData, condition['supplier'], condition['keyword'], condition['checkIn'], condition['checkOut'])
  
-            await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, tasks)
-            const end = new Date();
-            if(tasks?.length>0) {
-                checkUniqueCreatedAt(hotelData)
-                checkTaskTime({
-                    tasks,
-                    start,
-                    end,
-                    createdAt:tasks[0].createdAt
-                }, 'generate additional tasks')
+            await createSqsMessages(process.env.QUEUE_TASKS_DETAIL_URL, tasks)
 
-                if(!currentCreatedAt) {
-                    currentCreatedAt=tasks[0].createdAt
-                    currentTasks=tasks.slice(0, 10)
-                }
-                else{
-                   if(currentCreatedAt!==tasks[0].createdAt){
-                        Sentry.captureMessage(`generateAdditionalHotelDetailTasks start:${startGen} -> logDiff: ${end} on worker: ${process?.argv?.[2]}`,{
-                            level:'warning',
-                            extra:{
-                                currentCreatedAt,
-                                currentTasks:JSON.stringify(currentTasks.slice(0,10)),
-                                nextCreatedAt:tasks[0].createdAt,
-                                nextTasks:JSON.stringify(tasks.slice(0,10))
-                            }
-                        })
-                        currentCreatedAt=tasks[0].createdAt
-                        currentTasks=tasks.slice(0, 10)
-                   }
-                }
-     
-            }
         } catch (e) {
             console.log(e);
         }
     }
     const endGen=new Date()
-    Sentry.captureMessage(`generateAdditionalHotelDetailTasks status:done start:${startGen} -> end: ${endGen} on worker: ${process?.argv?.[2]}`,{
+    Sentry.captureMessage(`generateAdditionalHotelDetailTasks status:done start:${startGen} -> end: ${endGen} on worker: ${process.env.WORKER_NAME}`,{
         level:'info'
     })
 }

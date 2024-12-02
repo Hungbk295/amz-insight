@@ -40,7 +40,7 @@ export class Privia {
                     link: hotelData['link']
                 })
         })
-        await createSqsMessages(process.env.QUEUE_DETAIL_TASKS_URL, hotelDetailTasks)
+        await createSqsMessages(process.env.QUEUE_TASKS_DETAIL_URL, hotelDetailTasks)
     }
 
     convertRawCrawlData(rawData, task) {

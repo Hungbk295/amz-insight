@@ -13,8 +13,8 @@
             - working directory have to be like: /path/to/hn-hotel-fly. Otherwise, an ENOENT error will occur.
             - If you run on local, you can set working directory on your IDE before you run
         - ## Generate ecosystem with number of workers:
-            - mode:top  ```src/bash/ecosystem_generator.sh --name dom --count 2 --mode top```
-            - mode:detail  ```src/bash/ecosystem_generator.sh --name dom --count 2 --mode detail```
+            - mode:top  ```src/bash/ecosystem_generator.sh --name inter-top-hotel --count 2 --mode top```
+            - mode:detail  ```src/bash/ecosystem_generator.sh --name inter-detail-hotel --count 2 --mode detail```
         - ## Run worker
             - ```pm2 start ecosystem.json```
 

@@ -1,7 +1,6 @@
 #!/bin/bash
 
 readonly FILE_PATH="ecosystem.json"
-readonly MODE=("top" "detail")
 readonly EXEC=("top|exec_tophotel_normal" "detail|exec_hotel_detail")
 PREFIX_WORKER_NAME="NO_NAME"
 WORKER_COUNT=1
@@ -17,7 +16,7 @@ else
 fi
 
 # Validate required environment variables
-required_vars=(AWS_UID ENV QUEUE_TASKS_URL QUEUE_IMPORTANT_TASKS_URL QUEUE_DETAIL_TASKS_URL QUEUE_RESULTS_URL SENTRY_DSN)
+required_vars=(ENV QUEUE_TASKS_URL QUEUE_TASKS_IMPORTANT_URL QUEUE_TASKS_DETAIL_URL QUEUE_RESULTS_URL SENTRY_DSN)
 for var in "${required_vars[@]}"; do
     if [[ -z "${!var}" ]]; then
         echo "Error: Environment variable $var is not set."
@@ -111,11 +110,10 @@ for ((i = 0; i < WORKER_COUNT; i++)); do
         "namespace":"work_space_$PREFIX_WORKER_NAME",
         "env": {
             "WORKER_NAME": "$worker_name",
-            "AWS_UID": "$AWS_UID",
             "ENV": "$ENV",
             "QUEUE_TASKS_URL": "$QUEUE_TASKS_URL",
-            "QUEUE_IMPORTANT_TASKS_URL": "$QUEUE_IMPORTANT_TASKS_URL",
-            "QUEUE_DETAIL_TASKS_URL": "$QUEUE_DETAIL_TASKS_URL",
+            "QUEUE_TASKS_IMPORTANT_URL": "$QUEUE_TASKS_IMPORTANT_URL",
+            "QUEUE_TASKS_DETAIL_URL": "$QUEUE_TASKS_DETAIL_URL",
             "QUEUE_RESULTS_URL": "$QUEUE_RESULTS_URL",
             "SENTRY_DSN":"$SENTRY_DSN",
             "PROXY_SERVER": "$proxy_server",

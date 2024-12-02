@@ -6,4 +6,4 @@ if (!process.env.WORKER_NAME) {
     process.exit()
 }
 
-await run(process.env.QUEUE_DETAIL_TASKS_URL, process.env.WORKER_NAME)
+await run(process.env.QUEUE_TASKS_DETAIL_URL, process.env.WORKER_NAME)

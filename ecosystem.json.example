@@ -11,8 +11,8 @@
 				"AWS_UID": "836881754257",
 				"ENV": "prod",
 				"QUEUE_TASKS_URL": "",
-				"QUEUE_IMPORTANT_TASKS_URL": "",
-				"QUEUE_DETAIL_TASKS_URL": "",
+				"QUEUE_TASKS_IMPORTANT_URL": "",
+				"QUEUE_TASKS_DETAIL_URL": "",
 				"QUEUE_RESULTS_URL": "",
 				"PROXY_SERVER": "socks5://localhost:32782",
 				"PROXY_MANAGEMENT_API_URL": "http://localhost:32783"
@@ -29,8 +29,8 @@
 				"AWS_UID": "836881754257",
 				"ENV": "prod",
 				"QUEUE_TASKS_URL": "",
-				"QUEUE_IMPORTANT_TASKS_URL": "",
-				"QUEUE_DETAIL_TASKS_URL": "",
+				"QUEUE_TASKS_IMPORTANT_URL": "",
+				"QUEUE_TASKS_DETAIL_URL": "",
 				"QUEUE_RESULTS_URL": "",
 				"PROXY_SERVER": "socks5://localhost:32784",
 				"PROXY_MANAGEMENT_API_URL": "http://localhost:32785"
