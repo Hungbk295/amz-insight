@@ -59,4 +59,4 @@ async function finish(crawlResult, task) {
 	console.log('length: ', resultData.length);
 	await createSqsMessages(process.env.QUEUE_RESULTS_URL, _.chunk(resultData, 10));
 }
-await run(process.env.QUEUE_DETAIL_TASKS_URL)
+await run(process.env.QUEUE_TASKS_DETAIL_URL)
