@@ -85,7 +85,7 @@ export function checkSqsPeriodOfTime(start,end,messages,tile=''){
         //     }
         // })
         return true
-    } 
+    }
     return false
 }
 
