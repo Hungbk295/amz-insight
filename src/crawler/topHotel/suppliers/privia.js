@@ -11,13 +11,14 @@ export class Privia {
 
     async crawl(page, task) {
         let totalDataFromAPI = []
-        page.on('response', async response => {
-            const urls = await response.url()
-            if (urls.includes('price?') && response.status() === 200) {
-                let res = await response.json()
-                totalDataFromAPI = totalDataFromAPI.concat(res['hotelFareList'])
+        await page.route('**/*price?**', async route => {
+            const response = await route.fetch();
+            const json = await response.json();
+            if (json.hotelFareList) {
+                totalDataFromAPI = totalDataFromAPI.concat(json.hotelFareList);
             }
-        })
+            await route.continue();
+        });
         await page.goto(SUPPLIERS.Privia.link + task['link'], {timeout: 60000})
         await sleep(20)
         const dataFromAPI = totalDataFromAPI.slice(0, 100).map((item) => this.convertRawCrawlData(item, task))
