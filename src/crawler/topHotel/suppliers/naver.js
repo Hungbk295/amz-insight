@@ -18,8 +18,6 @@ export class Naver {
                             const json = await response.json();
                             apiData = json?.data?.hotelSearchByPlaceId?.hotelList;
                             
-                            console.log(`Intercepted API data with ${apiData?.length || 0} hotels`);
-                            
                             if (!hasResolved) {
                                 hasResolved = true;
                                 resolve(apiData);
@@ -57,12 +55,13 @@ export class Naver {
         await page.evaluate(scroll, {direction: "down", speed: "slow"});
         await sleep(5);
         
+        let linkURL = page.url();
+        const uniqueURL = linkURL.replace(SUPPLIERS.Naver.link, "").split("?")[0] + "/";
+
         let hotelDataFromAPI = await dataPromise;
-        console.log(`Initial API data received: ${hotelDataFromAPI ? hotelDataFromAPI.length : 'null'}`);
-        
         let hotels = await this.handleSinglePage(task, page, hotelDataFromAPI);
 
-        while (hotels.length < 100) {
+        while (hotels.length < 20) {
             try {
                 dataPromise = waitForApiData();
                 
@@ -73,8 +72,6 @@ export class Naver {
                 await sleep(5);
                 
                 hotelDataFromAPI = await dataPromise;
-                console.log(`New page API data received: ${hotelDataFromAPI ? hotelDataFromAPI.length : 'null'}`);
-                
                 const newHotels = await this.handleSinglePage(task, page, hotelDataFromAPI);
                 hotels = hotels.concat(newHotels);
                 
@@ -84,12 +81,15 @@ export class Naver {
                 break;
             }
         }
+        const result = hotels.slice(0, 100);
         
-        hotels.forEach((item, index) => {
+        result.forEach((item, index) => {
             item.rank = index + 1;
+            item.link = uniqueURL+item.link;
         });
+        console.log(result[0]);
         
-        return hotels;
+        return result
     }
 
     async handleSinglePage(task, page, hotelDataFromAPI) {
@@ -161,7 +161,6 @@ export class Naver {
         
         const hotels = (await Promise.all(hotelPromises)).filter(hotel => hotel !== null);
         
-        console.log(`Successfully processed ${hotels.length} out of ${hotelInfos.length} hotels`);
         return hotels;
     }
 }

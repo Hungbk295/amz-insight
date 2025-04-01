@@ -17,8 +17,8 @@ export const getContext = async (config) => {
     const fingerprintInjector = new FingerprintInjector()
     const {fingerprint} = browserFingerprintWithHeaders
     const options = config?.proxy && process.env.ENV === 'prod' ? {
-        headless: true,
-        proxy: {server: process.env.PROXY_SERVER}
+        headless: false,
+        // proxy: {server: process.env.PROXY_SERVER}
     } : {headless: false}
 
     const browser = await chromium.launch(options)

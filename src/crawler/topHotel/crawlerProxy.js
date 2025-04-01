@@ -29,7 +29,7 @@ export const run = async (queueUrl) => {
         const data = await readSqsMessages(queueUrl, 5)
         if (data.Messages) {
             for (const msg of data.Messages) {
-                const task = JSON.parse(msg.Body);
+                const task = {"link":"list?placeFileName=place%3ATokyo&includeTax=true&adultCnt=2&checkIn=2025-04-21&checkOut=2025-04-22&sortField=popularityKR&sortDirection=descending","checkIn":"2025-04-21","checkOut":"2025-04-22","keywordId":23,"createdAt":"2025-03-31T22:00:06.319Z","supplierId":5}
                 console.log('task',task);
                 if (task['isLastTask']) {
                     await deleteSqsMessage(queueUrl, msg.ReceiptHandle);
