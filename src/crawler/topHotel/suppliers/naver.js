@@ -61,7 +61,7 @@ export class Naver {
         let hotelDataFromAPI = await dataPromise;
         let hotels = await this.handleSinglePage(task, page, hotelDataFromAPI);
 
-        while (hotels.length < 20) {
+        while (hotels.length < 100) {
             try {
                 dataPromise = waitForApiData();
                 
