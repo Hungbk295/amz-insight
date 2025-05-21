@@ -66,13 +66,12 @@ export const search = async (req, res) => {
 			const countComments =
 				countCommentRaw && countCommentRaw.includes('(')
 					? countCommentRaw?.split('(')[1]?.split(')')[0]
-					: countCommentRaw
-
+					: Number(countCommentRaw?.replace(',', ''))
 			if (
 				(countComments &&
 					typeof countComments === 'string' &&
 					countComments.includes('K')) ||
-				Number(countComments?.replace(',', '')) > 300
+				countComments > 300
 			) {
 				result.push({
 					link: linkText,
@@ -81,12 +80,12 @@ export const search = async (req, res) => {
 			}
 		}
 
-		console.log('Found products:', result)
-
 		// Visit top 2 products with most reviews
+		result.sort((a, b) => b.countComments - a.countComments)
 		const topProducts = result
 			// .filter(link => link.link.includes('/sspa'))
-			.slice(0, 2)
+			.slice(0, 1)
+		console.log('Found products:', result)
 
 		const visitedProducts = []
 		for (const product of topProducts) {
@@ -99,9 +98,33 @@ export const search = async (req, res) => {
 			const comments = await page
 				.locator(`//div[contains(@data-hook,'review-collapsed')]/span`)
 				.allInnerTexts()
+
+			const description = await page
+				.locator(`//div[@id='feature-bullets']`)
+				.allInnerTexts()
+			const infoProduct = await page
+				.locator(`//div[@id='productDetails_expanderSectionTables']`)
+				.allInnerTexts()
+
+			const itemClick = infoProduct[0].split('\n')
+			for (const item of itemClick) {
+				const key = item?.trim()
+				try {
+					await page.click(`//span[contains(text(),'${key}')]`, {
+						timeout: 1000,
+					})
+				} catch (error) {
+					console.log('Error:', error)
+				}
+			}
+			const newinfoProduct = await page
+				.locator(`//div[@id='productDetails_expanderSectionTables']`)
+				.allInnerTexts()
 			visitedProducts.push({
 				link: productUrl,
 				comments: comments,
+				description: description,
+				infoProduct: newinfoProduct,
 			})
 		}
 
