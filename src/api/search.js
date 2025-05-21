@@ -4,6 +4,16 @@ import { SUPPLIERS } from '../config/suppliers.js'
 import { sleep } from '../utils/util.js'
 import { scroll } from '../utils/util.js'
 
+const listClickItems = [
+	'Item details',
+	'Night Vision',
+	'Additional details',
+	'Connectivity',
+	'Power',
+	'Measurements',
+	'Video',
+]
+
 export const search = async (req, res) => {
 	try {
 		const { keyword } = req.query
@@ -104,12 +114,8 @@ export const search = async (req, res) => {
 			const description = await page
 				.locator(`//div[@id='feature-bullets']`)
 				.allInnerTexts()
-			const infoProduct = await page
-				.locator(`//div[@id='productDetails_expanderSectionTables']`)
-				.allInnerTexts()
 
-			const itemClick = infoProduct[0].split('\n')
-			for (const item of itemClick) {
+			for (const item of listClickItems) {
 				const key = item?.trim()
 				try {
 					await page.click(`//span[contains(text(),'${key}')]`, {
