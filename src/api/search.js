@@ -85,7 +85,7 @@ export const search = async (req, res) => {
 
 		// Visit top 2 products with most reviews
 		const topProducts = result
-			.filter(link => link.link.includes('/sspa'))
+			// .filter(link => link.link.includes('/sspa'))
 			.slice(0, 2)
 
 		const visitedProducts = []
