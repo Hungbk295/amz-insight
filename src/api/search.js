@@ -72,7 +72,7 @@ export const search = async (req, res) => {
 				(countComments &&
 					typeof countComments === 'string' &&
 					countComments.includes('K')) ||
-				parseInt(countComments) > 300
+				Number(countComments?.replace(',', '')) > 300
 			) {
 				result.push({
 					link: linkText,
