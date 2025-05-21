@@ -31,7 +31,7 @@ export const search = async (req, res) => {
 		// await page.waitForNavigation()
 
 		// Wait 5 seconds after login
-		await sleep(5)
+		await sleep(2)
 
 		// Search for the keyword
 		await page.fill('#twotabsearchtextbox', keyword)
