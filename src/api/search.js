@@ -139,6 +139,11 @@ export const search = async (req, res) => {
 		// Close browser
 		await browser.close()
 
+		if (visitedProducts.length === 0) {
+			await browser.close()
+			return search(req, res)
+		}
+
 		return res.json({
 			success: true,
 			data: visitedProducts,
