@@ -2,6 +2,7 @@ import { getContext } from '../utils/browserManager.js'
 import { getConfigBySupplierId } from '../config/suppliers.js'
 import { SUPPLIERS } from '../config/suppliers.js'
 import { sleep } from '../utils/util.js'
+import { scroll } from '../utils/util.js'
 
 export const search = async (req, res) => {
 	try {
