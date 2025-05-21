@@ -44,7 +44,7 @@ const getContextForInternalSystem = async () => {
 		`hn_worker/profile/${nameProfile}`
 	)
 	const fingerprintInjector = new FingerprintInjector()
-	const options = { headless: true }
+	const options = { headless: false }
 	const context = await chromium.launchPersistentContext(pathProfile, options)
 	await fingerprintInjector.attachFingerprintToPlaywright(
 		context,
