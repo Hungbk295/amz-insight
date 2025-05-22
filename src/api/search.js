@@ -6,12 +6,12 @@ import { scroll } from '../utils/util.js'
 
 const listClickItems = [
 	'Item details',
-	'Night Vision',
+	'Design',
 	'Additional details',
 	'Connectivity',
 	'Power',
 	'Measurements',
-	'Video',
+	'Battery',
 ]
 
 export const search = async (req, res) => {
@@ -95,9 +95,8 @@ export const search = async (req, res) => {
 		result.sort((a, b) => b.countComments - a.countComments)
 		const topProducts = result
 			// .filter(link => link.link.includes('/sspa'))
-			.slice(0, 2)
+			.slice(0, 1)
 		console.log('Found products:', result)
-		await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
 
 		const visitedProducts = []
 		for (const product of topProducts) {
@@ -105,6 +104,7 @@ export const search = async (req, res) => {
 			const productUrl = `https://www.amazon.com${product.link}`
 			await page.goto(productUrl)
 			await sleep(1)
+			await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
 
 			// Get product details
 			const comments = await page
@@ -115,6 +115,9 @@ export const search = async (req, res) => {
 				.locator(`//div[@id='feature-bullets']`)
 				.allInnerTexts()
 
+			const alternativeInfo = await page
+				.locator(`//div[@id='tech']`)
+				.allInnerTexts()
 			for (const item of listClickItems) {
 				const key = item?.trim()
 				try {
@@ -128,11 +131,13 @@ export const search = async (req, res) => {
 			const newinfoProduct = await page
 				.locator(`//div[@id='productDetails_expanderSectionTables']`)
 				.allInnerTexts()
+
 			visitedProducts.push({
 				link: productUrl,
 				comments: comments,
 				description: description,
 				infoProduct: newinfoProduct,
+				alternativeInfo: alternativeInfo,
 			})
 		}
 
