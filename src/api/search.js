@@ -95,7 +95,7 @@ export const search = async (req, res) => {
 		result.sort((a, b) => b.countComments - a.countComments)
 		const topProducts = result
 			// .filter(link => link.link.includes('/sspa'))
-			.slice(0, 2)
+			.slice(0, 1)
 		console.log('Found products:', result)
 
 		const visitedProducts = []
@@ -123,16 +123,16 @@ export const search = async (req, res) => {
 				.locator(`//div[@id='prodDetails']`)
 				.allInnerTexts()
 			// await sleep(40)
-			for (const item of listClickItems) {
-				const key = item?.trim()
-				try {
-					await page.click(`//span[contains(text(),'${key}')][1]`, {
-						timeout: 1000,
-					})
-				} catch (error) {
-					console.log('Error:', error)
-				}
-			}
+			// for (const item of listClickItems) {
+			// 	const key = item?.trim()
+			// 	try {
+			// 		await page.click(`//span[contains(text(),'${key}')][1]`, {
+			// 			timeout: 1000,
+			// 		})
+			// 	} catch (error) {
+			// 		console.log('Error:', error)
+			// 	}
+			// }
 			const newinfoProduct = await page
 				.locator(`//div[@id='productDetails_expanderSectionTables']`)
 				.allInnerTexts()
