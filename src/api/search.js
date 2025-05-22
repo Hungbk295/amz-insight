@@ -101,7 +101,9 @@ export const search = async (req, res) => {
 		const visitedProducts = []
 		for (const product of topProducts) {
 			console.log('Visiting product:', product)
-			const productUrl = `https://www.amazon.com${product.link}`
+			const productUrl = product.link.includes('amazon.com')
+				? product.link
+				: `https://www.amazon.com${product.link}`
 			await page.goto(productUrl)
 			await sleep(1)
 			await page.evaluate(scroll, { direction: 'down', speed: 'slow' })
