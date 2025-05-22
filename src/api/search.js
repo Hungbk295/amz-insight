@@ -162,6 +162,7 @@ export const search = async (req, res) => {
 		})
 	} catch (error) {
 		console.error('Search error:', error)
+		await browser.close()
 		return res.status(500).json({
 			success: false,
 			error: 'Internal server error',
