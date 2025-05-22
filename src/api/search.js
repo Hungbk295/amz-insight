@@ -95,7 +95,7 @@ export const search = async (req, res) => {
 		result.sort((a, b) => b.countComments - a.countComments)
 		const topProducts = result
 			// .filter(link => link.link.includes('/sspa'))
-			.slice(0, 1)
+			.slice(0, 2)
 		console.log('Found products:', result)
 
 		const visitedProducts = []
