@@ -118,10 +118,15 @@ export const search = async (req, res) => {
 			const alternativeInfo = await page
 				.locator(`//div[@id='tech']`)
 				.allInnerTexts()
+
+			const prodDetail = await page
+				.locator(`//div[@id='prodDetails']`)
+				.allInnerTexts()
+			// await sleep(40)
 			for (const item of listClickItems) {
 				const key = item?.trim()
 				try {
-					await page.click(`//span[contains(text(),'${key}')]`, {
+					await page.click(`//span[contains(text(),'${key}')][1]`, {
 						timeout: 1000,
 					})
 				} catch (error) {
@@ -136,7 +141,7 @@ export const search = async (req, res) => {
 				link: productUrl,
 				comments: comments,
 				description: description,
-				infoProduct: newinfoProduct,
+				infoProduct: newinfoProduct.length ? newinfoProduct : prodDetail,
 				alternativeInfo: alternativeInfo,
 			})
 		}

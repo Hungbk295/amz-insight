@@ -2,7 +2,7 @@ const SUPPLIERS = {
 	Amazon: {
 		id: 'amazon',
 		name: 'Amazon',
-		baseUrl: 'https://www.amazon.com',
+		baseUrl: 'https://www.amazon.com/search/s?k=search',
 	},
 }
 
