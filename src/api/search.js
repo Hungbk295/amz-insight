@@ -110,7 +110,9 @@ export const search = async (req, res) => {
 
 			// Get product details
 			const comments = await page
-				.locator(`//div[contains(@data-hook,'review-collapsed')]/span`)
+				.locator(
+					`//div[@class="card-padding"]//div[contains(@data-hook,'review-collapsed')]/span`
+				)
 				.allInnerTexts()
 
 			const description = await page
@@ -138,6 +140,9 @@ export const search = async (req, res) => {
 			const newinfoProduct = await page
 				.locator(`//div[@id='productDetails_expanderSectionTables']`)
 				.allInnerTexts()
+
+			console.log('newinfoProduct', newinfoProduct)
+			console.log('prodDetail', prodDetail)
 
 			visitedProducts.push({
 				link: productUrl,
